@@ -4,6 +4,8 @@ import { Container, pockets } from "./items.svelte";
 import { doc, setDoc, type Firestore } from "firebase/firestore";
 import { ItemDisplayList } from "./itemDisplayList.svelte";
 import type { About, Attribute, Bars, Proficiencies, Speed, Stats } from "./attributes.svelte";
+import { AttributeManager } from "./attributes/attributes.svelte";
+import { DefaultProficiencies, DefaultStats } from "./attributes/attributes.defaults.svelte";
 
 export enum Species {
   Human = "Human",
@@ -93,35 +95,10 @@ export abstract class Character {
   appearance: string = $state("");
   fna: string = $state("");
 
-  modifiers: string[] = []
+  modifiers: string[] = [];
 
-  stats: Stats = $state({
-    "Vitality": 6,
-    "Agility": 6,
-    "Strength": 6,
-    "Dexterity": 6,
-    "Charisma": 6,
-    "Perception": 6,
-    "Intelligence": 6,
-  })
-
-  proficiencies: Proficiencies = $state({
-    "Athletics": " ",
-    "Acrobatics": " ",
-    "Stealth": " ",
-    "Flying": " ",
-    "Firearms": " ",
-    "Persuasion": " ",
-    "Intimidation": " ",
-    "Investigation": " ",
-    "Knowledge": " ",
-    "Technology": " ",
-    "Melee": " ",
-    "Explosives": " ",
-    "Medicine": " ",
-    "Mechanics": " ",
-    "Willpower": " ",
-  })
+  stats = AttributeManager.fromList(DefaultStats, 6);
+  proficiencies = AttributeManager.fromList(DefaultProficiencies, " ");
 
   abstract bars: Bars
   abstract speed: Speed
@@ -165,14 +142,16 @@ export abstract class Character {
   abstract getBaseMaxWeight(): number
 
   static trans(target: Character, source: Character) {
-    for (let k in target.proficiencies) {
-      if (k in source.proficiencies)
-        target.proficiencies[k] = source.proficiencies[k]
+    for (let k in target.proficiencies.keys) {
+      if (k in source.proficiencies.keys)
+        target.proficiencies.set(k, source.proficiencies.get(k))
     }
+
     for (let k in target.bars) {
       if (k in source.bars)
         target.bars[k] = source.bars[k]
     }
+
     target.stats = source.stats
     target.about = source.about
     target.biography = source.biography
@@ -204,7 +183,7 @@ export abstract class Character {
       fna: this.fna,
 
       about: objectToOrdered(this.about),
-      stats: objectToOrdered(this.stats),
+      stats: this.stats.serialize(),
       proficiencies: objectToOrdered(this.proficiencies),
       bars: objectToOrdered(this.bars),
       speed: objectToOrdered(this.speed),
@@ -240,7 +219,7 @@ export abstract class Character {
     char.appearance = doc.appearance ?? "";
     char.fna = doc.fna ?? "";
     char.about = orderedToObject(doc.about ?? []);
-    char.stats = orderedToObject(doc.stats ?? []);
+    char.stats = AttributeManager.deserialize(doc.stats ?? []);
     char.proficiencies = orderedToObject(doc.proficiencies ?? {}) as any;
     char.bars = orderedToObject(doc.bars ?? []);
     char.speed = orderedToObject(doc.speed ?? []);

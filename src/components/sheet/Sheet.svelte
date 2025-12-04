@@ -30,6 +30,7 @@
           character,
           ev.currentTarget.value as Species
         );
+        if (!newCharacter) return;
         character = newCharacter;
         character.uploadMultiple({
           species: character.species,

@@ -9,7 +9,7 @@
   let rulebook = $state(false);
 
   let sum = $derived(
-    Object.values(character.stats).reduce((total, value) => total + value)
+    character.stats.values.reduce((total, value) => total + value)
   );
 
   export function statSumInvalid(sum: number) {
@@ -34,15 +34,15 @@
   </RulebookSnippet>
   <p class="total">Total Points <span>{sum}</span></p>
   <section class="statList">
-    {#each Object.entries(character.stats) as stat}
+    {#each character.stats.entries as stat}
       <span>{stat[0]}</span>
       <span class="modifier">{statModifier(stat[1])}</span>
       <input
-        style={statInvalid(character.stats[stat[0]]) ? invalidText : ""}
+        style={statInvalid(character.stats.get(stat[0])) ? invalidText : ""}
         bind:value={
-          () => character.stats[stat[0]],
+          () => character.stats.get(stat[0]),
           (v) => {
-            character.stats[stat[0]] = v!;
+            character.stats.set(stat[0], v!);
             if (stat[0] === "Strength") {
               character.containers.at(0)!.carry = character.getBaseMaxWeight();
               character.maxWeight = character.getMaxWeight();
@@ -56,13 +56,13 @@
       />
     {/each}
   </section>
-  <div class="passive">
+  <!-- <div class="passive">
     <span>Passive Perception</span>
     <span class="value">{10 + character.stats.Perception - 4}</span>
 
     <span>Passive Dodge</span>
     <span class="value">{10 + character.stats.Agility - 4}</span>
-  </div>
+  </div> -->
   <h2>Features & Abilities</h2>
   <textarea
     bind:value={character.fna}

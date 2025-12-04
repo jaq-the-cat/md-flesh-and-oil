@@ -21,15 +21,15 @@ export class Human extends Character {
   });
 
   override getMaxHp() {
-    return Math.floor(6 + this.stats.Vitality * 1.4)
+    return Math.floor(6 + this.stats.get("Vitality")  * 1.4)
   }
 
   override getBaseMaxWeight() {
-    return 5 + this.stats.Strength * 2
+    return 5 + this.stats.get("Strength")  * 2
   }
 
   constructor() {
-    super()
-    delete this.proficiencies.Flying
+    super();
+    this.proficiencies.remove("Flying");
   }
 }

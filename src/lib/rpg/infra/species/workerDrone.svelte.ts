@@ -22,15 +22,15 @@ export class WorkerDrone extends Character {
   });
 
   override getMaxHp() {
-    return Math.floor(8 + this.stats.Vitality * 1.6)
+    return Math.floor(8 + this.stats.get("Vitality") * 1.6)
   }
 
   override getBaseMaxWeight() {
-    return 5 + this.stats.Strength * 3
+    return 5 + this.stats.get("Strength") * 3
   }
 
   constructor() {
     super()
-    delete this.proficiencies.Flying
+    this.proficiencies.remove("Flying");
   }
 }

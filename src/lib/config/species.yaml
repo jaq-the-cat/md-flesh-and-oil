@@ -1,0 +1,99 @@
+﻿species_id:
+  name: Species Name
+  baseHp: 10
+
+  bars:
+    hp:
+      - add: vitality
+      - multiply: 2
+      - add: 8 
+
+  speed:
+    walk: 10
+    run: 20
+
+  inventory:
+    slots:
+      handLeft: true
+      handRight: true
+      shoulderLeft: true
+      shoulderRight: true
+      front: true
+      back: true
+    innate:
+
+  stats:
+    - vitality
+    - agility
+    - strength
+    - <etc>
+
+  skills:
+    - athletics
+    - acrobatics
+    - stealth
+    - etc
+
+capabilities:
+  swimmer:
+    speed:
+      swim: 10
+
+  wings:
+    speed:
+      fly: 10
+    skills:
+      - flying
+
+  biological:
+    bars:
+      blood: 10
+
+  drone:
+    bars:
+      oil: 10
+  
+  solverInfected:
+    bars:
+      solver: 10
+    skills:
+      - willpower
+  
+  teleporation:
+    requirements:
+      capabilities:
+        solverInfected: true
+      bars:
+        solver:
+          min: 5
+  
+  disassemblyArmLeft:
+    inventory:
+      innate:
+        - claws
+        - sword
+        - whatever
+  
+  disassemblyArmRight:
+    inventory:
+      innate:
+        - claws
+        - sword
+        - whatever
+  
+  hasNaniteTail:
+    requirements:
+      capabilities:
+        hasSolverTail: false
+    inventory:
+      innate:
+        - naniteTail
+        
+  hasSolverTail:
+    requirements:
+      capabilities:
+        solverInfected: true
+        hasNaniteTail: false
+    inventory:
+      innate:
+        - solverTail

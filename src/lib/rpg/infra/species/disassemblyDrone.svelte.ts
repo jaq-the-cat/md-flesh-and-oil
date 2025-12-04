@@ -24,11 +24,11 @@ export class DisassemblyDrone extends Character {
   });
 
   override getMaxHp() {
-    return Math.floor(8 + this.stats.Vitality * 2)
+    return Math.floor(8 + this.stats.get("Vitality")  * 2)
   }
 
   override getBaseMaxWeight() {
-    return 5 + this.stats.Strength * 4
+    return 5 + this.stats.get("Strength")  * 4
   }
 
   constructor() {

@@ -5,7 +5,7 @@ import { Human } from "./human.svelte"
 import { SolverDrone } from "./solverDrone.svelte"
 import { WorkerDrone } from "./workerDrone.svelte"
 
-export function initializeFromSpecies(species: Species): Character {
+export function initializeFromSpecies(species: Species): Character | undefined {
   switch (species) {
     case Species.Avian:
       return new AvianDrone()
@@ -20,16 +20,7 @@ export function initializeFromSpecies(species: Species): Character {
   }
 }
 export function initializeFromCharacterAndSpecies(character: Character, species: Species) {
-  switch (species) {
-    case Species.Avian:
-      return Character.trans(new AvianDrone(), character)
-    case Species.Disassembly:
-      return Character.trans(new DisassemblyDrone(), character)
-    case Species.Human:
-      return Character.trans(new Human(), character)
-    case Species.Solver:
-      return Character.trans(new SolverDrone(), character)
-    case Species.Worker:
-      return Character.trans(new WorkerDrone(), character)
-  }
+  let base = initializeFromSpecies(species);
+  if (!base) return
+  return Character.trans(base, character);
 }
