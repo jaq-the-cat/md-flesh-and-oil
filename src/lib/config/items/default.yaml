@@ -1,0 +1,27 @@
+﻿gun:
+  hit: Firearms
+  damage: 8 Pierce
+
+  range: 10
+  rate: 1
+  
+  capacity:
+    value: 12
+    step: 1
+
+  reloadable:
+    accepts:
+      - gunAmmo
+    actions: 1
+
+knife:
+  hit: Melee
+  damage: 8 + Strength Pierce
+
+  range: 1
+  rate: 1
+
+bottle:
+  capacity:
+    value: 0.2
+    step: 0.1

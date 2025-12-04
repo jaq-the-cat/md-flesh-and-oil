@@ -1,0 +1,39 @@
+﻿human:
+  name: Human
+
+  bars:
+    hp:
+      - add: vitality
+      - multiply: 2
+      - add: 8
+
+  speed:
+    walk: 10
+    run: 20
+
+  inventory:
+    slots:
+      handLeft: true
+      handRight: true
+      shoulderLeft: true
+      shoulderRight: true
+      front: true
+      back: true
+    innate:
+
+  stats:
+    - vitality
+    - agility
+    - strength
+    - <etc>
+
+  skills:
+    - athletics
+    - acrobatics
+    - stealth
+    - etc
+  
+  capabilities:
+    biological: true
+    swimmer: true
+    disassemblyArmRight: true
