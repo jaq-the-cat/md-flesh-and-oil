@@ -1,0 +1,45 @@
+﻿bars:
+  hp: 8 + stats.vitality * 2
+
+speed:
+  walk: 10
+  run: 20
+
+stats:
+  - vitality
+  - agility
+  - strength
+  - dexterity
+  - charisma
+  - perception
+  - intelligence
+
+skills:
+  athletics: vitality
+  acrobatics: agility
+  stealth: agility
+  firearms: dexterity
+  persuasion: charisma
+  intimidation: charisma
+  investigation: intelligence
+  knowledge: intelligence
+  technology: intelligence
+  melee: strength
+  explosives:
+    - intelligence
+    - dexterity
+  medicine:
+    - intelligence
+    - dexterity
+  mechanics:
+    - intelligence
+    - dexterity
+
+inventory:
+  slots:
+    handLeft: true
+    handRight: true
+    shoulderLeft: true
+    shoulderRight: true
+    front: true
+    back: true

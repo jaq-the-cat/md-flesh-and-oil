@@ -1,4 +1,4 @@
-﻿gun:
+gun:
   hit: Firearms
   damage: 8 Pierce
 
@@ -20,6 +20,11 @@ knife:
 
   range: 1
   rate: 1
+
+  requirements:
+    stats:
+      dexterity:
+        min: 5
 
 bottle:
   capacity:

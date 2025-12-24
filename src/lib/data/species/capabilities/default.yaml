@@ -1,0 +1,27 @@
+canSwim:
+  speed:
+    swim: 5
+
+hasWings:
+  speed:
+    fly: 20
+  skills:
+    - flying
+
+hasBlood:
+  bars:
+    blood: 10
+
+hasOil:
+  bars:
+    oil: 10
+
+solverInfected:
+  bars:
+    hp: 10 + stats.vitality * 2
+    solver: 10
+  skills:
+    willpower:
+      - strength
+      - charisma
+      - intelligence

@@ -1,0 +1,36 @@
+human:
+  name: Human
+
+  capabilities:
+    hasBlood: true
+    canSwim: true
+
+  bars:
+    hp: 6 + stats.vitality * 2
+
+worker:
+  name: Worker Drone
+
+  capabilities:
+    hasOil: true
+
+solver:
+  name: Solver Drone
+
+  capabilities:
+    hasOil: true
+    solverInfected: true
+
+disassembler:
+  name: Disasssemby Drone
+
+  capabilities:
+    hasOil: true
+    solverInfected: true
+    disassemblyArmLeft: true
+    disassemblyArmRight: true
+    hasNaniteTail: true
+    hasWings: true
+
+  bars:
+    hp: 10 + stats.vitality * 2

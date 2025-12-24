@@ -1,0 +1,9 @@
+﻿disassemblyArmLeft: {}
+
+disassemblyArmRight: {}
+
+hasNaniteTail:
+  requirements:
+    capabilities:
+      solverInfected: true
+      hasSolverTail: false

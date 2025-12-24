@@ -1,0 +1,23 @@
+hasSolverTail:
+  requirements:
+    capabilities:
+      solverInfected: true
+      hasNaniteTail: false
+  inventory:
+    slots:
+      tail: true
+    innate:
+      - solverTail
+
+canSolverTeleport:
+  requirements:
+    capabilities:
+      solverInfected: true
+  usage:
+    requirements:
+      bars:
+        solver:
+          min: 5
+    cost:
+      bars:
+        solver: 1
