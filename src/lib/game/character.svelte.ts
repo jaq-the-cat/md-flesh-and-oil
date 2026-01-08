@@ -1,9 +1,9 @@
 import type { SpeciesDefinition } from "$lib/dataProcessor/types/definition.types";
 import type { NumberValue } from "$lib/dataProcessor/types/base.types";
-import type { AttributeValues } from "./bars.svelte";
 import { Inventory } from "./inventory.svelte";
 import '$lib/extensions/object.extension';
 import { ObjectLink } from "$lib/dataProcessor/manager/data.manager";
+import * as math from 'mathjs';
 
 enum SkillProficiencies {
     None = ' ',
@@ -32,20 +32,18 @@ export class Character {
         this.skills = Object.map(definition.skills, ([skill, _]) => [skill, Character.DEFAULT_SKILL]);
     }
 
-    evalMathString(s: string) {
-        s = '6 + stats.vitality * 2';
-        let process = s.trim().replace(/ /g, '');
-        const values = process.split(/[\+\-\*\/]/).map(v => {
-            if (!isNaN(+v)) return +v;
-            const linked = ObjectLink.linkToValue(this, v);
-            if (!linked || isNaN(+linked)) return 0;
-            return +linked;
-        });
-        const operators = process.matchAll(/[\+\-\*\/]/g).map(m => m[0]).toArray();
-        for (let opIndex in operators) {
-            console.log(opIndex)
+    getNumberValue(n: NumberValue) {
+        if (typeof n === 'number') return n;
+        const tokens = n.split(' ')
+        for (let index in tokens) {
+            // console.log(`[${index}] ${tokens[index]}`);
+            const value = tokens[index];
+            if (!value.match(/[\+\-\*\/]/) && isNaN(+value)) {
+                tokens[index] = ObjectLink.linkToValue(this, value) ?? '0';
+            }
         }
-        // console.log(values, operators)
+        const expression = tokens.join('')
+        return math.evaluate(expression);
     }
 
     print() {
