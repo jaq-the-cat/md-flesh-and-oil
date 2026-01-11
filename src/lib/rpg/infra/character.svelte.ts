@@ -106,21 +106,40 @@ export abstract class Character {
   })
 
   proficiencies: Proficiencies = $state({
-    "Athletics": " ",
+    // VIT
+    // AGL
     "Acrobatics": " ",
     "Stealth": " ",
     "Flying": " ",
+    // STR
+    "Athletics": " ",
+    "Climb": " ",
+    "Grapple": " ",
+    // DEX
+    "Craft": " ",
     "Firearms": " ",
+    // STR+DEX
+    "Melee": " ",
+    // CHA
+    "Disguise": " ",
     "Persuasion": " ",
     "Intimidation": " ",
+    // PER
+    "Animal Handling": " ",
     "Investigation": " ",
+    // INT
     "Knowledge": " ",
     "Technology": " ",
-    "Melee": " ",
+    "Religion": " ",
+    "Nature": " ",
+
+    // INT+DEX,
     "Explosives": " ",
     "Medicine": " ",
     "Mechanics": " ",
-    "Willpower": " ",
+
+    // STR+CHA+INT
+    "Willpower": " "
   })
 
   abstract bars: Bars
@@ -240,8 +259,14 @@ export abstract class Character {
     char.appearance = doc.appearance ?? "";
     char.fna = doc.fna ?? "";
     char.about = orderedToObject(doc.about ?? []);
-    char.stats = orderedToObject(doc.stats ?? []);
-    char.proficiencies = orderedToObject(doc.proficiencies ?? {}) as any;
+    char.stats = {
+      ...char.stats,
+      ...orderedToObject(doc.stats ?? [])
+    };
+    char.proficiencies = {
+      ...char.proficiencies,
+      ...orderedToObject(doc.proficiencies ?? {}) as any
+    };
     char.bars = orderedToObject(doc.bars ?? []);
     char.speed = orderedToObject(doc.speed ?? []);
     char.containers = Container.deserializeList(doc.containers);
@@ -265,36 +290,119 @@ export abstract class Character {
 }
 
 export function getProfModifier(value?: string) {
-  if (value === 'P') return '+2';
-  else if (value === 'E') return '+3';
-  return '  '
+  if (value === 'P') return 2;
+  else if (value === 'E') return 3;
+  return 0;
+}
+
+export function formatPlusMinus(v: number) {
+  if (v >= 0) return `+${v}`;
+  if (v < 0) return `-${v}`;
+}
+
+export function getSkillModifier(skill: keyof Proficiencies, character: Character): number {
+  switch (skill) {
+    // VIT
+    // AGL
+    case "Acrobatics":
+    case "Stealth":
+    case "Flying":
+      return character.stats.Agility-4 + getProfModifier(character.proficiencies[skill]);
+    // STR
+    case "Athletics":
+    case "Climb":
+    case "Grapple":
+      return character.stats.Strength-4 + getProfModifier(character.proficiencies[skill]);
+    // DEX
+    case "Craft":
+    case "Firearms":
+      return character.stats.Dexterity-4 + getProfModifier(character.proficiencies[skill]);
+    // STR+DEX
+    case "Melee":
+      return Math.max(
+        character.stats.Strength,
+        character.stats.Dexterity,
+      )-4  + getProfModifier(character.proficiencies[skill]);
+    // CHA
+    case "Disguise":
+    case "Persuasion":
+    case "Intimidation":
+      return character.stats.Charisma-4 + getProfModifier(character.proficiencies[skill]);
+    // PER
+    case "Animal Handling":
+    case "Investigation":
+      return character.stats.Perception-4 + getProfModifier(character.proficiencies[skill]);
+    // INT
+    case "Knowledge":
+    case "Technology":
+    case "Religion":
+    case "Nature":
+      return character.stats.Intelligence-4 + getProfModifier(character.proficiencies[skill]);
+
+    // INT+DEX,
+    case "Explosives":
+    case "Medicine":
+    case "Mechanics":
+      return Math.max(
+        character.stats.Intelligence,
+        character.stats.Dexterity,
+      )-4  + getProfModifier(character.proficiencies[skill]);
+
+    // STR+CHA+INT
+    case "Willpower":
+      return Math.max(
+        character.stats.Strength,
+        character.stats.Charisma,
+        character.stats.Intelligence,
+      )-4  + getProfModifier(character.proficiencies[skill]);
+  }
+  return 0;
 }
 
 export function getProfStat(skill: keyof Proficiencies) {
   switch (skill) {
-    case "Athletics":
-      return "VIT"
+    // VIT
+    // AGL
     case "Acrobatics":
     case "Stealth":
     case "Flying":
-      return "AGI"
+        return `AGL`;
+    // STR
+    case "Athletics":
+    case "Climb":
+    case "Grapple":
+        return `STR`;
+    // DEX
+    case "Craft":
     case "Firearms":
-      return "DEX"
+        return `DEX`;
+    // STR+DEX
+    case "Melee":
+        return `STR+DEX`;
+    // CHA
+    case "Disguise":
     case "Persuasion":
     case "Intimidation":
-      return "CHA"
+        return `CHA`;
+    // PER
+    case "Animal Handling":
     case "Investigation":
-      return "PER"
+        return `PER`;
+    // INT
     case "Knowledge":
     case "Technology":
-      return "INT"
-    case "Melee":
-      return "STR/DEX"
+    case "Religion":
+    case "Nature":
+        return `INT`;
+
+    // INT+DEX,
     case "Explosives":
     case "Medicine":
     case "Mechanics":
-      return "INT + DEX"
+        return `INT+DEX`;
+
+    // STR+CHA+INT
     case "Willpower":
-      return "STR/CHA/INT"
+        return `STR+CHA+INT`;
   }
 }

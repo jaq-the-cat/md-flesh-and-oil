@@ -2,8 +2,10 @@
   import { invalidText } from "$lib";
   import {
     Character,
+    formatPlusMinus,
     getProfModifier,
     getProfStat,
+    getSkillModifier,
     Species,
   } from "$lib/rpg/infra/character.svelte";
   import type { Proficiencies } from "$lib/rpg/infra/attributes.svelte";
@@ -57,7 +59,7 @@
   <section class="profList">
     {#each Object.entries(character.proficiencies) as prof}
       <span>{prof[0]} [{getProfStat(prof[0])}]</span>
-      <span>{getProfModifier(prof[1])}</span>
+      <span>{formatPlusMinus(getSkillModifier(prof[0], character))}</span>
       <select
         bind:value={
           () => character.proficiencies[prof[0]],
