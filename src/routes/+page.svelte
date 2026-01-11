@@ -1,19 +1,21 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import { db } from "$lib/db";
-  import { addDoc, collection } from "firebase/firestore";
+    import { Character } from "$lib/game/character.svelte";
+  // import { goto } from "$app/navigation";
+  // import { db } from "$lib/db";
+  // import { addDoc, collection } from "firebase/firestore";
   import Sheet from "../components/sheet/Sheet.svelte";
-  import { WorkerDrone } from "$lib/rpg/infra/species/workerDrone.svelte";
+	import type { PageProps } from './$types';
 
-  let character = $state(new WorkerDrone());
+	const { data }: PageProps = $props();
+  let character = $state(new Character(data.human!));
 
   async function save() {
-    const doc = await addDoc(
-      collection(db.firestore!, "sheets"),
-      character.serialize()
-    );
-    character.id = doc.id;
-    goto(`/sheet/${doc.id}`);
+    // const doc = await addDoc(
+      // collection(db.firestore!, "sheets"),
+      // character.serialize()
+    // );
+    // character.id = doc.id;
+    // goto(`/sheet/${doc.id}`);
   }
 </script>
 

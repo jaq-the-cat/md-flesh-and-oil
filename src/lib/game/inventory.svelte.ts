@@ -1,4 +1,4 @@
-import type { InventoryDefinition } from "$lib/dataProcessor/types/definition.types";
+import type { InventoryDefinition } from "$lib/data/shared/types/definition.types";
 import { Item } from "./item.svelte";
 import '$lib/extensions/object.extension';
 

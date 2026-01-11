@@ -1,9 +1,4 @@
-import path from 'path';
-import type { GenericDefinition } from '../types/definition.types';
-import { SpeciesManager } from './species.manager';
-
-const basePath = 'src/lib/data/';
-const speciesPath = path.join(basePath, 'species');
+import type { GenericDefinition } from "./types/definition.types";
 
 export class ObjectLink<V, T extends object = object> {
     root: T
@@ -35,15 +30,6 @@ export class ObjectLink<V, T extends object = object> {
         }
         return null;
     }
-}
-
-export class DataManager {
-    private static instance?: DataManager;
-    species: SpeciesManager;
-
-    private constructor() {
-        this.species = new SpeciesManager(speciesPath);
-    }
     
     public static joinObjects<T extends GenericDefinition>(a: any, b: any, overwrite: boolean = false): T {
         if (!a) return a;
@@ -61,11 +47,5 @@ export class DataManager {
             }
         }
         return a as T;
-    }
-
-    public static get() {
-        if (!this.instance)
-            this.instance = new DataManager()
-        return this.instance;
     }
 }

@@ -1,9 +1,9 @@
-import type { SpeciesDefinition } from "$lib/dataProcessor/types/definition.types";
-import type { NumberValue } from "$lib/dataProcessor/types/base.types";
+import type { SpeciesDefinition } from "$lib/data/shared/types/definition.types";
+import type { NumberValue } from "$lib/data/shared/types/base.types";
 import { Inventory } from "./inventory.svelte";
 import '$lib/extensions/object.extension';
-import { ObjectLink } from "$lib/dataProcessor/manager/data.manager";
 import * as math from 'mathjs';
+import { ObjectLink } from "$lib/data/shared/objectLink";
 
 enum SkillProficiencies {
     None = ' ',
@@ -17,6 +17,15 @@ export class Character {
     static DEFAULT_SKILL = SkillProficiencies.None
     
     _definition: SpeciesDefinition
+    about: Record<string, string>  = {
+        name: 'inline',
+        height: 'inline',
+        weight: 'inline',
+        gender: 'inline',
+        alignment: 'inline',
+        appearance: 'multiline',
+        biography: 'multiline',
+    }
     bars: Record<string, [0, NumberValue]> = {}
     speed: Record<string, number> = {}
     inventory: Inventory;
