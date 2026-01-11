@@ -297,7 +297,7 @@ export function getProfModifier(value?: string) {
 
 export function formatPlusMinus(v: number) {
   if (v >= 0) return `+${v}`;
-  if (v < 0) return `-${v}`;
+  if (v < 0) return v;
 }
 
 export function getSkillModifier(skill: keyof Proficiencies, character: Character): number {
