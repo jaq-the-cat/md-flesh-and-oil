@@ -127,6 +127,7 @@ export abstract class Character {
     // PER
     "Animal Handling": " ",
     "Investigation": " ",
+    "Insight": " ",
     // INT
     "Knowledge": " ",
     "Technology": " ",
@@ -331,6 +332,7 @@ export function getSkillModifier(skill: keyof Proficiencies, character: Characte
     // PER
     case "Animal Handling":
     case "Investigation":
+    case "Insight":
       return character.stats.Perception-4 + getProfModifier(character.proficiencies[skill]);
     // INT
     case "Knowledge":
@@ -387,6 +389,7 @@ export function getProfStat(skill: keyof Proficiencies) {
     // PER
     case "Animal Handling":
     case "Investigation":
+    case "Insight":
         return `PER`;
     // INT
     case "Knowledge":
