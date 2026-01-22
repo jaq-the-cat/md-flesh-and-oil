@@ -1,13 +1,19 @@
 <script lang="ts">
-    import { Character } from "$lib/game/character.svelte";
-  // import { goto } from "$app/navigation";
-  // import { db } from "$lib/db";
-  // import { addDoc, collection } from "firebase/firestore";
+  import { Character } from "$lib/game/character.svelte";
   import Sheet from "../components/sheet/Sheet.svelte";
-	import type { PageProps } from './$types';
+  
+  let character: Character | undefined = $state();
 
-	const { data }: PageProps = $props();
-  let character = $state(new Character(data.human!));
+  async function getDefinition() {
+    const params = new URLSearchParams({
+      type: 'species',
+      name: 'human'
+    });
+    const response = await fetch(`/api/definition?${params}`);
+    if (response.status !== 200) return; // error
+    const data = await response.json();
+    character = new Character(data.definition);
+  }
 
   async function save() {
     // const doc = await addDoc(
@@ -25,9 +31,13 @@
 
 <header class="sheetLinks">
   <button onclick={save}>Create</button>
+  <button onclick={getDefinition}>{character}</button>
 </header>
 
-<Sheet bind:character />
+{#if character }
+  <Sheet bind:character />  
+{/if}
+
 
 <style lang="scss">
   header {

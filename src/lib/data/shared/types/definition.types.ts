@@ -34,8 +34,11 @@ export interface InventoryDefinition extends GenericDefinition {
     }
 }
 
+export type AboutValue = 'inline' | 'multiline'
+
 export interface SpeciesDefinition extends GenericDefinition {
     name: string
+    about: Record<string, AboutValue>
     bars: Record<string, NumberValue>
     speed: Record<string, number>
     inventory: InventoryDefinition

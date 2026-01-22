@@ -1,4 +1,4 @@
-import type { SpeciesDefinition } from "$lib/data/shared/types/definition.types";
+import type { AboutValue, SpeciesDefinition } from "$lib/data/shared/types/definition.types";
 import type { NumberValue } from "$lib/data/shared/types/base.types";
 import { Inventory } from "./inventory.svelte";
 import '$lib/extensions/object.extension';
@@ -17,15 +17,7 @@ export class Character {
     static DEFAULT_SKILL = SkillProficiencies.None
     
     _definition: SpeciesDefinition
-    about: Record<string, string>  = {
-        name: 'inline',
-        height: 'inline',
-        weight: 'inline',
-        gender: 'inline',
-        alignment: 'inline',
-        appearance: 'multiline',
-        biography: 'multiline',
-    }
+    about: Record<string, AboutValue>
     bars: Record<string, [0, NumberValue]> = {}
     speed: Record<string, number> = {}
     inventory: Inventory;
@@ -34,6 +26,7 @@ export class Character {
     
     constructor(definition: SpeciesDefinition) {
         this._definition = definition;
+        this.about = structuredClone(definition.about)
         this.bars = Object.map(definition.bars, ([key, val]) => [key, [0, val]]);
         this.speed = structuredClone(definition.speed);
         this.inventory = new Inventory(this._definition.inventory);

@@ -1,4 +1,13 @@
-﻿bars:
+﻿about:
+  name: inline
+  height: inline
+  weight: inline
+  gender: inline
+  alignment: inline
+  appearance: multiline
+  biography: multiline
+
+bars:
   hp: 8 + stats.vitality * 2
 
 speed:
