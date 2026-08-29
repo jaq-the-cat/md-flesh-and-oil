@@ -17,7 +17,7 @@
 </p>
 <br />
 <p>
-  Loud Noises roll a 1d4 + DM-given modifiers dependant on what type of noise it
+  Loud Noises roll a 1d20 + DM-given modifiers dependant on what type of noise it
   is, with baselines below. The resulting roll is also the range in meters the
   noise can be heard from.
 </p>
@@ -29,12 +29,12 @@
 </p>
 <br />
 <ul>
-  <li>Gunshot: +10 + 1d4</li>
-  <li>Pistol Shot: +8 + 1d4</li>
-  <li>Screaming: +4 + 1d6</li>
-  <li>Striking Metal: +4 + 1d4</li>
-  <li>Talking: +2</li>
-  <li>Silenced Gunshot: +2</li>
-  <li>Striking Plastic: +2</li>
-  <li>Whispering: +1</li>
+  <li>Gunshot: +10 + 1d50</li>
+  <li>Pistol Shot: +8 + 1d40</li>
+  <li>Screaming: +4 + 1d30</li>
+  <li>Striking Metal: +4 + 1d20</li>
+  <li>Talking: +35</li>
+  <li>Silenced Gunshot: +30</li>
+  <li>Striking Plastic: +20</li>
+  <li>Whispering: +10</li>
 </ul>

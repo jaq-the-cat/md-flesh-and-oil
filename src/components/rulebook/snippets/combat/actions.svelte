@@ -126,7 +126,7 @@
       Athletics or Strength check to counter it.
     </li>
     <li>
-      If you win, you can throw them up to 1d4 + Strength meters away. You deal
+      If you win, you can throw them up to 1d20 + Strength meters away. You deal
       fall damage multiplied by 2 based on that roll.
     </li>
     <li>

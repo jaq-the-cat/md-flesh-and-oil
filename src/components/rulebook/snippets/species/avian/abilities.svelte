@@ -28,7 +28,7 @@
   there are some static:
 </p>
 <ul>
-  <li>Intact Drone Parts heal for 1d8 + Mechanics HP.</li>
-  <li>Damaged Drone Parts heal for 1d4 + Mechanics HP.</li>
+  <li>Intact Drone Parts heal for 1d40 + Mechanics HP.</li>
+  <li>Damaged Drone Parts heal for 1d20 + Mechanics HP.</li>
   <li>Replacing a damaged limb heals for 1/4 + Mechanics Max HP.</li>
 </ul>

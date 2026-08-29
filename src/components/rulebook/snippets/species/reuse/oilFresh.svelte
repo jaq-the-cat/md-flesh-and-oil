@@ -7,7 +7,7 @@
 </p>
 <p>They can dump their current Used Oil reserve by using the Bathroom.</p>
 <p>
-  Whenever they take more than 4 damage, they roll a 1d4. They lose that amount
+  Whenever they take more than 20 damage, they roll a 1d20. They lose that amount divided by 5
   in Fresh Oil down to 1. If they take any damage while at 1 Oil, go down to 0.
 </p>
 <p>

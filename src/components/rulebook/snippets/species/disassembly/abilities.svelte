@@ -19,7 +19,7 @@
 <h3>Wings</h3>
 <p>Must be activated using an Action.</p>
 <p>Permits flight, may also be used as a weapon or shield.</p>
-<p>1d6 + Strength + 6 Strike damage</p>
+<p>1d30 + Strength + 30 Strike damage</p>
 <p>Block -2 difficulty</p>
 <h3>Nanite Acid Stinger</h3>
 <p>+1 Successful Attacks if hit.</p>

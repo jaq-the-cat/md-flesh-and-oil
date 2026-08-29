@@ -9,7 +9,7 @@
   <summary> General Rules and Explanations </summary>
   <h2>Checks</h2>
   <p>
-    Skill Checks are how most things are decided. You roll a d20 (a 20 sided
+    Skill Checks are how most things are decided. You roll a d100 (a 20 sided
     die) and add the relevant modifier against the action's difficulty (decided
     by DM, a static value, or against an enemy's stats) and if you pass, you can
     do the action. Checks such as Explosives and Mechanics require 2 rolls, one
