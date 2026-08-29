@@ -4,37 +4,35 @@ import { Character, Species } from "../character.svelte";
 export class SolverDrone extends Character {
   species = $state(Species.Solver);
 
-  modifiers = [
-    "-1 Stealth while Visor is turned on. Toggle with an Action. Limits vision to 3m.",
-  ]
+  modifiers = ["-10 Stealth while Visor is turned on. Toggle with an Action. Limits vision to 3m."];
 
   override bars: Bars = $state({
     "Used Oil": 9,
     "Absolute Solver": 1,
-    "Heat": 0,
+    Heat: 0,
   });
 
   override speed: Speed = $state({
-    "Walk": 5,
-    "Run": 10,
-    "Jump": 2,
-    "Flying": 20,
+    Walk: 5,
+    Run: 10,
+    Jump: 2,
+    Flying: 20,
   });
 
-  patched = $state(false)
+  patched = $state(false);
 
   override getMaxHp() {
-    return Math.floor(8 + this.stats.Vitality * 1.6)
+    return Math.floor(this.stats.Vitality * 2);
   }
 
   override getBaseMaxWeight() {
-    return 5 + this.stats.Strength * 3
+    return Math.floor(this.stats.Strength / 8);
   }
 
   override serializeExtra() {
     return {
-      "patched": this.patched
-    }
+      patched: this.patched,
+    };
   }
 
   override deserializeExtra(doc: any) {
@@ -42,6 +40,6 @@ export class SolverDrone extends Character {
   }
 
   constructor() {
-    super()
+    super();
   }
 }

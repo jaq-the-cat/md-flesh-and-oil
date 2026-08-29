@@ -12,16 +12,12 @@
     Object.values(character.stats).reduce((total, value) => total + value)
   );
 
-  export function statSumInvalid(sum: number) {
-    return false;
-  }
-
   export function statInvalid(stat: number) {
-    return stat < 0 || stat > 10;
+    return stat < 0 || stat > 100;
   }
 
   function statModifier(stat: number): string {
-    let modifier = stat - 4;
+    let modifier = stat - 40;
     if (modifier < 0) return `${modifier}`;
     else if (modifier == 0) return `${modifier}`;
     return `+${modifier}`;
@@ -36,7 +32,6 @@
   <section class="statList">
     {#each Object.entries(character.stats) as stat}
       <span>{stat[0]}</span>
-      <span class="modifier">{statModifier(stat[1])}</span>
       <input
         style={statInvalid(character.stats[stat[0]]) ? invalidText : ""}
         bind:value={
@@ -50,7 +45,7 @@
           }
         }
         min="0"
-        max="10"
+        max="100"
         onfocusout={() => character.upload("stats", character.stats)}
         type="number"
       />
@@ -58,10 +53,10 @@
   </section>
   <div class="passive">
     <span>Passive Perception</span>
-    <span class="value">{10 + character.stats.Perception - 4}</span>
+    <span class="value">{character.passivePerception}</span>
 
     <span>Passive Dodge</span>
-    <span class="value">{10 + character.stats.Agility - 4}</span>
+    <span class="value">{character.passiveDodge}</span>
   </div>
   <h2>Features & Abilities</h2>
   <textarea
@@ -96,15 +91,15 @@
 
   .statList {
     display: grid;
-    grid-template-columns: auto min-content minmax(auto, 10ch);
+    grid-template-columns: auto minmax(auto, 10ch);
     align-items: center;
     row-gap: 5px;
     column-gap: 10px;
   }
 
-  .modifier {
-    justify-self: end;
-  }
+  // .modifier {
+  //   justify-self: end;
+  // }
 
   .passive {
     display: grid;

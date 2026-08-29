@@ -5,32 +5,32 @@ export class WorkerDrone extends Character {
   species = $state(Species.Worker);
 
   modifiers = [
-    "-1 Stealth while Visor is turned on. Toggle with an Action. Limits vision to 3m.",
-    "+1 Expertises during Character Creation and increase limit from 2 to 3."
-  ]
+    "-10 Stealth while Visor is turned on. Toggle with an Action. Limits vision to 3m.",
+    "+1 Expertises during Character Creation and increase limit from 2 to 3.",
+  ];
 
   override bars: Bars = $state({
     "Fresh Oil": 10,
     "Used Oil": 0,
-    "Sanity": 10,
+    Sanity: 10,
   });
 
   override speed: Speed = $state({
-    "Walk": 5,
-    "Run": 10,
-    "Jump": 2,
+    Walk: 5,
+    Run: 10,
+    Jump: 2,
   });
 
   override getMaxHp() {
-    return Math.floor(8 + this.stats.Vitality * 1.6)
+    return Math.floor(this.stats.Vitality * 2);
   }
 
   override getBaseMaxWeight() {
-    return 5 + this.stats.Strength * 3
+    return Math.floor(this.stats.Strength / 8);
   }
 
   constructor() {
-    super()
-    delete this.proficiencies.Flying
+    super();
+    delete this.proficiencies.Flying;
   }
 }

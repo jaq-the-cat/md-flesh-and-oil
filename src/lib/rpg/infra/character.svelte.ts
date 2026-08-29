@@ -14,35 +14,34 @@ export enum Species {
 }
 
 export abstract class Character {
-  firestore?: Firestore
+  firestore?: Firestore;
   id: string | undefined = $state(undefined);
 
   async upload(field: string, value: string | number | SvelteMap<string, any> | Attribute | Container[] | null) {
     if (!this.id || !db.firestore) return;
-    let data
-    if (value == null || typeof value !== 'object') {
-      data = { [field]: value }
+    let data;
+    if (value == null || typeof value !== "object") {
+      data = { [field]: value };
     } else if (Array.isArray(value)) {
-      data = { [field]: Container.serializeList(value) }
+      data = { [field]: Container.serializeList(value) };
     } else if (value instanceof SvelteMap) {
-      data = { [field]: svelteToOrdered(value) }
+      data = { [field]: svelteToOrdered(value) };
     } else {
-      data = { [field]: objectToOrdered(value) }
+      data = { [field]: objectToOrdered(value) };
     }
     setDoc(doc(db.firestore, "sheets", this.id), data, { merge: true });
   }
 
-  async uploadMultiple(data: { [field: string]: string | number | boolean | SvelteMap<string, any> | object | any[] | null }) {
+  async uploadMultiple(data: {
+    [field: string]: string | number | boolean | SvelteMap<string, any> | object | any[] | null;
+  }) {
     if (!this.id || !db.firestore) return;
     for (const key in data) {
-      const el = data[key]
-      if (el && typeof el === 'object') {
-        if (Array.isArray(el))
-          data[key] = Container.serializeList(el)
-        else if (el instanceof SvelteMap)
-          data[key] = svelteToOrdered(el)
-        else
-          data[key] = objectToOrdered(el)
+      const el = data[key];
+      if (el && typeof el === "object") {
+        if (Array.isArray(el)) data[key] = Container.serializeList(el);
+        else if (el instanceof SvelteMap) data[key] = svelteToOrdered(el);
+        else data[key] = objectToOrdered(el);
       }
     }
     setDoc(doc(db.firestore, "sheets", this.id), data, { merge: true });
@@ -51,7 +50,7 @@ export abstract class Character {
   checkItemWasRemoved(itemId: string) {
     if (!this.id || !db.firestore) return;
 
-    let data: { [key: string]: null } = {}
+    let data: { [key: string]: null } = {};
     if (this.left === itemId) {
       data.left = null;
     }
@@ -75,84 +74,69 @@ export abstract class Character {
 
   overrides: { [key: string]: number | string | null } = {
     maxHp: null,
-  }
+  };
 
   currentHp = $state(0);
 
   species = $state(Species.Worker);
 
   about: About = $state({
-    "Name": "",
-    "Height": "",
-    "Weight": "",
-    "Gender": "",
-    "Alignment": "",
+    Name: "",
+    Height: "",
+    Weight: "",
+    Gender: "",
+    Alignment: "",
   });
 
   biography: string = $state("");
   appearance: string = $state("");
   fna: string = $state("");
 
-  modifiers: string[] = []
+  modifiers: string[] = [];
 
   stats: Stats = $state({
-    "Vitality": 6,
-    "Agility": 6,
-    "Strength": 6,
-    "Dexterity": 6,
-    "Charisma": 6,
-    "Perception": 6,
-    "Intelligence": 6,
-  })
+    Vitality: 50,
+    Agility: 50,
+    Strength: 50,
+    Dexterity: 50,
+    Charisma: 50,
+    Perception: 50,
+    Intelligence: 50,
+  });
 
   proficiencies: Proficiencies = $state({
-    // VIT
-    // AGL
-    "Acrobatics": " ",
-    "Stealth": " ",
-    "Flying": " ",
-    // STR
-    "Athletics": " ",
-    "Climb": " ",
-    "Grapple": " ",
-    // DEX
-    "Craft": " ",
-    "Firearms": " ",
-    // STR+DEX
-    "Melee": " ",
-    // CHA
-    "Disguise": " ",
-    "Persuasion": " ",
-    "Intimidation": " ",
-    // PER
+    Acrobatics: " ",
+    Stealth: " ",
+    Flying: " ",
+    Athletics: " ",
+    Climb: " ",
+    Grapple: " ",
+    Craft: " ",
+    Firearms: " ",
+    Melee: " ",
+    Disguise: " ",
+    Persuasion: " ",
+    Intimidation: " ",
     "Animal Handling": " ",
-    "Investigation": " ",
-    "Insight": " ",
-    // INT
-    "Knowledge": " ",
-    "Technology": " ",
-    "Religion": " ",
-    "Nature": " ",
+    Investigation: " ",
+    Insight: " ",
+    Knowledge: " ",
+    Technology: " ",
+    Nature: " ",
+    Explosives: " ",
+    Medicine: " ",
+    Mechanics: " ",
+    Willpower: " ",
+  });
 
-    // INT+DEX,
-    "Explosives": " ",
-    "Medicine": " ",
-    "Mechanics": " ",
-
-    // STR+CHA+INT
-    "Willpower": " "
-  })
-
-  abstract bars: Bars
-  abstract speed: Speed
+  abstract bars: Bars;
+  abstract speed: Speed;
 
   twoHanding = $state(false);
 
-  containers: Container[] = $state([
-    pockets(this)
-  ]);
+  containers: Container[] = $state([pockets(this)]);
 
-  itemList: ItemDisplayList = $state(new ItemDisplayList(this.containers))
+  itemList: ItemDisplayList = $state(new ItemDisplayList(this.containers));
 
   left: string | null = $state(null);
   leftShoulder: string | null = $state(null);
@@ -173,45 +157,51 @@ export abstract class Character {
     return parseFloat(value.toFixed(2));
   }
 
+  get passivePerception() {
+    return Math.floor(this.stats.Perception / 1.5);
+  }
+
+  get passiveDodge() {
+    return Math.floor((this.stats.Dexterity + this.stats.Agility) / 3);
+  }
+
   refresh() {
     this.maxWeight = this.getMaxWeight();
   }
 
   serializeExtra(): { [key: string]: any } {
-    return {}
+    return {};
   }
 
-  abstract getMaxHp(): number
-  abstract getBaseMaxWeight(): number
+  abstract getMaxHp(): number;
+  abstract getBaseMaxWeight(): number;
 
   static trans(target: Character, source: Character) {
     for (let k in target.proficiencies) {
-      if (k in source.proficiencies)
-        target.proficiencies[k] = source.proficiencies[k]
+      if (k in source.proficiencies) target.proficiencies[k] = source.proficiencies[k];
     }
     for (let k in target.bars) {
-      if (k in source.bars)
-        target.bars[k] = source.bars[k]
+      if (k in source.bars) target.bars[k] = source.bars[k];
     }
-    target.stats = source.stats
-    target.about = source.about
-    target.biography = source.biography
-    target.appearance = source.appearance
-    target.fna = source.fna
+    target.stats = source.stats;
+    target.about = source.about;
+    target.biography = source.biography;
+    target.appearance = source.appearance;
+    target.fna = source.fna;
 
-    target.twoHanding = source.twoHanding
-    target.containers = source.containers
-    target.itemList = source.itemList
+    target.twoHanding = source.twoHanding;
+    target.containers = source.containers;
+    target.itemList = source.itemList;
 
-    target.left = source.left
-    target.leftShoulder = source.leftShoulder
-    target.right = source.right
-    target.rightShoulder = source.rightShoulder
-    target.front = source.front
-    target.back = source.back
+    target.left = source.left;
+    target.leftShoulder = source.leftShoulder;
+    target.right = source.right;
+    target.rightShoulder = source.rightShoulder;
+    target.front = source.front;
+    target.back = source.back;
 
     return target;
-  };
+  }
 
   serialize() {
     return {
@@ -239,11 +229,11 @@ export abstract class Character {
       twoHanding: this.twoHanding,
       containers: Container.serializeList(this.containers),
 
-      ...this.serializeExtra()
-    }
+      ...this.serializeExtra(),
+    };
   }
 
-  deserializeExtra(doc: any) { };
+  deserializeExtra(doc: any) {}
 
   static deserialize(doc: any, char: Character) {
     if (doc == null) return doc;
@@ -251,7 +241,7 @@ export abstract class Character {
     if (doc.id) char.id = doc.id;
 
     char.overrides = {
-      maxHp: doc.overrides?.maxHp ?? null
+      maxHp: doc.overrides?.maxHp ?? null,
     };
     char.currentHp = doc.currentHp ?? 0;
 
@@ -262,19 +252,19 @@ export abstract class Character {
     char.about = orderedToObject(doc.about ?? []);
     char.stats = {
       ...char.stats,
-      ...orderedToObject(doc.stats ?? [])
+      ...orderedToObject(doc.stats ?? []),
     };
     char.proficiencies = {
       ...char.proficiencies,
-      ...orderedToObject(doc.proficiencies ?? {}) as any
+      ...(orderedToObject(doc.proficiencies ?? {}) as any),
     };
     char.bars = orderedToObject(doc.bars ?? []);
     char.speed = orderedToObject(doc.speed ?? []);
     char.containers = Container.deserializeList(doc.containers);
 
     char.twoHanding = doc.twoHanding ?? false;
-    char.maxWeight = char.getMaxWeight()
-    char.itemList.refresh(char.containers)
+    char.maxWeight = char.getMaxWeight();
+    char.itemList.refresh(char.containers);
 
     char.left = doc.left ?? null;
     char.right = doc.right ?? null;
@@ -284,16 +274,16 @@ export abstract class Character {
     char.front = doc.front ?? null;
     char.back = doc.back ?? null;
 
-    char.deserializeExtra(doc)
+    char.deserializeExtra(doc);
 
     return char;
   }
 }
 
 export function getProfModifier(value?: string) {
-  if (value === 'P') return 2;
-  else if (value === 'E') return 3;
-  return 0;
+  if (value === "P") return 1.1;
+  else if (value === "E") return 1.3;
+  return 1;
 }
 
 export function formatPlusMinus(v: number) {
@@ -301,64 +291,72 @@ export function formatPlusMinus(v: number) {
   if (v < 0) return v;
 }
 
-export function getSkillModifier(skill: keyof Proficiencies, character: Character): number {
+export function getSkillRollUsing(character: Character, skill: keyof Proficiencies, stats: (keyof Stats)[]) {
+  const statAverage = stats.map((stat) => character.stats[stat]).reduce((a, b) => a + b) / stats.length;
+  return Math.floor(getStatRoll(statAverage) * getProfModifier(character.proficiencies[skill]));
+}
+
+export function getSkillRoll(skill: keyof Proficiencies, character: Character): number {
   switch (skill) {
     // VIT
     // AGL
     case "Acrobatics":
+      return getSkillRollUsing(character, skill, ["Agility"]);
     case "Stealth":
+      return getSkillRollUsing(character, skill, ["Dexterity", "Agility"]);
     case "Flying":
-      return character.stats.Agility-4 + getProfModifier(character.proficiencies[skill]);
+      return getSkillRollUsing(character, skill, ["Agility"]);
     // STR
     case "Athletics":
+      return getSkillRollUsing(character, skill, ["Vitality", "Strength"]);
     case "Climb":
+      return getSkillRollUsing(character, skill, ["Strength", "Agility"]);
     case "Grapple":
-      return character.stats.Strength-4 + getProfModifier(character.proficiencies[skill]);
+      return getSkillRollUsing(character, skill, ["Strength"]);
     // DEX
     case "Craft":
     case "Firearms":
-      return character.stats.Dexterity-4 + getProfModifier(character.proficiencies[skill]);
+      return getSkillRollUsing(character, skill, ["Dexterity"]);
     // STR+DEX
     case "Melee":
-      return Math.max(
-        character.stats.Strength,
-        character.stats.Dexterity,
-      )-4  + getProfModifier(character.proficiencies[skill]);
+      return getSkillRollUsing(character, skill, ["Strength", "Dexterity"]);
     // CHA
     case "Disguise":
+      return getSkillRollUsing(character, skill, ["Agility", "Charisma"]);
     case "Persuasion":
+      return getSkillRollUsing(character, skill, ["Dexterity", "Charisma"]);
     case "Intimidation":
-      return character.stats.Charisma-4 + getProfModifier(character.proficiencies[skill]);
+      return getSkillRollUsing(character, skill, ["Strength", "Charisma"]);
     // PER
     case "Animal Handling":
+      return getSkillRollUsing(character, skill, ["Intelligence", "Charisma", "Perception"]);
     case "Investigation":
+      return getSkillRollUsing(character, skill, ["Intelligence", "Perception"]);
     case "Insight":
-      return character.stats.Perception-4 + getProfModifier(character.proficiencies[skill]);
+      return getSkillRollUsing(character, skill, ["Charisma", "Perception"]);
     // INT
     case "Knowledge":
+      return getSkillRollUsing(character, skill, ["Charisma", "Intelligence"]);
     case "Technology":
-    case "Religion":
+      return getSkillRollUsing(character, skill, ["Intelligence"]);
     case "Nature":
-      return character.stats.Intelligence-4 + getProfModifier(character.proficiencies[skill]);
+      return getSkillRollUsing(character, skill, ["Charisma", "Intelligence"]);
 
     // INT+DEX,
     case "Explosives":
     case "Medicine":
     case "Mechanics":
-      return Math.max(
-        character.stats.Intelligence,
-        character.stats.Dexterity,
-      )-4  + getProfModifier(character.proficiencies[skill]);
+      return getSkillRollUsing(character, skill, ["Intelligence", "Dexterity"]);
 
     // STR+CHA+INT
     case "Willpower":
-      return Math.max(
-        character.stats.Strength,
-        character.stats.Charisma,
-        character.stats.Intelligence,
-      )-4  + getProfModifier(character.proficiencies[skill]);
+      return getSkillRollUsing(character, skill, ["Strength", "Charisma", "Intelligence"]);
   }
   return 0;
+}
+
+function getStatRoll(value: number) {
+  return Math.floor(value - 50);
 }
 
 export function getProfStat(skill: keyof Proficiencies) {
@@ -368,44 +366,43 @@ export function getProfStat(skill: keyof Proficiencies) {
     case "Acrobatics":
     case "Stealth":
     case "Flying":
-        return `AGL`;
+      return `AGL`;
     // STR
     case "Athletics":
     case "Climb":
     case "Grapple":
-        return `STR`;
+      return `STR`;
     // DEX
     case "Craft":
     case "Firearms":
-        return `DEX`;
+      return `DEX`;
     // STR+DEX
     case "Melee":
-        return `STR+DEX`;
+      return `STR+DEX`;
     // CHA
     case "Disguise":
     case "Persuasion":
     case "Intimidation":
-        return `CHA`;
+      return `CHA`;
     // PER
     case "Animal Handling":
     case "Investigation":
     case "Insight":
-        return `PER`;
+      return `PER`;
     // INT
     case "Knowledge":
     case "Technology":
-    case "Religion":
     case "Nature":
-        return `INT`;
+      return `INT`;
 
     // INT+DEX,
     case "Explosives":
     case "Medicine":
     case "Mechanics":
-        return `INT+DEX`;
+      return `INT+DEX`;
 
     // STR+CHA+INT
     case "Willpower":
-        return `STR+CHA+INT`;
+      return `STR+CHA+INT`;
   }
 }

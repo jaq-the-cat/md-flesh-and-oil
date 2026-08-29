@@ -5,32 +5,32 @@ export class AvianDrone extends Character {
   species = $state(Species.Avian);
 
   modifiers = [
-    "-1 Stealth while Visor is turned on. Toggle with an Action. Limits vision to 3m.",
-    "+1 Stealth and Flying.",
-  ]
+    "-10 Stealth while Visor is turned on. Toggle with an Action. Limits vision to 3m.",
+    "+10 Stealth and Flying.",
+  ];
 
   override bars: Bars = $state({
     "Fresh Oil": 10,
     "Used Oil": 0,
-    "Sanity": 10,
+    Sanity: 10,
   });
 
   override speed: Speed = $state({
-    "Walk": 5,
-    "Run": 10,
-    "Jump": 2,
-    "Flying": 30,
+    Walk: 5,
+    Run: 10,
+    Jump: 2,
+    Flying: 15,
   });
 
   override getMaxHp() {
-    return Math.floor(8 + this.stats.Vitality * 1.6)
+    return Math.floor(this.stats.Vitality * 2);
   }
 
   override getBaseMaxWeight() {
-    return 5 + this.stats.Strength * 3
+    return Math.floor(this.stats.Strength / 8);
   }
 
   constructor() {
-    super()
+    super();
   }
 }
