@@ -19,7 +19,7 @@ export class Human extends Character {
   });
 
   override getMaxHp() {
-    return Math.floor(this.stats.Vitality * 2);
+    return Math.floor(10 + this.stats.Vitality * 1.4);
   }
 
   override getBaseMaxWeight() {

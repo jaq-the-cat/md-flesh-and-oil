@@ -22,7 +22,7 @@ export class WorkerDrone extends Character {
   });
 
   override getMaxHp() {
-    return Math.floor(this.stats.Vitality * 2);
+    return Math.floor(20 + this.stats.Vitality * 1.6);
   }
 
   override getBaseMaxWeight() {

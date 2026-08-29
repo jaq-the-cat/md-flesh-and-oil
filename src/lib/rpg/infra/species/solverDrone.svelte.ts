@@ -22,7 +22,7 @@ export class SolverDrone extends Character {
   patched = $state(false);
 
   override getMaxHp() {
-    return Math.floor(this.stats.Vitality * 2);
+    return Math.floor(20 + this.stats.Vitality * 1.8);
   }
 
   override getBaseMaxWeight() {
