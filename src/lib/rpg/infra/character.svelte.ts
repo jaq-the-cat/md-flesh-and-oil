@@ -8,6 +8,7 @@ import type { About, Attribute, Bars, Proficiencies, Speed, Stats } from "./attr
 export enum Species {
   Human = "Human",
   Avian = "Avian Drone",
+  Predator = "Predator Drone",
   Disassembly = "Disassembly Drone",
   Solver = "Solver Drone",
   Worker = "Worker Drone",
