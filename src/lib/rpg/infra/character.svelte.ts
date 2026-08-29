@@ -291,9 +291,15 @@ export function formatPlusMinus(v: number) {
   if (v < 0) return v;
 }
 
+// (100 * x) - 50 = 40
+
 export function getSkillRollUsing(character: Character, skill: keyof Proficiencies, stats: (keyof Stats)[]) {
   const statAverage = stats.map((stat) => character.stats[stat]).reduce((a, b) => a + b) / stats.length;
-  return Math.floor(getStatRoll(statAverage) * getProfModifier(character.proficiencies[skill]));
+  const statBonus = getBonus(statAverage);
+  const proficiencyModifier = getProfModifier(character.proficiencies[skill]);
+  return statBonus >= 0
+    ? Math.floor(statBonus * proficiencyModifier)
+    : Math.floor(statBonus / proficiencyModifier);
 }
 
 export function getSkillRoll(skill: keyof Proficiencies, character: Character): number {
@@ -341,7 +347,7 @@ export function getSkillRoll(skill: keyof Proficiencies, character: Character): 
   return 0;
 }
 
-function getStatRoll(value: number) {
+function getBonus(value: number) {
   return Math.floor(value - 50);
 }
 
