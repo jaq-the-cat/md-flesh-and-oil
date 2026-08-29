@@ -2,9 +2,9 @@ import type { Bars, Speed } from "../attributes.svelte";
 import { Character, Species } from "../character.svelte";
 
 export class PredatorDrone extends Character {
-  species = $state(Species.Avian);
+  species = $state(Species.Predator);
 
-  modifiers = ["+10 Stealth."];
+  modifiers = ["+15 Stealth."];
 
   override bars: Bars = $state({
     "Fresh Oil": 10,

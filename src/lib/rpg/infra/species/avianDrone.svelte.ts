@@ -4,10 +4,7 @@ import { Character, Species } from "../character.svelte";
 export class AvianDrone extends Character {
   species = $state(Species.Avian);
 
-  modifiers = [
-    "-10 Stealth while Visor is turned on. Toggle with an Action. Limits vision to 3m.",
-    "+10 Stealth and Flying.",
-  ];
+  modifiers = ["+10 Stealth and Flying."];
 
   override bars: Bars = $state({
     "Fresh Oil": 10,
