@@ -337,6 +337,18 @@ export const enemyLists: { [category: string]: { [enemy: string]: Enemy } } = {
         "Passive Perception": 40,
       },
     ),
+    "Predator Drone": new Enemy(
+      140,
+      [innate["Predator Drone"].Claws, innate["Predator Drone"]["Predator Bite"]],
+      [],
+      {
+        Melee: 60,
+        Stealth: 60,
+      },
+      {
+        "Passive Perception": 50,
+      },
+    ),
     "Wasp Drone (Worker)": new Enemy(
       250,
       [innate["Avian Drone"].Wings, weapons.Wasp.Stinger, weapons.Wasp["Wasp Bite"]],

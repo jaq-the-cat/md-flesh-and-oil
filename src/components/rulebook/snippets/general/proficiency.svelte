@@ -8,7 +8,7 @@
   Drones can pick a second Expertise, and have a cap of 3 instead of 2.
 </p>
 <p>
-  You can level up your skills by rolling a natural 20 (20 on the die, not
-  counting modifiers). If you roll a nat 20 on an Expertise check, you can add 1
+  You can level up your skills by rolling a natural 100 (100 on the die, not
+  counting modifiers). If you roll above a Nat 90 on an Expertise check, you can add 1
   point to one of the relating Attributes.
 </p>

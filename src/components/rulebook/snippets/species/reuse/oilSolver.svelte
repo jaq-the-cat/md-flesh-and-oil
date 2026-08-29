@@ -12,6 +12,7 @@
 </p>
 <p>At 0 Used Oil, the Drone gains 1 Heat per turn.</p>
 <p>
-  Whenever they take more than 4 damage, they roll a 1d20. They lose that amount
-  in Used Oil down to 1. If they take damage while at 1 Oil, go down to 0.
+  Whenever they take more than 20 damage, they roll a 1d20. They lose that
+  amount divided by 5 in Used Oil down to 1. If they take damage while at 1 Oil,
+  go down to 0.
 </p>

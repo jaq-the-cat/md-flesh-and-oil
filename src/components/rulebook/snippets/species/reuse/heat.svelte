@@ -5,7 +5,7 @@
 <ul>
   <li>> Using any Solver Power increases Heat by 1.</li>
   <li>> Failing any check increases Heat by 1.</li>
-  <li>> Rolling a Nat 1 increases Heat by 2.</li>
+  <li>> Rolling below a Nat 10 increases Heat by 2.</li>
   <li>> A Solver Drone activating their Wings increases Heat by 1.</li>
   <li>> At 8 Heat or above, gain 1 Absolute Solver per turn.</li>
 </ul>

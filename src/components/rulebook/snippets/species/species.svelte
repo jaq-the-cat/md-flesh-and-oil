@@ -2,6 +2,7 @@
   import Avian from "./avian/avian.svelte";
   import Disassembly from "./disassembly/disassembly.svelte";
   import Human from "./human/human.svelte";
+  import Predator from "./predator/predator.svelte";
   import Solver from "./solver/solver.svelte";
   import Worker from "./worker/worker.svelte";
 </script>
@@ -34,6 +35,12 @@
   <summary>Avian Drone [NC]</summary>
   <div class="gap">
     <Avian />
+  </div>
+</details>
+<details id="predator">
+  <summary>Predator Drone [NC]</summary>
+  <div class="gap">
+    <Predator />
   </div>
 </details>
 

@@ -5,12 +5,12 @@
 <details>
   <summary>Character Creation</summary>
   <p>
-    Point Buy system. You have 42 points which you can distribute across your
+    Point Buy system. You have 400 points which you can distribute across your
     Stats.
   </p>
   <p>Pick Proficiency in 2 skills and Expertise in 1.</p>
   <p>
-    You gain more Proficiency and Expertise by getting a Nat 20 in a Skill check
+    You gain more Proficiency and Expertise by getting above a Nat 90 in a Skill check
     or reading a Manual, up to a total of 2 Expert skills and 4 Proficient
     skills.
   </p>
