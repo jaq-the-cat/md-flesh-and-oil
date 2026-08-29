@@ -7,10 +7,9 @@ export enum About {
 }
 export enum Bars {
   health,
+  blood,
   oil,
   solver,
-  heat,
-  blood,
   sanity,
 }
 export enum Stats {

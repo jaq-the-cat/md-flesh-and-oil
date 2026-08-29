@@ -2,20 +2,21 @@ import { Bars, Skills, Movement } from "$lib/rpg_new/infra/config.svelte";
 import { Species } from "$lib/rpg_new/infra/species/species.svelte";
 import { NumberField } from "$lib/rpg_new/infra/types.svelte";
 
-export class Human extends Species {
+class WorkerDrone extends Species {
   constructor() {
     super({
       bars: {
-        [Bars.health]: new NumberField(0, (obj: Human) => obj.getSkillValue(Skills.vigor) * 2),
-        [Bars.blood]: new NumberField(0, 100),
-        [Bars.sanity]: new NumberField(10, (obj: Human) => Math.min(100, obj.getSkillValue(Skills.willpower))),
+        [Bars.health]: new NumberField(0, (obj: WorkerDrone) => obj.getSkillValue(Skills.vigor) * 2),
+        [Bars.oil]: new NumberField(0, 100),
+        [Bars.sanity]: new NumberField(10, (obj: WorkerDrone) =>
+          Math.min(100, obj.getSkillValue(Skills.willpower)),
+        ),
       },
       skills: [],
       movement: {
         [Movement.walking]: 5,
-        [Movement.running]: 8,
+        [Movement.running]: 10,
         [Movement.crawling]: 2,
-        [Movement.swimming]: 4,
         [Movement.jump_height]: 1,
       },
     });
