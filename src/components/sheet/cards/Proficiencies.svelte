@@ -59,12 +59,12 @@
   <section class="profList">
     {#each Object.entries(character.proficiencies) as prof}
       <span>{prof[0]}</span>
-      <span>{formatPlusMinus(getSkillRoll(prof[0], character))}</span>
+      <span>{formatPlusMinus(getSkillRoll(prof[0] as any, character))}</span>
       <select
         bind:value={
-          () => character.proficiencies[prof[0]],
+          () => (character.proficiencies as any)[prof[0]],
           (v) => {
-            character.proficiencies[prof[0]] = v ?? " ";
+            (character.proficiencies as any)[prof[0]] = v ?? " ";
             character.upload("proficiencies", character.proficiencies);
           }
         }

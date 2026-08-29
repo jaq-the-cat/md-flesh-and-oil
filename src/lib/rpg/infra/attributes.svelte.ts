@@ -52,18 +52,25 @@ export type Stats = {
 
 type Proficiency = " " | "P" | "E";
 export type Proficiencies = {
-  [key: string]: Proficiency | undefined;
   Athletics: Proficiency;
   Acrobatics: Proficiency;
   Stealth: Proficiency;
   Flying?: Proficiency;
   Firearms: Proficiency;
+  Wit: Proficiency;
+  Finesse: Proficiency;
+  Climb: Proficiency;
+  Grapple: Proficiency;
+  Craft: Proficiency;
+  Melee: Proficiency;
+  Disguise: Proficiency;
   Persuasion: Proficiency;
   Intimidation: Proficiency;
   Investigation: Proficiency;
+  Insight: Proficiency;
   Knowledge: Proficiency;
   Technology: Proficiency;
-  Melee: Proficiency;
+  Nature: Proficiency;
   Explosives: Proficiency;
   Medicine: Proficiency;
   Mechanics: Proficiency;

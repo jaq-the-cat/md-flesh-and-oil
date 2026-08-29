@@ -105,19 +105,19 @@ export abstract class Character {
   });
 
   proficiencies: Proficiencies = $state({
+    Athletics: " ",
     Acrobatics: " ",
     Stealth: " ",
-    Flying: " ",
-    Athletics: " ",
+    Firearms: " ",
+    Finesse: " ",
     Climb: " ",
     Grapple: " ",
     Craft: " ",
-    Firearms: " ",
     Melee: " ",
     Disguise: " ",
     Persuasion: " ",
     Intimidation: " ",
-    "Animal Handling": " ",
+    Wit: " ",
     Investigation: " ",
     Insight: " ",
     Knowledge: " ",
@@ -178,7 +178,7 @@ export abstract class Character {
 
   static trans(target: Character, source: Character) {
     for (let k in target.proficiencies) {
-      if (k in source.proficiencies) target.proficiencies[k] = source.proficiencies[k];
+      if (k in source.proficiencies) (target.proficiencies as any)[k] = (source.proficiencies as any)[k];
     }
     for (let k in target.bars) {
       if (k in source.bars) target.bars[k] = source.bars[k];
@@ -281,9 +281,9 @@ export abstract class Character {
 }
 
 export function getProfModifier(value?: string) {
-  if (value === "P") return 1.1;
-  else if (value === "E") return 1.3;
-  return 1;
+  if (value === "P") return 0.85;
+  else if (value === "E") return 1.2;
+  return 0.5;
 }
 
 export function formatPlusMinus(v: number) {
@@ -298,57 +298,43 @@ export function getSkillRollUsing(character: Character, skill: keyof Proficienci
 
 export function getSkillRoll(skill: keyof Proficiencies, character: Character): number {
   switch (skill) {
-    // VIT
-    // AGL
     case "Acrobatics":
       return getSkillRollUsing(character, skill, ["Agility"]);
     case "Stealth":
       return getSkillRollUsing(character, skill, ["Dexterity", "Agility"]);
     case "Flying":
       return getSkillRollUsing(character, skill, ["Agility"]);
-    // STR
     case "Athletics":
       return getSkillRollUsing(character, skill, ["Vitality", "Strength"]);
     case "Climb":
       return getSkillRollUsing(character, skill, ["Strength", "Agility"]);
     case "Grapple":
       return getSkillRollUsing(character, skill, ["Strength"]);
-    // DEX
     case "Craft":
     case "Firearms":
       return getSkillRollUsing(character, skill, ["Dexterity"]);
-    // STR+DEX
     case "Melee":
       return getSkillRollUsing(character, skill, ["Strength", "Dexterity"]);
-    // CHA
     case "Disguise":
       return getSkillRollUsing(character, skill, ["Agility", "Charisma"]);
     case "Persuasion":
       return getSkillRollUsing(character, skill, ["Dexterity", "Charisma"]);
     case "Intimidation":
       return getSkillRollUsing(character, skill, ["Strength", "Charisma"]);
-    // PER
-    case "Animal Handling":
-      return getSkillRollUsing(character, skill, ["Intelligence", "Charisma", "Perception"]);
     case "Investigation":
       return getSkillRollUsing(character, skill, ["Intelligence", "Perception"]);
     case "Insight":
       return getSkillRollUsing(character, skill, ["Charisma", "Perception"]);
-    // INT
     case "Knowledge":
       return getSkillRollUsing(character, skill, ["Charisma", "Intelligence"]);
     case "Technology":
       return getSkillRollUsing(character, skill, ["Intelligence"]);
     case "Nature":
       return getSkillRollUsing(character, skill, ["Charisma", "Intelligence"]);
-
-    // INT+DEX,
     case "Explosives":
     case "Medicine":
     case "Mechanics":
       return getSkillRollUsing(character, skill, ["Intelligence", "Dexterity"]);
-
-    // STR+CHA+INT
     case "Willpower":
       return getSkillRollUsing(character, skill, ["Strength", "Charisma", "Intelligence"]);
   }
@@ -359,50 +345,27 @@ function getStatRoll(value: number) {
   return Math.floor(value - 50);
 }
 
+export enum Skills {
+  vigor,
+  athletics,
+  stealth,
+  finesse,
+  firearms,
+  persuasion,
+  intimidation,
+  insight,
+  investigation,
+  knowledge,
+  technology,
+  wit,
+  melee,
+  explosives,
+  medicine,
+  mechanics,
+  willpower,
+  flying,
+}
+
 export function getProfStat(skill: keyof Proficiencies) {
-  switch (skill) {
-    // VIT
-    // AGL
-    case "Acrobatics":
-    case "Stealth":
-    case "Flying":
-      return `AGL`;
-    // STR
-    case "Athletics":
-    case "Climb":
-    case "Grapple":
-      return `STR`;
-    // DEX
-    case "Craft":
-    case "Firearms":
-      return `DEX`;
-    // STR+DEX
-    case "Melee":
-      return `STR+DEX`;
-    // CHA
-    case "Disguise":
-    case "Persuasion":
-    case "Intimidation":
-      return `CHA`;
-    // PER
-    case "Animal Handling":
-    case "Investigation":
-    case "Insight":
-      return `PER`;
-    // INT
-    case "Knowledge":
-    case "Technology":
-    case "Nature":
-      return `INT`;
-
-    // INT+DEX,
-    case "Explosives":
-    case "Medicine":
-    case "Mechanics":
-      return `INT+DEX`;
-
-    // STR+CHA+INT
-    case "Willpower":
-      return `STR+CHA+INT`;
-  }
+  return "";
 }
