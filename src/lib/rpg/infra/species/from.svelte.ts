@@ -2,7 +2,7 @@ import { Species, Character } from "../character.svelte";
 import { AvianDrone } from "./avianDrone.svelte";
 import { DisassemblyDrone } from "./disassemblyDrone.svelte";
 import { Human } from "./human.svelte";
-import { PredatorDrone } from "./predatorDrone";
+import { PredatorDrone } from "./predatorDrone.svelte";
 import { SolverDrone } from "./solverDrone.svelte";
 import { WorkerDrone } from "./workerDrone.svelte";
 
