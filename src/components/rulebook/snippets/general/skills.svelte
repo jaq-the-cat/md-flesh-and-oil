@@ -1,5 +1,5 @@
 <p>
-  Skills have a scaling bonus dependent on their parent stats. Most skills in the game have multiple stats
+  Skills have a scaling bonus dependent on their parent attributes. Most skills in the game have multiple attributes
   affecting them, and their average is taken to calculate the skill bonus. You can further modify skill
   bonuses with Proficiency (+12) and Expertise (+25) modifiers.
 </p>

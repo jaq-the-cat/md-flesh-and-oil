@@ -19,6 +19,7 @@ export enum Skills {
   mechanics,
   willpower,
   flying,
+  absolute_solver,
 }
 
 export enum SkillModifiers {
@@ -58,4 +59,6 @@ export const SkillStats: Record<Skills, Attributes[]> = {
   [Skills.mechanics]: [Attributes.intelligence, Attributes.dexterity],
 
   [Skills.willpower]: [Attributes.vitality, Attributes.charisma, Attributes.perception, Attributes.intelligence],
+
+  [Skills.absolute_solver]: [Attributes.dexterity, Attributes.intelligence],
 };

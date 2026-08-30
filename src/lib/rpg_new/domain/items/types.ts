@@ -34,8 +34,11 @@ export type ItemKind = Item["kind"];
 export type ContainerTemplate = { name: string; carry: number };
 export type Container = ContainerTemplate & { id: string; items: Item[] };
 
+/** Kinds a player can build by hand. Healing items are catalogue-only. */
+export type CustomKind = Exclude<ItemKind, "healing">;
+
 /** What a freshly picked kind looks like in the custom-item form. Adding a kind fails here first. */
-export const BLANK_ITEMS: Partial<Record<ItemKind, ItemTemplate>> = {
+export const BLANK_ITEMS: Record<CustomKind, ItemTemplate> = {
   plain: { kind: "plain", name: "", weight: 1 },
   melee: { kind: "melee", name: "", weight: 1, damage: "", twoHanded: false, info: "" },
   ranged: {
@@ -54,7 +57,7 @@ export const BLANK_ITEMS: Partial<Record<ItemKind, ItemTemplate>> = {
   liquid: { kind: "liquid", name: "", weight: 1, capacity: 1, weightPerUnit: 1, current: 0 },
 };
 
-export const ITEM_KINDS = Object.keys(BLANK_ITEMS) as ItemKind[];
+export const ITEM_KINDS = Object.keys(BLANK_ITEMS) as CustomKind[];
 
 export function createItem(template: ItemTemplate): Item {
   return { ...template, id: crypto.randomUUID() };

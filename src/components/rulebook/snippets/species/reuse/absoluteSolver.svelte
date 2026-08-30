@@ -9,7 +9,7 @@
   the Solver, gain Advantage.
 </p>
 <p>
-  An Absolute Solver roll is different from regular Stats, with the roll bonus
+  An Absolute Solver roll is different from regular Attributes, with the roll bonus
   being Stat - 2, as opposed to Stat - 4, going up to +8 at 10.
 </p>
 <p>

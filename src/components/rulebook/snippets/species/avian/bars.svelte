@@ -1,4 +1,4 @@
-<h2>Stats</h2>
+<h2>Attributes</h2>
 <ul>
   <li>HP (8 + Vitality value x 1.6)</li>
   <li>Fresh Oil (10)</li>

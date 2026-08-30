@@ -36,7 +36,7 @@
         {/if}
         <h4>Stat Bonuses</h4>
         <div>
-          {#each enemy[1].stats as stat}
+          {#each enemy[1].attributes as stat}
             <div>+{stat[1]} {stat[0]}</div>
           {/each}
         </div>

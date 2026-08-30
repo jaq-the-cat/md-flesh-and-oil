@@ -8,13 +8,15 @@
   import Innate from "./cards/Innate.svelte";
   import Movement from "./cards/Movement.svelte";
   import Skills from "./cards/Skills.svelte";
-  import Stats from "./cards/Attributes.svelte";
+  import Attributes from "./cards/Attributes.svelte";
   import RulebookSnippet from "./cards/dialogs/RulebookSnippet.svelte";
   import SpeciesRulebook from "../rulebook/snippets/species/species.svelte";
 
   let { species = $bindable() }: { species: Species } = $props();
 
-  let selected = $derived(Object.entries(SPECIES).find(([, kind]) => species instanceof kind)![0]);
+  let selected = $derived(
+    Object.entries(SPECIES).find(([, kind]) => species instanceof kind)![0] as keyof typeof SPECIES,
+  );
 
   function change(id: string) {
     const Chosen = SPECIES[id as keyof typeof SPECIES];
@@ -36,11 +38,11 @@
     </select>
   </div>
   <About {species} />
-  <Stats {species} />
+  <Attributes {species} />
   <Skills {species} />
   <Bars {species} />
   <Movement {species} />
-  <Innate />
+  <Innate speciesId={selected} />
   <Equipment />
 </main>
 
@@ -57,7 +59,7 @@
     grid-template-columns: 1fr 1fr 2fr 2fr;
     grid-template-areas:
       "species species   movement  bars     "
-      "about   about     stats     skills   "
+      "about   about     attributes     skills   "
       "innate  equipment equipment equipment";
   }
 
@@ -67,8 +69,8 @@
       grid-template-areas:
         "species   bars      movement"
         "species   innate    movement"
-        "about     stats     skills  "
-        "about     stats     skills  "
+        "about     attributes     skills  "
+        "about     attributes     skills  "
         "equipment equipment equipment";
     }
   }
@@ -78,9 +80,9 @@
       grid-template-columns: 1fr 1fr;
       grid-template-rows: min-content max-content auto;
       grid-template-areas:
-        "species   stats"
-        "about     stats"
-        "about     stats"
+        "species   attributes"
+        "about     attributes"
+        "about     attributes"
         "about     skills"
         "about     skills"
         "bars      movement"
@@ -97,7 +99,7 @@
         "species"
         "about"
         "movement"
-        "stats"
+        "attributes"
         "skills"
         "bars"
         "innate"

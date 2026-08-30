@@ -5,7 +5,7 @@
     BLANK_ITEMS,
     ITEM_KINDS,
     type ContainerTemplate,
-    type ItemKind,
+    type CustomKind,
     type ItemTemplate,
   } from "$lib/rpg_new/domain/items/types";
   import { label } from "../../labels";
@@ -15,20 +15,20 @@
     onCreate,
   }: {
     open: boolean;
-    onCreate: (template: Partial<ItemTemplate | ContainerTemplate>) => void;
+    onCreate: (template: ItemTemplate | ContainerTemplate) => void;
   } = $props();
 
   const CONTAINER = "container";
   const kinds = [...ITEM_KINDS, CONTAINER];
 
-  let kind = $state<ItemKind | typeof CONTAINER>("plain");
-  let draft = $state<Partial<ItemTemplate>>({ ...BLANK_ITEMS.plain });
+  let kind = $state<CustomKind | typeof CONTAINER>("plain");
+  let draft = $state<ItemTemplate>({ ...BLANK_ITEMS.plain });
   let carry = $state(10);
 
   const hitSkills = enumValues<Skills>(Skills);
 
   /** Swapping kinds keeps what the player already typed that the new kind also has. */
-  function changeKind(next: ItemKind | typeof CONTAINER) {
+  function changeKind(next: CustomKind | typeof CONTAINER) {
     kind = next;
     // A container has no item fields, so park the draft on `plain` and no kind block renders.
     const blank = BLANK_ITEMS[next === CONTAINER ? "plain" : next];
@@ -49,7 +49,7 @@
 
     <label>
       {label("kind")}
-      <select value={kind} onchange={(event) => changeKind(event.currentTarget.value as ItemKind)}>
+      <select value={kind} onchange={(event) => changeKind(event.currentTarget.value as CustomKind)}>
         {#each kinds as option}
           <option value={option}>{label(option)}</option>
         {/each}

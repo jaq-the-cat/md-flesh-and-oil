@@ -8,14 +8,14 @@
 
   let { species }: { species: Species } = $props();
 
-  let stats = $derived(fields(Attributes, species.stats));
-  let total = $derived(stats.reduce((sum, field) => sum + field.value.getValue(), 0));
+  let attributes = $derived(fields(Attributes, species.attributes));
+  let total = $derived(attributes.reduce((sum, field) => sum + field.value.getValue(), 0));
 
   let rulebook = $state(false);
 </script>
 
-<div id="stats">
-  <RulebookSnippet title={label("stats")} bind:open={rulebook}>
+<div id="attributes">
+  <RulebookSnippet title={label("attributes")} bind:open={rulebook}>
     <AttributesSnippet />
   </RulebookSnippet>
   <p class="total">
@@ -23,7 +23,7 @@
     <span>{total}</span>
   </p>
   <section class="statList">
-    {#each stats as field (field.key)}
+    {#each attributes as field (field.key)}
       <span>{field.label}</span>
       <NumberInput {species} field={field.value} />
     {/each}
@@ -31,8 +31,8 @@
 </div>
 
 <style lang="scss">
-  #stats {
-    grid-area: stats;
+  #attributes {
+    grid-area: attributes;
     display: flex;
     flex-direction: column;
     row-gap: 5px;

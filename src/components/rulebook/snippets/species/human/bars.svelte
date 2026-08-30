@@ -1,4 +1,4 @@
-<h2>Stats</h2>
+<h2>Attributes</h2>
 <ul>
   <li>HP (6 + Vitality value x 1.4)</li>
   <li>Blood (10)</li>

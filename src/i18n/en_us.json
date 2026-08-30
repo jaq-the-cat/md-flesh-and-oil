@@ -18,7 +18,7 @@
   "solver": "Absolute Solver",
   "sanity": "Sanity",
 
-  "stats": "Attributes",
+  "attributes": "Attributes",
   "total_points": "Total Points",
   "vitality": "Vitality",
   "agility": "Agility",
@@ -28,6 +28,7 @@
   "perception": "Perception",
   "intelligence": "Intelligence",
 
+  "skill": "Skill",
   "skills": "Skills",
   "proficiencies": "Proficiencies",
   "average": "Average",
@@ -53,6 +54,7 @@
   "medicine": "Medicine",
   "mechanics": "Mechanics",
   "willpower": "Willpower",
+  "absolute_solver": "Absolute Solver",
 
   "movement": "Speed",
   "walking": "Walk",
@@ -70,6 +72,11 @@
   "add_prefab": "Add Prefab",
   "cancel": "Cancel",
   "kind": "Kind",
+  "amount": "Amount",
+  "weapon": "Weapon",
+  "attribute_modifier": "Attribute Modifier",
+  "skill_modifier": "Skill Modifier",
+  "text": "Description Only",
   "carry": "Carry",
   "weight_per_unit": "Weight / Unit",
   "plain": "Item",

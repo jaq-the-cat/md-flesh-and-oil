@@ -1,4 +1,4 @@
-<h2>Stats</h2>
+<h2>Attributes</h2>
 <ul>
   <li>HP (10 + Vitality value x 2)</li>
   <li>Absolute Solver (10)</li>

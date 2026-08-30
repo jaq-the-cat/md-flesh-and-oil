@@ -56,7 +56,7 @@
           <span>{itemInspect.ammo.reloadTurns != 1 ? "Turns" : "Turn"}</span>
         </span>
       {/if}
-      <h2>Stats</h2>
+      <h2>Attributes</h2>
       <span>{itemInspect.range} Range</span>
       {#if "rate" in itemInspect && itemInspect.rate}
         <span>{itemInspect.rate} Rate</span>

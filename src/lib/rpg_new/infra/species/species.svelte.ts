@@ -18,7 +18,7 @@ import { NumberField, type NumberLike } from "../types.svelte";
 export abstract class Species {
   public readonly about: Record<About, string> = $state({} as Record<About, string>);
   public readonly bars: Partial<Record<Bars, NumberField<Species>>> = $state({});
-  public readonly stats: Partial<Record<Attributes, NumberField<Species>>> = $state({});
+  public readonly attributes: Partial<Record<Attributes, NumberField<Species>>> = $state({});
   public readonly skills: Partial<Record<Skills, SkillModifiers>> = $state({});
   public readonly movement: Partial<Record<Movement, NumberField<Species>>> = $state({});
 
@@ -29,7 +29,7 @@ export abstract class Species {
   }) {
     this.about = Object.fromEntries(enumValues(About).map((about) => [about, ""])) as Record<About, string>;
     this.bars = clone(enabled.bars);
-    this.stats = Object.fromEntries(
+    this.attributes = Object.fromEntries(
       enumValues(Attributes).map((stat) => [stat, new NumberField(0, MAX_ATTR_VALUE, DEFAULT_ATTR_VALUE)]),
     );
     this.skills = Object.fromEntries(
@@ -46,7 +46,7 @@ export abstract class Species {
 
     let values = [];
     for (const stat of SkillStats[skill]) {
-      let statEntry = this.stats[stat];
+      let statEntry = this.attributes[stat];
       if (statEntry != null) values.push(statEntry.getValue());
     }
     if (values.length === 0) return 0;
@@ -61,13 +61,13 @@ export abstract class Species {
       target.about[about] = source.about[about];
     }
     for (const stat of enumValues<Attributes>(Attributes)) {
-      copyField(target, target.stats[stat], source.stats[stat]);
+      copyField(target, target.attributes[stat], source.attributes[stat]);
     }
     for (const skill of enumValues<Skills>(Skills)) {
       const modifier = source.skills[skill];
       if (modifier != null && target.skills[skill] != null) target.skills[skill] = modifier;
     }
-    // Bars and movement come last: their maximums are derived from the stats and skills above.
+    // Bars and movement come last: their maximums are derived from the attributes and skills above.
     for (const bar of enumValues<Bars>(Bars)) {
       copyField(target, target.bars[bar], source.bars[bar]);
     }

@@ -6,7 +6,7 @@
   <summary>Character Creation</summary>
   <p>
     Point Buy system. You have 350 points which you can distribute across your
-    Stats.
+    Attributes.
   </p>
   <p>Pick Proficiency in 2 skills and Expertise in 1.</p>
   <p>

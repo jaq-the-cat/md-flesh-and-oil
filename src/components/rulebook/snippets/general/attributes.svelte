@@ -3,7 +3,7 @@
 </p>
 <p>
   During character creation, you generally have a number points to spread across your
-  stats. The GM will let you know how many you are allowed to allocate. If not specifically
+  attributes. The GM will let you know how many you are allowed to allocate. If not specifically
   stated to be different, the convention is a maximum 350 points (50 im all skills).
 </p>
 <ul>

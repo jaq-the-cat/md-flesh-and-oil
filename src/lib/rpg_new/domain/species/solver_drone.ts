@@ -12,7 +12,7 @@ export class SolverDrone extends Species {
         [Bars.solver]: new NumberField(0, 100),
         [Bars.sanity]: sanityField(),
       },
-      skills: [Skills.flying],
+      skills: [Skills.flying, Skills.absolute_solver],
       movement: {
         [Movement.walking]: 5,
         [Movement.running]: 10,
