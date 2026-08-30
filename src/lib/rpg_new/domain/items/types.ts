@@ -68,7 +68,7 @@ export function createContainer(template: ContainerTemplate): Container {
 }
 
 /** A liquid's contents count toward its weight; every other kind is a fixed figure. */
-export function itemWeight(item: Item) {
+export function itemWeight(item: ItemTemplate) {
   const contents = item.kind === "liquid" ? item.current * item.weightPerUnit : 0;
   return round(item.weight + contents);
 }

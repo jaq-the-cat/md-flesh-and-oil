@@ -5,6 +5,7 @@
   import { label } from "../labels";
   import InspectAbility from "./dialogs/InspectAbility.svelte";
   import NewAbility from "./dialogs/NewAbility.svelte";
+  import PrefabAbility from "./dialogs/PrefabAbility.svelte";
 
   let { speciesId }: { speciesId: keyof typeof SPECIES } = $props();
 
@@ -20,15 +21,12 @@
   let available = $derived(
     ABILITY_PREFABS[speciesId].filter((prefab) => !innate.some((ability) => ability.name === prefab.name)),
   );
-  let prefabIndex = $state(0);
-
   let inspecting = $state<Ability | null>(null);
   let creating = $state(false);
+  let picking = $state(false);
 
-  function addPrefab() {
-    const prefab = available[prefabIndex];
-    if (prefab) innate.push(createAbility(prefab));
-    prefabIndex = 0;
+  function addPrefab(template: AbilityTemplate) {
+    innate.push(createAbility(template));
   }
 
   function addCustom(template: AbilityTemplate) {
@@ -45,18 +43,10 @@
 <div id="innate">
   <h2 class="cardTitle">{label("innate")}</h2>
 
-  <button onclick={() => (creating = true)}>{label("add_custom")}</button>
-
-  {#if available.length > 0}
-    <div class="restore">
-      <select bind:value={prefabIndex}>
-        {#each available as prefab, index}
-          <option value={index}>{prefab.name}</option>
-        {/each}
-      </select>
-      <button onclick={addPrefab}>{label("add")}</button>
-    </div>
-  {/if}
+  <div class="actions">
+    <button onclick={() => (creating = true)}>{label("add_custom")}</button>
+    <button onclick={() => (picking = true)}>{label("add_prefab")}</button>
+  </div>
 
   <div class="abilities">
     {#each abilities as ability (ability.id)}
@@ -68,6 +58,7 @@
 
 <InspectAbility bind:ability={inspecting} />
 <NewAbility bind:open={creating} onCreate={addCustom} />
+<PrefabAbility bind:open={picking} {available} onAdd={addPrefab} />
 
 <style lang="scss">
   #innate {
@@ -77,14 +68,10 @@
     gap: 5px;
   }
 
-  .restore {
-    display: flex;
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 5px;
-
-    select {
-      flex-grow: 1;
-      min-width: 0;
-    }
   }
 
   .abilities {

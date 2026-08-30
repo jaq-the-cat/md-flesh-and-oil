@@ -70,6 +70,7 @@
   "add": "Add",
   "add_custom": "Add Custom",
   "add_prefab": "Add Prefab",
+  "nothing_available": "Nothing left to add.",
   "cancel": "Cancel",
   "kind": "Kind",
   "amount": "Amount",
