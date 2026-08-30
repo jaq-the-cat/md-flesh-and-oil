@@ -135,7 +135,7 @@
     grid-area: lootTable;
     display: flex;
     flex-direction: column;
-    row-gap: 5px;
+    row-gap: 10px;
 
     .currentInput {
       min-width: 10ch;
@@ -144,7 +144,7 @@
 
     .give {
       margin-top: 10px;
-      gap: 5px;
+      gap: 10px;
       display: grid;
       grid-template-columns: 1fr 1fr;
 

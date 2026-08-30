@@ -36,7 +36,7 @@
     grid-area: attributes;
     display: flex;
     flex-direction: column;
-    row-gap: 5px;
+    row-gap: 10px;
   }
 
   .total {
@@ -49,7 +49,7 @@
     display: grid;
     grid-template-columns: auto max-content;
     align-items: center;
-    row-gap: 5px;
+    row-gap: 10px;
     column-gap: 10px;
   }
 </style>

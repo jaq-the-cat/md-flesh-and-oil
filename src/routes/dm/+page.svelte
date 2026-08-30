@@ -59,7 +59,7 @@
   header {
     grid-area: header;
     display: flex;
-    column-gap: 5px;
+    column-gap: 10px;
     width: 100%;
     justify-content: center;
   }

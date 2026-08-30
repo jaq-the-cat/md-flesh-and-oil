@@ -65,7 +65,7 @@
     grid-area: enemyList;
     display: flex;
     flex-direction: column;
-    row-gap: 5px;
+    row-gap: 10px;
 
     h2,
     h4 {
@@ -75,13 +75,13 @@
     .details {
       display: grid;
       column-gap: 1ch;
-      row-gap: 5px;
+      row-gap: 10px;
       grid-template-columns: max-content auto;
 
       .wpnList {
         display: flex;
         flex-direction: column;
-        row-gap: 5px;
+        row-gap: 10px;
       }
     }
   }

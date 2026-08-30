@@ -81,7 +81,7 @@
     grid-template-columns: max-content auto;
     align-items: baseline;
     margin: 0;
-    gap: 5px 15px;
+    gap: 10px 15px;
   }
 
   dt {
@@ -100,7 +100,7 @@
   .level {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
 
     input {
       width: 8ch;

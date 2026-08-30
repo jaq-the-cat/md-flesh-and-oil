@@ -10,6 +10,7 @@ export const en_us = {
     attributes: "Attributes",
     skills: "Skills",
     proficiencies: "Proficiency & Expertise",
+    status: "Status",
     bars: "Bars",
     movement: "Speed",
     equipment: "Equipment",

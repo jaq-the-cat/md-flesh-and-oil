@@ -92,7 +92,7 @@
   .categories {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 10px;
 
     .selected {
       background-color: #142105;
@@ -102,7 +102,7 @@
   .list {
     display: grid;
     grid-template-columns: auto min-content;
-    gap: 5px;
+    gap: 10px;
     overflow-y: auto;
   }
 
@@ -149,7 +149,7 @@
     display: grid;
     grid-template-columns: max-content auto;
     margin: 0;
-    gap: 5px 15px;
+    gap: 10px 15px;
   }
 
   dt {

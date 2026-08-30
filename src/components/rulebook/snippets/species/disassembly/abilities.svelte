@@ -18,12 +18,12 @@
 <h3>Wings</h3>
 <p>Must be activated using an Action.</p>
 <p>Permits flight, may also be used as a weapon or shield.</p>
-<p>1d6 + Strength + 6 Strike damage</p>
-<p>Block -2 difficulty</p>
+<p>1d30 + Strength Strike damage</p>
+<p>Block -40 difficulty</p>
 <h3>Nanite Acid Stinger</h3>
 <p>+1 Successful Attacks if hit.</p>
 <p>Cannot be Blocked.</p>
 <p>
-  Melee, 3 damage per turn for 1 turn per 10 Absolute Solver or until licked by a
+  Melee, 10 damage per turn for 1 turn per 10 Absolute Solver or until licked by a
   Disassembly Drone, range 2m.
 </p>

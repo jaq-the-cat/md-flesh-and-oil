@@ -25,7 +25,7 @@
       flex-direction: column;
       justify-content: start;
       overflow-y: auto;
-      row-gap: 5px;
+      row-gap: 10px;
     }
 
     h1 {

@@ -65,19 +65,19 @@
     grid-area: abilities;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
   }
 
   .actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5px;
+    gap: 10px;
   }
 
   .abilityList {
     display: grid;
     grid-template-columns: auto min-content;
-    gap: 5px;
+    gap: 10px;
   }
 
   .ability {

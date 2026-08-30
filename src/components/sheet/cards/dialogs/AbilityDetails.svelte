@@ -35,7 +35,7 @@
     grid-template-columns: max-content auto;
     align-items: baseline;
     margin: 0;
-    gap: 5px 15px;
+    gap: 10px 15px;
   }
 
   dt {

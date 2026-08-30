@@ -129,7 +129,7 @@
     grid-area: equipment;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
   }
 
   h2 {
@@ -139,12 +139,12 @@
   .actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5px;
+    gap: 10px;
   }
 
   .containers {
     display: flex;
-    gap: 5px;
+    gap: 10px;
 
     select {
       flex-grow: 1;
@@ -154,8 +154,10 @@
   .items {
     display: grid;
     grid-template-columns: auto min-content;
-    gap: 5px;
-    max-height: 40vh;
+    align-content: start;
+    gap: 10px;
+    flex-grow: 1;
+    min-height: 6lh;
     overflow-y: auto;
   }
 
@@ -174,6 +176,6 @@
     display: grid;
     grid-template-columns: max-content auto;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
   }
 </style>

@@ -69,7 +69,7 @@
   .list {
     display: grid;
     grid-template-columns: auto min-content;
-    gap: 5px;
+    gap: 10px;
     overflow-y: auto;
   }
 

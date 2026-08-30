@@ -31,7 +31,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 5px;
+      gap: 10px;
       margin-bottom: 5px;
     }
   }

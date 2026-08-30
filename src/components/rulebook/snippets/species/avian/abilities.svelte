@@ -2,7 +2,7 @@
 <h3>Wings</h3>
 <p>Can be activated without spending an Action.</p>
 <p>Permits flight, but may not be used as a weapon or shield.</p>
-<p>When active, temporarily increases Agility by +10.</p>
+<p>When flying, increase Passive Dodge by +10.</p>
 <h3>Talon Carry</h3>
 <p>
   Avian Drones can pick up Heavy objects such as other Drones, heavy weapons or
