@@ -3,11 +3,6 @@ import type { AbilityKind } from "$lib/rpg_new/domain/abilities/types";
 import type { ItemKind, Slot } from "$lib/rpg_new/domain/items/types";
 import type { SPECIES } from "$lib/rpg_new/domain/species/registry";
 
-/**
- * The reference locale. Every group keyed by an enum is checked for completeness, so
- * adding a skill, bar or slot fails to compile until it has a label here.
- * Other locales are typed `Localization`, which holds them to this same shape.
- */
 export const en_us = {
   cards: {
     species: "Species",
