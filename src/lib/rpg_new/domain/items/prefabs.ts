@@ -14,31 +14,42 @@ const ranged = (
   magazine: number,
   reloadTurns: number,
   info: string | null = null,
-) => ({ kind: "ranged", name, weight, hit, damage, range, rate, magazine, reloadTurns, info }) satisfies ItemTemplate;
+) =>
+  ({ kind: "ranged", name, weight, hit, damage, range, rate, magazine, reloadTurns, info }) satisfies ItemTemplate;
 
 const RANGED = [
-  ranged("Pistol", 1, Skills.firearms, "8 Pierce", 10, 1, 12, 1),
-  ranged("Revolver", 1, Skills.firearms, "10 Pierce", 10, 1, 6, 2),
-  ranged("Submachine Gun", 2, Skills.firearms, "6 Pierce", 12, 6, 30, 1, "-10 Hit every 3 meters"),
-  ranged("Semi-Auto Shotgun", 2, Skills.firearms, "12 Pierce", 12, 2, 10, 1, "-10 Damage per meter"),
-  ranged("Pump Shotgun", 2, Skills.firearms, "24 Pierce", 12, 1, 6, 1, "-20 Damage per meter"),
-  ranged("Rifle", 2, Skills.firearms, "10 Pierce", 20, 1, 6, 1),
-  ranged("Assault Rifle", 3, Skills.firearms, "10 Pierce", 30, 4, 32, 1),
-  ranged("Battle Rifle", 3, Skills.firearms, "12 Pierce", 30, 3, 24, 1),
+  ranged("Pistol", 1, Skills.firearms, "40 Pierce", 10, 1, 12, 1),
+  ranged("Revolver", 1, Skills.firearms, "50 Pierce", 10, 1, 6, 2),
+  ranged("Submachine Gun", 2, Skills.firearms, "25 Pierce", 12, 6, 30, 1, "-10 Hit every 3 meters"),
+  ranged("Semi-Auto Shotgun", 2, Skills.firearms, "65 Pierce", 12, 2, 10, 1, "-10 Damage per meter"),
+  ranged("Pump Shotgun", 2, Skills.firearms, "80 Pierce", 12, 1, 6, 1, "-20 Damage per meter"),
+  ranged("Rifle", 2, Skills.firearms, "35 Pierce", 20, 1, 6, 1),
+  ranged("Assault Rifle", 3, Skills.firearms, "40 Pierce", 30, 4, 32, 1),
+  ranged("Battle Rifle", 3, Skills.firearms, "50 Pierce", 30, 3, 24, 1),
   ranged(
     "Sniper Rifle",
     5,
     Skills.firearms,
-    "24 Pierce",
+    "80 Pierce",
     50,
     1,
     4,
     1,
     "+2 Hit under 10m, -10 Hit above 10m, -20 Hit above 20m",
   ),
-  ranged("Improvised Railgun", 1, Skills.technology, "22 Energy", 15, 1, 1, 4),
-  ranged("JCJ Railgun", 2, Skills.technology, "28 Energy", 15, 1, 1, 2),
-  ranged("Sentinel Gun", 4, Skills.technology, "Bootloops in a 5m cone", 5, 1, 1, 1, "Looking away costs 2 Reactions"),
+  ranged("Improvised Railgun", 1, Skills.technology, "75 Energy", 15, 1, 1, 4),
+  ranged("JCJ Railgun", 2, Skills.technology, "100 Energy", 15, 1, 1, 2),
+  ranged(
+    "Sentinel Gun",
+    4,
+    Skills.technology,
+    "Bootloops in a 5m cone",
+    5,
+    1,
+    1,
+    1,
+    "Looking away costs 2 Reactions",
+  ),
 ];
 
 export const CONTAINER_PREFABS: ContainerTemplate[] = [
@@ -53,23 +64,23 @@ export const CONTAINER_PREFABS: ContainerTemplate[] = [
 
 export const ITEM_PREFABS: Record<string, ItemTemplate[]> = {
   Melee: [
-    melee("Bone Saw", 0.1, "1d20 + Strength Slash"),
-    melee("Screwdriver", 0.1, "1d20 + Strength Pierce"),
-    melee("Work Hammer", 0.1, "1d20 + Strength Blunt"),
+    melee("Bone Saw", 0.1, "1d20 + Melee Slash"),
+    melee("Screwdriver", 0.1, "1d20 + Melee Pierce"),
+    melee("Work Hammer", 0.1, "1d20 + Melee Blunt"),
     melee(
       "Small Dagger",
       0.1,
-      "1d30 + Strength Slash",
+      "1d30 + Melee Slash",
       "Can be equipped without using an action. Can be used to perform an Assassination.",
     ),
-    melee("Wrench", 0.1, "1d20 + Strength Blunt"),
-    melee("Knife", 0.1, "1d20 + Strength + 20 Slash", "Can be used to perform an Assassination."),
-    melee("Machete", 0.5, "1d20 + Strength + 30 Slash", "-10 Block"),
-    melee("Sword", 1, "1d20 + Strength + 30 Slash", "-20 Hit, -20 Block"),
-    melee("Axe", 2, "1d40 + Strength + 20 Slash", null, true),
-    melee("Chainsaw", 4, "1d60 + Strength + 40 Slash", "+1 Hit, uses 200mL Oil per Hit", true),
-    melee("Improv. Metal Shield", 5, "2 Strike", "-4 Block"),
-    melee("JCJ Titanium Shield", 8, "4 Strike", "-6 Block"),
+    melee("Wrench", 0.1, "1d20 + Melee Blunt"),
+    melee("Knife", 0.1, "1d20 + Melee + 20 Slash", "Can be used to perform an Assassination."),
+    melee("Machete", 0.5, "1d20 + Melee + 30 Slash", "-10 Block"),
+    melee("Sword", 1, "1d20 + Melee + 30 Slash", "-20 Hit, -20 Block"),
+    melee("Axe", 2, "1d40 + Melee + 20 Slash", null, true),
+    melee("Chainsaw", 4, "1d60 + Melee + 40 Slash", "+10 Hit, uses 200mL Oil per Hit", true),
+    melee("Improv. Metal Shield", 5, "10 Strike", "-40 Block"),
+    melee("JCJ Titanium Shield", 8, "16 Strike", "-60 Block"),
   ],
   Ranged: RANGED,
   Ammo: RANGED.map((weapon) => ({
@@ -94,7 +105,7 @@ export const ITEM_PREFABS: Record<string, ItemTemplate[]> = {
       range: "1d75",
       info: "Explodes after 1 Turn.",
     },
-    { kind: "throwable", name: "Ninja Star", weight: 0, damage: "10 + Strength Pierce", range: "10", info: null },
+    { kind: "throwable", name: "Ninja Star", weight: 0, damage: "10 + Melee Pierce", range: "10", info: null },
   ],
   Healing: [
     {
@@ -176,7 +187,14 @@ export const ITEM_PREFABS: Record<string, ItemTemplate[]> = {
     { kind: "liquid", name: "Oil Bottle (500mL)", weight: 0.2, capacity: 0.5, weightPerUnit: 0.8, current: 0.5 },
     { kind: "liquid", name: "Oil Jug (1L)", weight: 0.4, capacity: 1, weightPerUnit: 0.8, current: 1 },
     { kind: "liquid", name: "Oil Jerrycan (10L)", weight: 0.6, capacity: 10, weightPerUnit: 0.8, current: 10 },
-    { kind: "liquid", name: "Gasoline Jerrycan (10L)", weight: 0.6, capacity: 10, weightPerUnit: 0.6, current: 10 },
+    {
+      kind: "liquid",
+      name: "Gasoline Jerrycan (10L)",
+      weight: 0.6,
+      capacity: 10,
+      weightPerUnit: 0.6,
+      current: 10,
+    },
     { kind: "liquid", name: "Diesel Jerrycan (10L)", weight: 0.6, capacity: 10, weightPerUnit: 0.7, current: 10 },
   ],
   "Human Food": [
