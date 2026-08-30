@@ -2,7 +2,7 @@
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
   import { db } from "$lib/db";
   import { localization } from "$i18n";
-  import { fromDocument, stableJson, toDocument, type SheetDocument } from "$lib/persistence";
+  import { fromDocument, sheetJson, toDocument, type SheetDocument } from "$lib/persistence";
   import type { Species } from "$lib/rpg/infra/species/species.svelte";
   import Sheet from "../../../components/sheet/Sheet.svelte";
 
@@ -16,6 +16,8 @@
   // The last document we know the server holds, so an echo of our own write is not saved again.
   let settled = "";
   let pending: ReturnType<typeof setTimeout>;
+  // Preserved across saves: setDoc replaces the whole document, so an unknown author would be lost.
+  let author: string | undefined;
 
   let reference = $derived(doc(db.firestore!, "sheets", data.slug));
 
@@ -29,9 +31,10 @@
         return;
       }
       const document = snapshot.data() as SheetDocument;
-      const json = stableJson(document);
+      const json = sheetJson(document);
       if (json === settled) return;
 
+      author = document.author;
       settled = json;
       species = fromDocument(document);
       status = "saved";
@@ -41,7 +44,7 @@
   $effect(() => {
     if (!species) return;
     // Reading the whole document is what subscribes this effect to every field on the sheet.
-    const json = stableJson(toDocument(species));
+    const json = sheetJson(toDocument(species));
     if (json === settled) return;
 
     settled = json;
@@ -49,7 +52,7 @@
     clearTimeout(pending);
     pending = setTimeout(async () => {
       try {
-        await setDoc(reference, JSON.parse(json));
+        await setDoc(reference, { ...JSON.parse(json), ...(author ? { author } : {}), updatedAt: Date.now() });
         status = "saved";
       } catch {
         status = "error";

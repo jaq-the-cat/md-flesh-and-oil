@@ -4,7 +4,8 @@
   import { addDoc, collection } from "firebase/firestore";
   import { db } from "$lib/db";
   import { localization } from "$i18n";
-  import { stableJson, toDocument } from "$lib/persistence";
+  import { authorId } from "$lib/author";
+  import { sheetJson, toDocument } from "$lib/persistence";
   import { WorkerDrone } from "$lib/rpg/domain/species/worker_drone";
   import type { Species } from "$lib/rpg/infra/species/species.svelte";
   import Sheet from "../components/sheet/Sheet.svelte";
@@ -15,15 +16,19 @@
   let failed = $state(false);
 
   // Read once on purpose: this is the baseline the unload warning compares against.
-  const untouched = untrack(() => stableJson(toDocument(species)));
-  const edited = () => stableJson(toDocument(species)) !== untouched;
+  const untouched = untrack(() => sheetJson(toDocument(species)));
+  const edited = () => sheetJson(toDocument(species)) !== untouched;
 
   async function create() {
     creating = true;
     failed = false;
     try {
-      const document = JSON.parse(stableJson(toDocument(species)));
-      const created = await addDoc(collection(db.firestore!, "sheets"), document);
+      const sheet = JSON.parse(sheetJson(toDocument(species)));
+      const created = await addDoc(collection(db.firestore!, "sheets"), {
+        ...sheet,
+        author: await authorId(),
+        updatedAt: Date.now(),
+      });
       await goto(`/sheet/${created.id}`);
     } catch {
       failed = true;

@@ -6,8 +6,14 @@ import { clamp } from "$lib/rpg/helpers";
 import type { NumberField } from "$lib/rpg/infra/types.svelte";
 import type { Species } from "$lib/rpg/infra/species/species.svelte";
 
+/** Written alongside a sheet, but not part of the sheet itself. */
+export type SheetMeta = {
+  author: string;
+  updatedAt: number;
+};
+
 /** One Firestore document per sheet. Items and abilities are already plain data. */
-export type SheetDocument = {
+export type SheetDocument = Partial<SheetMeta> & {
   species: SpeciesId;
   about: Record<About, string>;
   attributes: Partial<Record<Attributes, number>>;
@@ -33,6 +39,15 @@ export function stableJson(value: unknown): string {
       ? Object.fromEntries(Object.entries(item).sort(([a], [b]) => a.localeCompare(b)))
       : item,
   );
+}
+
+/**
+ * The sheet without its metadata, so a document read back compares equal to the one we sent
+ * even though `updatedAt` changes on every write.
+ */
+export function sheetJson(document: SheetDocument): string {
+  const { author, updatedAt, ...sheet } = document;
+  return stableJson(sheet);
 }
 
 export function toDocument(species: Species): SheetDocument {

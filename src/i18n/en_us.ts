@@ -187,6 +187,14 @@ export const en_us = {
     container: "Container",
   },
 
+  sheets: {
+    title: "My Sheets",
+    empty: "You have not created any sheets in this browser yet.",
+    never: "Never saved",
+    confirm_delete: "Delete this sheet permanently?",
+    no_identity: "Could not sign in. Check that Anonymous sign-in is enabled for this Firebase project.",
+  },
+
   dm: {
     sheets: "Sheets",
     enemies: "Enemy List",
@@ -206,6 +214,7 @@ export const en_us = {
     cancel: "Cancel",
     close: "Close",
     delete: "DEL",
+    delete_confirm: "Delete",
     transfer: "Transfer",
     equipped: "Equipped",
     yes: "Yes",
