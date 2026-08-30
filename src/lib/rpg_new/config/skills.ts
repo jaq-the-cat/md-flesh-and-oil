@@ -1,4 +1,4 @@
-import { Stats } from "./stats";
+import { Attributes } from "./attributes";
 
 export enum Skills {
   vigor,
@@ -22,36 +22,36 @@ export enum Skills {
 }
 
 export enum SkillModifiers {
-  average = 0.5,
-  proficient = 0.85,
-  expert = 1.2,
+  average = 0,
+  proficient = 12,
+  expert = 25,
 }
 
-export const SkillStats: Record<Skills, Stats[]> = {
-  [Skills.vigor]: [Stats.vitality],
-  [Skills.athletics]: [Stats.vitality, Stats.strength],
+export const SkillStats: Record<Skills, Attributes[]> = {
+  [Skills.vigor]: [Attributes.vitality],
+  [Skills.athletics]: [Attributes.vitality, Attributes.strength],
 
-  [Skills.stealth]: [Stats.agility],
-  [Skills.finesse]: [Stats.dexterity, Stats.agility],
-  [Skills.flying]: [Stats.dexterity, Stats.agility],
+  [Skills.stealth]: [Attributes.agility],
+  [Skills.finesse]: [Attributes.dexterity, Attributes.agility],
+  [Skills.flying]: [Attributes.dexterity, Attributes.agility],
 
-  [Skills.persuasion]: [Stats.charisma],
-  [Skills.intimidation]: [Stats.charisma],
+  [Skills.persuasion]: [Attributes.charisma],
+  [Skills.intimidation]: [Attributes.charisma],
 
-  [Skills.insight]: [Stats.perception],
-  [Skills.investigation]: [Stats.perception],
+  [Skills.insight]: [Attributes.perception],
+  [Skills.investigation]: [Attributes.perception],
 
-  [Skills.knowledge]: [Stats.intelligence],
-  [Skills.technology]: [Stats.intelligence],
+  [Skills.knowledge]: [Attributes.intelligence],
+  [Skills.technology]: [Attributes.intelligence],
 
-  [Skills.wit]: [Stats.intelligence, Stats.charisma],
+  [Skills.wit]: [Attributes.intelligence, Attributes.charisma],
 
-  [Skills.melee]: [Stats.strength, Stats.dexterity],
-  [Skills.firearms]: [Stats.intelligence, Stats.dexterity],
+  [Skills.melee]: [Attributes.strength, Attributes.dexterity],
+  [Skills.firearms]: [Attributes.intelligence, Attributes.dexterity],
 
-  [Skills.explosives]: [Stats.intelligence, Stats.dexterity],
-  [Skills.medicine]: [Stats.intelligence, Stats.dexterity],
-  [Skills.mechanics]: [Stats.intelligence, Stats.dexterity],
+  [Skills.explosives]: [Attributes.intelligence, Attributes.dexterity],
+  [Skills.medicine]: [Attributes.intelligence, Attributes.dexterity],
+  [Skills.mechanics]: [Attributes.intelligence, Attributes.dexterity],
 
-  [Skills.willpower]: [Stats.vitality, Stats.charisma, Stats.perception, Stats.intelligence],
+  [Skills.willpower]: [Attributes.vitality, Attributes.charisma, Attributes.perception, Attributes.intelligence],
 };

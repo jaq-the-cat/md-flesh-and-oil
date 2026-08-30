@@ -1,8 +1,8 @@
 import { enumValues } from "$lib/rpg_new/helpers";
-import strings from "../../../static/i18n/en_us.json";
+import localization from "../../i18n/en_us.json";
 
 export function label(key: string): string {
-  return (strings as Record<string, string>)[key] ?? key;
+  return (localization as Record<string, string>)[key] ?? key;
 }
 
 /** The enum members `record` has an entry for, in declaration order, ready to render. */

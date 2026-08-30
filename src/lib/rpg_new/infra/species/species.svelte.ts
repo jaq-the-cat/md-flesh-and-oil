@@ -1,11 +1,11 @@
 import {
   About,
   Bars,
-  Stats,
+  Attributes,
   Skills,
   SkillModifiers,
   Movement,
-  MAX_STAT_VALUE,
+  MAX_ATTR_VALUE,
   SkillStats,
 } from "$lib/rpg_new/config";
 import { DEFAULT_SKILLS } from "$lib/rpg_new/domain/species/defaults";
@@ -15,7 +15,7 @@ import { NumberField, type NumberLike } from "../types.svelte";
 export abstract class Species {
   public readonly about: Record<About, string> = $state({} as Record<About, string>);
   public readonly bars: Partial<Record<Bars, NumberField<Species>>> = $state({});
-  public readonly stats: Partial<Record<Stats, NumberField<Species>>> = $state({});
+  public readonly stats: Partial<Record<Attributes, NumberField<Species>>> = $state({});
   public readonly skills: Partial<Record<Skills, SkillModifiers>> = $state({});
   public readonly movement: Partial<Record<Movement, NumberField<Species>>> = $state({});
 
@@ -26,7 +26,9 @@ export abstract class Species {
   }) {
     this.about = Object.fromEntries(enumValues(About).map((about) => [about, ""])) as Record<About, string>;
     this.bars = clone(enabled.bars);
-    this.stats = Object.fromEntries(enumValues(Stats).map((stat) => [stat, new NumberField(0, MAX_STAT_VALUE)]));
+    this.stats = Object.fromEntries(
+      enumValues(Attributes).map((stat) => [stat, new NumberField(0, MAX_ATTR_VALUE)]),
+    );
     this.skills = Object.fromEntries(
       [...DEFAULT_SKILLS, ...enabled.skills].map((skill) => [skill, SkillModifiers.average]),
     );
@@ -35,9 +37,9 @@ export abstract class Species {
     );
   }
 
-  getSkillValue(skill: Skills) {
-    const modifier = this.skills[skill];
-    if (modifier == null) return 0;
+  getSkillBonus(skill: Skills) {
+    const skillModifier = this.skills[skill];
+    if (skillModifier == null) return 0;
 
     let values = [];
     for (const stat of SkillStats[skill]) {
@@ -45,7 +47,8 @@ export abstract class Species {
       if (statEntry != null) values.push(statEntry.getValue());
     }
     if (values.length === 0) return 0;
-    return (values.reduce((a, b) => a + b, 0) / values.length) * modifier;
+    const statAverage = values.reduce((a, b) => a + b, 0) / values.length;
+    return Math.sqrt(statAverage / MAX_ATTR_VALUE) * MAX_ATTR_VALUE + skillModifier - MAX_ATTR_VALUE / 2;
   }
 
   /** Copies into `target` every value it shares with `source`, leaving the rest at its defaults. */
@@ -53,7 +56,7 @@ export abstract class Species {
     for (const about of enumValues<About>(About)) {
       target.about[about] = source.about[about];
     }
-    for (const stat of enumValues<Stats>(Stats)) {
+    for (const stat of enumValues<Attributes>(Attributes)) {
       copyField(target, target.stats[stat], source.stats[stat]);
     }
     for (const skill of enumValues<Skills>(Skills)) {

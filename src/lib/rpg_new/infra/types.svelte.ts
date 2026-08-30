@@ -11,7 +11,8 @@ export class NumberField<T extends Species = any> {
   }
 
   getMaxValue(obj: T) {
-    return typeof this.max == "number" ? this.max : this.max(obj);
+    const max = typeof this.max == "number" ? this.max : this.max(obj);
+    return Math.max(this.min, max);
   }
 
   setValue(obj: T, n: number) {

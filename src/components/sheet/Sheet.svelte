@@ -8,7 +8,7 @@
   import Innate from "./cards/Innate.svelte";
   import Movement from "./cards/Movement.svelte";
   import Skills from "./cards/Skills.svelte";
-  import Stats from "./cards/Stats.svelte";
+  import Stats from "./cards/Attributes.svelte";
   import RulebookSnippet from "./cards/dialogs/RulebookSnippet.svelte";
   import SpeciesRulebook from "../rulebook/snippets/species/species.svelte";
 

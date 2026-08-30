@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { Stats } from "$lib/rpg_new/config";
+  import { Attributes } from "$lib/rpg_new/config";
   import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
   import NumberInput from "../NumberInput.svelte";
   import { fields, label } from "../labels";
   import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";
-  import Attributes from "../../rulebook/snippets/general/attributes.svelte";
+  import AttributesSnippet from "../../rulebook/snippets/general/attributes.svelte";
 
   let { species }: { species: Species } = $props();
 
-  let stats = $derived(fields(Stats, species.stats));
+  let stats = $derived(fields(Attributes, species.stats));
   let total = $derived(stats.reduce((sum, field) => sum + field.value.getValue(), 0));
 
   let rulebook = $state(false);
@@ -16,7 +16,7 @@
 
 <div id="stats">
   <RulebookSnippet title={label("stats")} bind:open={rulebook}>
-    <Attributes />
+    <AttributesSnippet />
   </RulebookSnippet>
   <p class="total">
     <span>{label("total_points")}</span>

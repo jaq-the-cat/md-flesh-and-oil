@@ -1,3 +1,4 @@
+import { MAX_ATTR_VALUE } from "$lib/rpg_new/config";
 import { Skills } from "$lib/rpg_new/config/skills";
 import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
 import { NumberField } from "$lib/rpg_new/infra/types.svelte";
@@ -22,6 +23,13 @@ export const DEFAULT_SKILLS: Skills[] = [
   Skills.willpower,
 ];
 
+export function healthField<T extends Species>(base: number, multiplier: number) {
+  return new NumberField(
+    base,
+    (obj: T) => (MAX_ATTR_VALUE / 2 + obj.getSkillBonus(Skills.vigor)) * multiplier + base,
+  );
+}
+
 export function sanityField<T extends Species>() {
-  return new NumberField(0, (obj: T) => Math.min(100, obj.getSkillValue(Skills.willpower)));
+  return new NumberField(0, (obj: T) => Math.min(100, obj.getSkillBonus(Skills.willpower)));
 }

@@ -20,6 +20,7 @@
   <section class="skillList">
     {#each fields(Skills, species.skills) as field (field.key)}
       <span>{field.label}</span>
+      <span class=skillValue>{Math.floor(species.getSkillBonus(field.key))}</span>
       <select bind:value={species.skills[field.key]}>
         {#each modifiers as modifier}
           <option value={modifier}>{label(SkillModifiers[modifier])}</option>
@@ -36,10 +37,14 @@
 
   .skillList {
     display: grid;
-    grid-template-columns: auto min-content;
+    grid-template-columns: auto min-content min-content;
     align-items: center;
     row-gap: 5px;
     column-gap: 10px;
+  }
+
+  .skillValue {
+    text-align: end;
   }
 
   select {
