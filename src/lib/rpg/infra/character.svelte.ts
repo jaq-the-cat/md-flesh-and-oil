@@ -282,9 +282,9 @@ export abstract class Character {
 }
 
 export function getProfModifier(value?: string) {
-  if (value === "P") return 0.85;
-  else if (value === "E") return 1.2;
-  return 0.5;
+  if (value === "P") return 12;
+  else if (value === "E") return 25;
+  return 0;
 }
 
 export function formatPlusMinus(v: number) {
@@ -296,11 +296,8 @@ export function formatPlusMinus(v: number) {
 
 export function getSkillRollUsing(character: Character, skill: keyof Proficiencies, stats: (keyof Stats)[]) {
   const statAverage = stats.map((stat) => character.stats[stat]).reduce((a, b) => a + b) / stats.length;
-  const statBonus = getBonus(statAverage);
   const proficiencyModifier = getProfModifier(character.proficiencies[skill]);
-  return statBonus >= 0
-    ? Math.floor(statBonus * proficiencyModifier)
-    : Math.floor(statBonus / proficiencyModifier);
+  return Math.floor(Math.sqrt(statAverage / 100) * 100 + proficiencyModifier - 50);
 }
 
 export function getSkillRoll(skill: keyof Proficiencies, character: Character): number {
@@ -308,6 +305,8 @@ export function getSkillRoll(skill: keyof Proficiencies, character: Character): 
     case "Acrobatics":
       return getSkillRollUsing(character, skill, ["Agility"]);
     case "Stealth":
+      return getSkillRollUsing(character, skill, ["Dexterity", "Agility"]);
+    case "Finesse":
       return getSkillRollUsing(character, skill, ["Dexterity", "Agility"]);
     case "Flying":
       return getSkillRollUsing(character, skill, ["Agility"]);
@@ -318,6 +317,7 @@ export function getSkillRoll(skill: keyof Proficiencies, character: Character): 
     case "Grapple":
       return getSkillRollUsing(character, skill, ["Strength"]);
     case "Craft":
+      return getSkillRollUsing(character, skill, ["Intelligence", "Dexterity"]);
     case "Firearms":
       return getSkillRollUsing(character, skill, ["Dexterity"]);
     case "Melee":
@@ -334,6 +334,8 @@ export function getSkillRoll(skill: keyof Proficiencies, character: Character): 
       return getSkillRollUsing(character, skill, ["Charisma", "Perception"]);
     case "Knowledge":
       return getSkillRollUsing(character, skill, ["Charisma", "Intelligence"]);
+    case "Wit":
+      return getSkillRollUsing(character, skill, ["Perception", "Agility"]);
     case "Technology":
       return getSkillRollUsing(character, skill, ["Intelligence"]);
     case "Nature":
