@@ -1,5 +1,5 @@
 <script>
-  import OilFresh from "../reuse/oilFresh.svelte";
+  import Oil from "../reuse/oil.svelte";
   import Sanity from "../reuse/sanity.svelte";
   import Abilities from "./abilities.svelte";
   import Bars from "./bars.svelte";
@@ -19,6 +19,6 @@
 <Bars />
 <Speed />
 <Modifiers />
-<OilFresh />
+<Oil />
 <Sanity />
 <Abilities />

@@ -41,4 +41,10 @@
   li > :first-child {
     flex-grow: 1;
   }
+
+  li > :last-child {
+    margin-left: 1ch;
+    width: 5ch;
+    text-align: start;
+  }
 </style>

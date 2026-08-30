@@ -6,13 +6,13 @@
 </p>
 <h2>Melee Weapons</h2>
 <p>
-  Melee weapons only need to do a hit check, using the Strength or Dexterity
-  Stat + Melee, if the attack is being blocked or dodged, but they have to do a
+  Melee weapons only need to do a hit check, using the Melee skill (Strength and
+  Dexterity), if the attack is being blocked or dodged, but they have to do a
   damage check in return.
 </p>
 <h2>Ranged Weapons</h2>
 <p>
   Ranged Weapons must first hit, then they can deal damage. The difficulty is
-  based on the target's Passive Dodge. Capacity means how many times the gun can
+  based on the target's Passive Dodge. Magazine means how many times the gun can
   be shot until having to be reloaded or replaced with a different Arm Weapon.
 </p>

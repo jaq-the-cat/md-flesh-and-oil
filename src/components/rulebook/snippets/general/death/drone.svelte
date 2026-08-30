@@ -11,7 +11,6 @@
   Industrial-Grade Glue and 2x Screws.
 </p>
 <p>
-  An extracted core can be kept alive by being fed 1x Fresh or Used Oil
-  (depending on which they need) every 30 minutes of real-life time. Failing to
+  An extracted core can be kept alive by being fed 10 Oil every 30 minutes of real-life time. Failing to
   do so kills that Drone permanently.
 </p>

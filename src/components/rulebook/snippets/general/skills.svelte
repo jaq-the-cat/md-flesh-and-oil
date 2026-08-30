@@ -23,3 +23,8 @@
   <li>Mechanics</li>
   <li>Willpower</li>
 </ul>
+<p>Some skills are only available to certain species:</p>
+<ul>
+  <li>Flying</li>
+  <li>Absolute Solver</li>
+</ul>

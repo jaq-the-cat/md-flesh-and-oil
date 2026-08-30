@@ -3,7 +3,7 @@
   <li>Dodge</li>
   <ul>
     <li>
-      Allows an Acrobatics check to dodge Melee or Ranged attacks. When Dodging
+      Allows a Finesse check to dodge Melee or Ranged attacks. When Dodging
       weapons with rate above 1 (guns, claws, etc), only roll once, and the
       enemy rolls once per Hit against that check.
     </li>
@@ -11,7 +11,7 @@
   <li>Block</li>
   <ul>
     <li>Allows a Blocking check with a blocking item (Sword/Shield).</li>
-    <li>Add your Strength modifier when blocking Melee attacks.</li>
+    <li>Add your Athletics bonus when blocking Melee attacks.</li>
     <li>
       When blocking a Melee attack, when your Block roll is the same as the
       enemy's Hit roll, you Parry their attack.

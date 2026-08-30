@@ -4,7 +4,7 @@
 <p>
   During character creation, you generally have a number points to spread across your
   attributes. The GM will let you know how many you are allowed to allocate. If not specifically
-  stated to be different, the convention is a maximum 350 points (50 im all skills).
+  stated to be different, the convention is a maximum of 175 points (25 in every attribute).
 </p>
 <ul>
   <li>Vitality</li>

@@ -73,7 +73,7 @@
     All species can take Fall Damage at a rate of 1 damage per meter above their
     Jump Speed that they fall.
   </p>
-  <p>A fall from 3m deals a Human 1 Damage, because their Jump Height is 2m.</p>
+  <p>A fall from 3m deals a Human 2 Damage, because their Jump Height is 1m.</p>
   <h2>Damage Types</h2>
   <p>There are 5 types of damage: Strike, Pierce, Slash, Energy and Hunger.</p>
   <p>

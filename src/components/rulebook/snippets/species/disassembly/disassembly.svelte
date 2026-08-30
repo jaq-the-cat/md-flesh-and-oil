@@ -1,7 +1,6 @@
 <script>
   import AbsoluteSolver from "../reuse/absoluteSolver.svelte";
-  import Heat from "../reuse/heat.svelte";
-  import OilSolver from "../reuse/oilSolver.svelte";
+  import Oil from "../reuse/oil.svelte";
   import Abilities from "./abilities.svelte";
   import Bars from "./bars.svelte";
   import Modifiers from "./modifiers.svelte";
@@ -11,7 +10,6 @@
 <Bars />
 <Speed />
 <Modifiers />
-<OilSolver />
-<Heat />
+<Oil />
 <AbsoluteSolver />
 <Abilities />

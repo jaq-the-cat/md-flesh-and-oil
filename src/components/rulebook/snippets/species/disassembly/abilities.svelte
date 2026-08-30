@@ -1,14 +1,13 @@
 <h2>Abilities</h2>
 <h3>Eat</h3>
 <p>
-  Can be used on a dead body (Human or Drone) to drain their entire Used Oil or
+  Can be used on a dead body (Human or Drone) to drain their entire Oil or
   Blood reserve at once. Eating someone during combat takes 2 turns to complete.
-  Increases Heat by 2.
 </p>
-<h3>Regenerate (Absolute Solver > 1)</h3>
+<h3>Regenerate (Absolute Solver > 10)</h3>
 <p>
   Regenerate your wounds with an Absolute Solver roll. Difficulty is your
-  missing HP up to 18.
+  missing HP up to 90.
 </p>
 <h3>Arm Weapons</h3>
 <p>
@@ -25,6 +24,6 @@
 <p>+1 Successful Attacks if hit.</p>
 <p>Cannot be Blocked.</p>
 <p>
-  Melee, 3 damage per turn for 1d(Absolute Solver) turns or until licked by a
+  Melee, 3 damage per turn for 1 turn per 10 Absolute Solver or until licked by a
   Disassembly Drone, range 2m.
 </p>
