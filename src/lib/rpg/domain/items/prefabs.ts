@@ -234,4 +234,4 @@ export const ITEM_PREFABS: Record<string, ItemTemplate[]> = {
   ],
 };
 
-export const POCKETS: ContainerTemplate = { name: "Pockets", carry: 5 };
+export const POCKETS: ContainerTemplate = { name: "Pockets", carry: null };

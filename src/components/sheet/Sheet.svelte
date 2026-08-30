@@ -28,10 +28,10 @@
   <About {species} />
   <Attributes {species} />
   <SpeciesCard speciesId={selected} {speciesIds} onSpeciesChange={change} {species} />
-  <Abilities speciesId={selected} />
+  <Abilities {species} />
   <Skills {species} />
   <Rules />
-  <Equipment />
+  <Equipment {species} />
 </main>
 
 <style lang="scss">

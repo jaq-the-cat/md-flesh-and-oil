@@ -1,41 +1,34 @@
 <script lang="ts">
-  import { ABILITY_PREFABS } from "$lib/rpg/domain/abilities/prefabs";
   import { createAbility, type Ability, type AbilityTemplate } from "$lib/rpg/domain/abilities/types";
-  import type { SPECIES } from "$lib/rpg/domain/species/registry";
+  import type { Species } from "$lib/rpg/infra/species/species.svelte";
   import { localization } from "$i18n";
   import InspectAbility from "./dialogs/InspectAbility.svelte";
   import NewAbility from "./dialogs/NewAbility.svelte";
   import PrefabAbility from "./dialogs/PrefabAbility.svelte";
 
-  let { speciesId }: { speciesId: keyof typeof SPECIES } = $props();
+  let { species }: { species: Species } = $props();
 
-  // Two lists rather than one, so a species change can replace the innate half and leave the rest alone.
-  let innate = $state<Ability[]>(ABILITY_PREFABS[speciesId].map(createAbility));
-  let custom = $state<Ability[]>([]);
-  let abilities = $derived([...innate, ...custom]);
-
-  $effect(() => {
-    innate = ABILITY_PREFABS[speciesId].map(createAbility);
-  });
+  // The species owns both lists; swapping species replaces `innate` and keeps `custom`.
+  let abilities = $derived([...species.innate, ...species.custom]);
 
   let available = $derived(
-    ABILITY_PREFABS[speciesId].filter((prefab) => !innate.some((ability) => ability.name === prefab.name)),
+    species.catalogue.filter((prefab) => !species.innate.some((ability) => ability.name === prefab.name)),
   );
   let inspecting = $state<Ability | null>(null);
   let creating = $state(false);
   let picking = $state(false);
 
   function addPrefab(template: AbilityTemplate) {
-    innate.push(createAbility(template));
+    species.innate.push(createAbility(template));
   }
 
   function addCustom(template: AbilityTemplate) {
-    custom.push(createAbility(template));
+    species.custom.push(createAbility(template));
   }
 
   function remove(ability: Ability) {
-    innate = innate.filter((other) => other.id !== ability.id);
-    custom = custom.filter((other) => other.id !== ability.id);
+    species.innate = species.innate.filter((other) => other.id !== ability.id);
+    species.custom = species.custom.filter((other) => other.id !== ability.id);
     if (inspecting?.id === ability.id) inspecting = null;
   }
 </script>

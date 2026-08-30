@@ -12,6 +12,9 @@ import {
   STAT_SPAN,
   DEFAULT_ATTR_VALUE,
 } from "$lib/rpg/config";
+import { createAbility, type Ability, type AbilityTemplate } from "$lib/rpg/domain/abilities/types";
+import { POCKETS } from "$lib/rpg/domain/items/prefabs";
+import { createContainer, SLOTS, type Container, type Slot } from "$lib/rpg/domain/items/types";
 import { DEFAULT_SKILLS } from "$lib/rpg/domain/species/defaults";
 import { clamp, clone } from "$lib/rpg/helpers";
 import { NumberField, type NumberLike } from "../types.svelte";
@@ -23,10 +26,22 @@ export abstract class Species {
   public readonly skills: Partial<Record<Skills, SkillModifiers>> = $state({});
   public readonly movement: Partial<Record<Movement, NumberField<Species>>> = $state({});
 
+  public containers: Container[] = $state([]);
+  public equipped: Record<Slot, string | null> = $state({} as Record<Slot, string | null>);
+
+  /** Every ability this species offers, whether or not it is currently taken. */
+  public readonly catalogue: AbilityTemplate[] = [];
+  public innate: Ability[] = $state([]);
+  public custom: Ability[] = $state([]);
+
+  private readonly carry: (obj: Species) => number;
+
   constructor(enabled: {
     bars: Partial<Record<Bars, NumberField<Species>>>;
     skills: Skills[];
     movement: Partial<Record<Movement, number>>;
+    abilities: AbilityTemplate[];
+    carry: (obj: Species) => number;
   }) {
     this.about = Object.fromEntries(Object.values(About).map((about) => [about, ""])) as Record<About, string>;
     this.about[About.alignment] = Alignment.true_neutral;
@@ -40,6 +55,17 @@ export abstract class Species {
     this.movement = Object.fromEntries(
       Object.entries(enabled.movement).map(([key, value]) => [key, new NumberField(0, value * 2, value)]),
     );
+
+    this.containers = [createContainer(POCKETS)];
+    this.equipped = Object.fromEntries(SLOTS.map((slot) => [slot, null])) as Record<Slot, string | null>;
+    this.catalogue = enabled.abilities;
+    this.innate = enabled.abilities.map(createAbility);
+    this.carry = enabled.carry;
+  }
+
+  /** What this species can carry on its person, before any container is added. */
+  get carryWeight() {
+    return this.carry(this);
   }
 
   getSkillBonus(skill: Skills) {
@@ -76,6 +102,10 @@ export abstract class Species {
     // for (const movement of Object.values(Movement)) {
     //   copyField(target, target.movement[movement], source.movement[movement]);
     // }
+    // Gear and hand-written abilities belong to the character, not the body they are in.
+    target.containers = source.containers;
+    target.equipped = source.equipped;
+    target.custom = source.custom;
     return target;
   }
 }

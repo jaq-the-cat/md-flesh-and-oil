@@ -1,14 +1,21 @@
 <script lang="ts">
-  let { sheets = $bindable() as any } = $props();
+  import { localization } from "$i18n";
+  import type { StoredSheet } from "$lib/persistence";
+  import type { SPECIES } from "$lib/rpg/domain/species/registry";
+  import { collectionStore } from "sveltefire";
+
+  let { sheets }: { sheets: ReturnType<typeof collectionStore<StoredSheet>> } = $props();
+
+  const speciesName = (id: keyof typeof SPECIES) => localization().species[id] ?? id;
 </script>
 
 <section class="sheets">
-  <h1>Sheets</h1>
+  <h1>{localization().dm.sheets}</h1>
   <ul>
-    {#each $sheets as sheet}
+    {#each $sheets as sheet (sheet.id)}
       <a class="buttonStyle" href="/sheet/{sheet.id}">
-        <span>{sheet.about.at(0).value}</span>
-        <span>[{sheet.species}]</span>
+        <span>{sheet.about?.name || localization().dm.unnamed}</span>
+        <span>[{speciesName(sheet.species)}]</span>
       </a>
     {/each}
   </ul>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { POCKETS } from "$lib/rpg/domain/items/prefabs";
+  import type { Species } from "$lib/rpg/infra/species/species.svelte";
   import {
     containerWeight,
     createContainer,
@@ -17,19 +17,12 @@
   import NewItem from "./dialogs/NewItem.svelte";
   import PrefabItem from "./dialogs/PrefabItem.svelte";
 
-  // The inventory lives here until the species owns it, as planned in rpg/infra/PLAN.md.
-  let containers = $state<Container[]>([createContainer(POCKETS)]);
+  let { species }: { species: Species } = $props();
+
+  let containers = $derived(species.containers);
+  let equipped = $derived(species.equipped);
   let selectedIndex = $state(0);
   let selected = $derived(containers[selectedIndex]);
-
-  let equipped = $state<Record<Slot, string | null>>({
-    left_hand: null,
-    right_hand: null,
-    left_shoulder: null,
-    right_shoulder: null,
-    front: null,
-    back: null,
-  });
 
   /** Anything that can go in a slot, so it can never fall out of sync with the containers. */
   let equippable = $derived(containers.flatMap((container) => [container, ...container.items]).slice(1));
@@ -89,7 +82,7 @@
     <select bind:value={selectedIndex}>
       {#each containers as container, index}
         <option value={index}>
-          {container.name} [{containerWeight(container)}/{container.carry}kg]
+          {container.name} [{containerWeight(container)}/{container.carry ?? Math.floor(species.carryWeight)}kg]
         </option>
       {/each}
     </select>

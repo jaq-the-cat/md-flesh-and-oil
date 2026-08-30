@@ -187,6 +187,13 @@ export const en_us = {
     container: "Container",
   },
 
+  dm: {
+    sheets: "Sheets",
+    enemies: "Enemy List",
+    enemies_missing: "The enemy catalogue has not been ported to the new system yet.",
+    unnamed: "Unnamed",
+  },
+
   units: {
     turn: "Turn",
     turns: "Turns",
@@ -203,5 +210,12 @@ export const en_us = {
     equipped: "Equipped",
     yes: "Yes",
     nothing_available: "Nothing left to add.",
+    create: "Create Sheet",
+    creating: "Creating...",
+    loading: "Loading...",
+    missing: "That sheet does not exist.",
+    saving: "Saving...",
+    saved: "Saved",
+    error: "Could not save",
   },
 };

@@ -1,88 +1,24 @@
 <script lang="ts">
-  import type { Item } from "$lib/rpg/infra/items.svelte";
-  import { enemyLists } from "$lib/rpg/instances/enemies.svelte";
-  import WeaponInspect from "../sheet/cards/dialogs/WeaponInspect.svelte";
-
-  let selectedEnemyList: string = $state("Humans");
-  let enemies = $derived(Object.entries(enemyLists[selectedEnemyList]));
-
-  let itemInspect: Item | null = $state(null);
+  import { localization } from "$i18n";
 </script>
 
 <section id="enemyList">
-  <WeaponInspect bind:itemInspect />
-  <h1>Enemy List</h1>
-  <select bind:value={selectedEnemyList}>
-    {#each Object.keys(enemyLists) as enemyListKey}
-      <option value={enemyListKey}>{enemyListKey}</option>
-    {/each}
-  </select>
-  {#if selectedEnemyList}
-    {#each enemies as enemy}
-      <h2>{enemy[0]}</h2>
-      <div class="details">
-        <h4>Max HP:</h4>
-        <div>{enemy[1].maxHp}</div>
-        {#if enemy[1].guaranteedWeapons.length > 0}
-          <h4>Guaranteed Weapons:</h4>
-          <div class="wpnList">
-            {#each enemy[1].guaranteedWeapons as weapon}
-              <button onclick={() => (itemInspect = weapon)}
-                >{weapon.name}</button
-              >
-            {/each}
-          </div>
-        {/if}
-        {#if enemy[1].possibleWeapons.length > 0}
-          <h4>Possible Weapons:</h4>
-          <div class="wpnList">
-            {#each enemy[1].possibleWeapons as weapon}
-              <button onclick={() => (itemInspect = weapon)}
-                >{weapon.name}</button
-              >
-            {/each}
-          </div>
-        {/if}
-        <h4>Stat Bonuses</h4>
-        <div>
-          {#each enemy[1].attributes as stat}
-            <div>{stat[1] >= 0 ? "+" : "-"}{stat[1]} {stat[0]}</div>
-          {/each}
-        </div>
-        <h4>Innate</h4>
-        <div>
-          {#each enemy[1].passive as stat}
-            <div>{stat[1]} {stat[0]}</div>
-          {/each}
-        </div>
-      </div>
-    {/each}
-  {/if}
+  <h1>{localization().dm.enemies}</h1>
+  <p class="empty">{localization().dm.enemies_missing}</p>
 </section>
 
 <style lang="scss">
   #enemyList {
     grid-area: enemyList;
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
+  }
 
-    h2,
-    h4 {
-      margin: 0;
-    }
+  h1 {
+    text-align: center;
+  }
 
-    .details {
-      display: grid;
-      column-gap: 1ch;
-      row-gap: 10px;
-      grid-template-columns: max-content auto;
-
-      .wpnList {
-        display: flex;
-        flex-direction: column;
-        row-gap: 10px;
-      }
-    }
+  .empty {
+    margin-top: 10px;
+    text-align: center;
+    opacity: 0.8;
   }
 </style>

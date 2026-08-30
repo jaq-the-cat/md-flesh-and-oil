@@ -31,7 +31,8 @@ export type ItemTemplate = { name: string; weight: number } & Details;
 export type Item = ItemTemplate & { id: string };
 export type ItemKind = Item["kind"];
 
-export type ContainerTemplate = { name: string; carry: number };
+/** A null carry means the species' own carry weight, which tracks Athletics. */
+export type ContainerTemplate = { name: string; carry: number | null };
 export type Container = ContainerTemplate & { id: string; items: Item[] };
 
 /** Kinds a player can build by hand. Healing items are catalogue-only. */

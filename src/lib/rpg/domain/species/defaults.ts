@@ -23,11 +23,19 @@ export const DEFAULT_SKILLS: Skills[] = [
   Skills.willpower,
 ];
 
-export function healthField<T extends Species>(base: number, multiplier: number) {
+/** How solidly a species is built. Drives both its health and what it can carry. */
+export type Build = { base: number; multiplier: number };
+
+export function healthField<T extends Species>({ base, multiplier }: Build) {
   return new NumberField(
     0,
     (obj: T) => (MAX_ATTR_VALUE / 2 + obj.getSkillBonus(Skills.vigor)) * multiplier + base,
   );
+}
+
+/** The health formula keyed to Athletics rather than Vigor, scaled down by five. */
+export function carryWeight({ base, multiplier }: Build) {
+  return (obj: Species) => ((MAX_ATTR_VALUE / 2 + obj.getSkillBonus(Skills.athletics)) * multiplier + base) / 5;
 }
 
 export function sanityField<T extends Species>() {
