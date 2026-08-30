@@ -1,3 +1,5 @@
+import { Skills } from "$lib/rpg_new/config";
+
 export type Slot = "left_hand" | "right_hand" | "left_shoulder" | "right_shoulder" | "front" | "back";
 
 export const SLOTS: Slot[] = ["left_hand", "right_hand", "left_shoulder", "right_shoulder", "front", "back"];
@@ -7,7 +9,7 @@ type Details =
   | { kind: "melee"; damage: string; twoHanded: boolean; info: string | null }
   | {
       kind: "ranged";
-      hit: string;
+      hit: Skills;
       damage: string;
       range: number;
       rate: number;
@@ -27,9 +29,32 @@ type Details =
 
 export type ItemTemplate = { name: string; weight: number } & Details;
 export type Item = ItemTemplate & { id: string };
+export type ItemKind = Item["kind"];
 
 export type ContainerTemplate = { name: string; carry: number };
 export type Container = ContainerTemplate & { id: string; items: Item[] };
+
+/** What a freshly picked kind looks like in the custom-item form. Adding a kind fails here first. */
+export const BLANK_ITEMS: Partial<Record<ItemKind, ItemTemplate>> = {
+  plain: { kind: "plain", name: "", weight: 1 },
+  melee: { kind: "melee", name: "", weight: 1, damage: "", twoHanded: false, info: "" },
+  ranged: {
+    kind: "ranged",
+    name: "",
+    weight: 1,
+    hit: Skills.firearms,
+    damage: "",
+    range: 10,
+    rate: 1,
+    magazine: 1,
+    reloadTurns: 1,
+    info: "",
+  },
+  throwable: { kind: "throwable", name: "", weight: 1, damage: "", range: "", info: "" },
+  liquid: { kind: "liquid", name: "", weight: 1, capacity: 1, weightPerUnit: 1, current: 0 },
+};
+
+export const ITEM_KINDS = Object.keys(BLANK_ITEMS) as ItemKind[];
 
 export function createItem(template: ItemTemplate): Item {
   return { ...template, id: crypto.randomUUID() };

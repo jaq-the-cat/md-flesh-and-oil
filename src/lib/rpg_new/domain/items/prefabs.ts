@@ -1,3 +1,4 @@
+import { Skills } from "$lib/rpg_new/config";
 import type { ContainerTemplate, ItemTemplate } from "./types";
 
 const melee = (name: string, weight: number, damage: string, info: string | null = null, twoHanded = false) =>
@@ -6,7 +7,7 @@ const melee = (name: string, weight: number, damage: string, info: string | null
 const ranged = (
   name: string,
   weight: number,
-  hit: string,
+  hit: Skills,
   damage: string,
   range: number,
   rate: number,
@@ -16,18 +17,18 @@ const ranged = (
 ) => ({ kind: "ranged", name, weight, hit, damage, range, rate, magazine, reloadTurns, info }) satisfies ItemTemplate;
 
 const RANGED = [
-  ranged("Pistol", 1, "Firearms", "8 Pierce", 10, 1, 12, 1),
-  ranged("Revolver", 1, "Firearms", "10 Pierce", 10, 1, 6, 2),
-  ranged("Submachine Gun", 2, "Firearms", "6 Pierce", 12, 6, 30, 1, "-10 Hit every 3 meters"),
-  ranged("Semi-Auto Shotgun", 2, "Firearms", "12 Pierce", 12, 2, 10, 1, "-10 Damage per meter"),
-  ranged("Pump Shotgun", 2, "Firearms", "24 Pierce", 12, 1, 6, 1, "-20 Damage per meter"),
-  ranged("Rifle", 2, "Firearms", "10 Pierce", 20, 1, 6, 1),
-  ranged("Assault Rifle", 3, "Firearms", "10 Pierce", 30, 4, 32, 1),
-  ranged("Battle Rifle", 3, "Firearms", "12 Pierce", 30, 3, 24, 1),
+  ranged("Pistol", 1, Skills.firearms, "8 Pierce", 10, 1, 12, 1),
+  ranged("Revolver", 1, Skills.firearms, "10 Pierce", 10, 1, 6, 2),
+  ranged("Submachine Gun", 2, Skills.firearms, "6 Pierce", 12, 6, 30, 1, "-10 Hit every 3 meters"),
+  ranged("Semi-Auto Shotgun", 2, Skills.firearms, "12 Pierce", 12, 2, 10, 1, "-10 Damage per meter"),
+  ranged("Pump Shotgun", 2, Skills.firearms, "24 Pierce", 12, 1, 6, 1, "-20 Damage per meter"),
+  ranged("Rifle", 2, Skills.firearms, "10 Pierce", 20, 1, 6, 1),
+  ranged("Assault Rifle", 3, Skills.firearms, "10 Pierce", 30, 4, 32, 1),
+  ranged("Battle Rifle", 3, Skills.firearms, "12 Pierce", 30, 3, 24, 1),
   ranged(
     "Sniper Rifle",
     5,
-    "Firearms",
+    Skills.firearms,
     "24 Pierce",
     50,
     1,
@@ -35,9 +36,9 @@ const RANGED = [
     1,
     "+2 Hit under 10m, -10 Hit above 10m, -20 Hit above 20m",
   ),
-  ranged("Improvised Railgun", 1, "Technology", "22 Energy", 15, 1, 1, 4),
-  ranged("JCJ Railgun", 2, "Technology", "28 Energy", 15, 1, 1, 2),
-  ranged("Sentinel Gun", 4, "Technology", "Bootloops in a 5m cone", 5, 1, 1, 1, "Looking away costs 2 Reactions"),
+  ranged("Improvised Railgun", 1, Skills.technology, "22 Energy", 15, 1, 1, 4),
+  ranged("JCJ Railgun", 2, Skills.technology, "28 Energy", 15, 1, 1, 2),
+  ranged("Sentinel Gun", 4, Skills.technology, "Bootloops in a 5m cone", 5, 1, 1, 1, "Looking away costs 2 Reactions"),
 ];
 
 export const CONTAINER_PREFABS: ContainerTemplate[] = [

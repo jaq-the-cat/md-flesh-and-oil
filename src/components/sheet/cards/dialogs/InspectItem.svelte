@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Skills } from "$lib/rpg_new/config";
   import { itemWeight, type Container, type Item } from "$lib/rpg_new/domain/items/types";
   import { label } from "../../labels";
 
@@ -35,7 +36,7 @@
         {/if}
       {:else if item.kind === "ranged"}
         <dt>{label("hit")}</dt>
-        <dd>{item.hit}</dd>
+        <dd>{label(Skills[item.hit])}</dd>
         <dt>{label("damage")}</dt>
         <dd>{item.damage}</dd>
         <dt>{label("range")}</dt>

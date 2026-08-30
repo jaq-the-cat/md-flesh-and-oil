@@ -14,6 +14,7 @@
   } from "$lib/rpg_new/domain/items/types";
   import { label } from "../labels";
   import InspectItem from "./dialogs/InspectItem.svelte";
+  import NewItem from "./dialogs/NewItem.svelte";
 
   // The inventory lives here until the species owns it, as planned in rpg_new/infra/PLAN.md.
   let containers = $state<Container[]>([createContainer(POCKETS)]);
@@ -34,7 +35,7 @@
 
   let inspecting = $state<Item | null>(null);
 
-  let custom = $state({ name: "", weight: 1 });
+  let creating = $state(false);
 
   const CONTAINERS = "Containers";
   const categories = [CONTAINERS, ...Object.keys(ITEM_PREFABS)];
@@ -49,17 +50,9 @@
     selectedIndex = containers.length - 1;
   }
 
-  function addPrefab() {
-    const prefab = prefabs[prefabIndex];
-    if ("carry" in prefab) addContainer(prefab);
-    else selected.items.push(createItem(prefab));
-  }
-
-  function addCustom(asContainer: boolean) {
-    if (custom.name === "") return;
-    if (asContainer) addContainer({ name: custom.name, carry: custom.weight });
-    else selected.items.push(createItem({ kind: "plain", name: custom.name, weight: custom.weight }));
-    custom = { name: "", weight: 1 };
+  function add(template: ContainerTemplate | ItemTemplate) {
+    if ("carry" in template) addContainer(template);
+    else selected.items.push(createItem(template));
   }
 
   function removeSelectedContainer() {
@@ -97,15 +90,7 @@
 <div id="equipment">
   <h2 class="cardTitle">{label("equipment")}</h2>
 
-  <h2>{label("add_custom")}</h2>
-  <div class="custom">
-    <div class="inputs">
-      <input class="name" type="text" bind:value={custom.name} />
-      <input class="weight" type="number" min="0" step="0.1" bind:value={custom.weight} />
-    </div>
-    <button onclick={() => addCustom(false)}>{label("add_as_item")}</button>
-    <button onclick={() => addCustom(true)}>{label("add_as_container")}</button>
-  </div>
+  <button onclick={() => (creating = true)}>{label("add_custom")}</button>
 
   <h2>{label("add_prefab")}</h2>
   <div class="prefabs">
@@ -119,7 +104,7 @@
         <option value={name}>{name}</option>
       {/each}
     </select>
-    <button onclick={addPrefab}>{label("add")}</button>
+    <button onclick={() => add(prefabs[prefabIndex])}>{label("add")}</button>
   </div>
 
   <h2>{label("container")}</h2>
@@ -159,6 +144,7 @@
 </div>
 
 <InspectItem bind:item={inspecting} {containers} {moveItem} />
+<NewItem bind:open={creating} onCreate={add} />
 
 <style lang="scss">
   #equipment {
@@ -172,26 +158,10 @@
     margin: 0;
   }
 
-  .custom,
   .prefabs {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 5px;
-  }
-
-  .custom .inputs {
-    grid-column: 1 / 3;
-    display: flex;
-    gap: 5px;
-
-    .name {
-      flex-grow: 1;
-      min-width: 0;
-    }
-
-    .weight {
-      width: 8ch;
-    }
   }
 
   .prefabs .prefab {
