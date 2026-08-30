@@ -1,6 +1,6 @@
-import { Bars, Movement, Skills } from "$lib/rpg_new/config";
-import { NumberField } from "$lib/rpg_new/infra/types.svelte";
-import { Species } from "$lib/rpg_new/infra/species/species.svelte";
+import { Bars, Movement, Skills } from "$lib/rpg/config";
+import { NumberField } from "$lib/rpg/infra/types.svelte";
+import { Species } from "$lib/rpg/infra/species/species.svelte";
 import { healthField, sanityField } from "./defaults";
 
 export class SolverDrone extends Species {

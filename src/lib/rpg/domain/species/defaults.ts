@@ -1,7 +1,7 @@
-import { MAX_ATTR_VALUE } from "$lib/rpg_new/config";
-import { Skills } from "$lib/rpg_new/config/skills";
-import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
-import { NumberField } from "$lib/rpg_new/infra/types.svelte";
+import { MAX_ATTR_VALUE } from "$lib/rpg/config";
+import { Skills } from "$lib/rpg/config/skills";
+import type { Species } from "$lib/rpg/infra/species/species.svelte";
+import { NumberField } from "$lib/rpg/infra/types.svelte";
 
 export const DEFAULT_SKILLS: Skills[] = [
   Skills.vigor,

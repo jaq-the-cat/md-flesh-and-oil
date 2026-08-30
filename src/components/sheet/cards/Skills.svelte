@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { SkillModifiers, Skills } from "$lib/rpg_new/config";
-  import { enumValues } from "$lib/rpg_new/helpers";
-  import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
+  import { SkillModifiers, Skills } from "$lib/rpg/config";
+  import { enumValues } from "$lib/rpg/helpers";
+  import type { Species } from "$lib/rpg/infra/species/species.svelte";
   import { localization } from "$i18n";
   import { fields } from "../fields";
   import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";
@@ -15,7 +15,7 @@
   let skills = $derived(fields(Skills, species.skills, localization().skills));
   let counts = $derived(
     [SkillModifiers.proficient, SkillModifiers.expert].map((modifier) => ({
-      label: localization().modifiers[modifier],
+      label: localization().modifiers.plural[modifier],
       total: skills.filter((field) => field.value === modifier).length,
     })),
   );
@@ -45,7 +45,7 @@
       <span class=skillValue>{Math.floor(species.getSkillBonus(field.key))}</span>
       <select bind:value={species.skills[field.key]}>
         {#each modifiers as modifier}
-          <option value={modifier}>{localization().modifierCodes[modifier]}</option>
+          <option value={modifier}>{localization().modifiers.codes[modifier]}</option>
         {/each}
       </select>
     {/each}

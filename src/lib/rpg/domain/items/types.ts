@@ -1,4 +1,4 @@
-import { Skills } from "$lib/rpg_new/config";
+import { Skills } from "$lib/rpg/config";
 
 export type Slot = "left_hand" | "right_hand" | "left_shoulder" | "right_shoulder" | "front" | "back";
 

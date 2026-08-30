@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Skills } from "$lib/rpg_new/config";
-  import { itemWeight, type Item, type ItemTemplate } from "$lib/rpg_new/domain/items/types";
+  import { Skills } from "$lib/rpg/config";
+  import { itemWeight, type Item, type ItemTemplate } from "$lib/rpg/domain/items/types";
   import { localization } from "$i18n";
 
   // Templates render read-only; a real item in the sheet can have its liquid level adjusted.

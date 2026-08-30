@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Ability } from "$lib/rpg_new/domain/abilities/types";
+  import type { Ability } from "$lib/rpg/domain/abilities/types";
   import { localization } from "$i18n";
   import AbilityDetails from "./AbilityDetails.svelte";
 

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { localization } from "$i18n";
-  import { SPECIES } from "$lib/rpg_new/domain/species/registry";
-  import { Species } from "$lib/rpg_new/infra/species/species.svelte";
+  import { SPECIES } from "$lib/rpg/domain/species/registry";
+  import { Species } from "$lib/rpg/infra/species/species.svelte";
   import About from "./cards/About.svelte";
   import Bars from "./cards/Bars.svelte";
   import Equipment from "./cards/Equipment.svelte";
-  import Innate from "./cards/Innate.svelte";
+  import Abilities from "./cards/Abilities.svelte";
   import Movement from "./cards/Movement.svelte";
   import Skills from "./cards/Skills.svelte";
   import Attributes from "./cards/Attributes.svelte";
@@ -44,7 +44,7 @@
   <Skills {species} />
   <Bars {species} />
   <Movement {species} />
-  <Innate speciesId={selected} />
+  <Abilities speciesId={selected} />
   <Equipment />
 </main>
 
@@ -62,7 +62,7 @@
     grid-template-areas:
       "species species   movement  bars     "
       "about   about     attributes     skills   "
-      "innate  equipment equipment equipment";
+      "abilities  equipment equipment equipment";
   }
 
   @media (max-width: 1720px) {
@@ -70,7 +70,7 @@
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-areas:
         "species   bars      movement"
-        "species   innate    movement"
+        "species   abilities    movement"
         "about     attributes     skills  "
         "about     attributes     skills  "
         "equipment equipment equipment";
@@ -88,7 +88,7 @@
         "about     skills"
         "about     skills"
         "bars      movement"
-        "innate    movement"
+        "abilities    movement"
         "equipment equipment";
     }
   }
@@ -104,7 +104,7 @@
         "attributes"
         "skills"
         "bars"
-        "innate"
+        "abilities"
         "equipment";
     }
   }

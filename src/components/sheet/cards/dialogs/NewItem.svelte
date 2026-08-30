@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { Skills } from "$lib/rpg_new/config";
-  import { enumValues } from "$lib/rpg_new/helpers";
+  import { Skills } from "$lib/rpg/config";
   import {
     BLANK_ITEMS,
     ITEM_KINDS,
     type ContainerTemplate,
     type CustomKind,
     type ItemTemplate,
-  } from "$lib/rpg_new/domain/items/types";
+  } from "$lib/rpg/domain/items/types";
   import { localization } from "$i18n";
 
   let {
@@ -25,7 +24,7 @@
   let draft = $state<ItemTemplate>({ ...BLANK_ITEMS.plain });
   let carry = $state(10);
 
-  const hitSkills = enumValues<Skills>(Skills);
+  const hitSkills = Object.values(Skills);
 
   /** Swapping kinds keeps what the player already typed that the new kind also has. */
   function changeKind(next: CustomKind | typeof CONTAINER) {

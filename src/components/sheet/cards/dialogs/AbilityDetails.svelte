@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Attributes, Skills } from "$lib/rpg_new/config";
-  import type { Ability, AbilityTemplate } from "$lib/rpg_new/domain/abilities/types";
+  import { Attributes, Skills } from "$lib/rpg/config";
+  import type { Ability, AbilityTemplate } from "$lib/rpg/domain/abilities/types";
   import { localization } from "$i18n";
 
   let { ability }: { ability: Ability | AbilityTemplate } = $props();

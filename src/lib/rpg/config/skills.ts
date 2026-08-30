@@ -1,26 +1,28 @@
+import { names } from "$lib/rpg/helpers";
 import { Attributes } from "./attributes";
 
-export enum Skills {
-  vigor,
-  athletics,
-  stealth,
-  finesse,
-  firearms,
-  persuasion,
-  intimidation,
-  insight,
-  investigation,
-  knowledge,
-  technology,
-  wit,
-  melee,
-  explosives,
-  medicine,
-  mechanics,
-  willpower,
-  flying,
-  absolute_solver,
-}
+export const Skills = names(
+  "vigor",
+  "athletics",
+  "stealth",
+  "finesse",
+  "firearms",
+  "persuasion",
+  "intimidation",
+  "insight",
+  "investigation",
+  "knowledge",
+  "technology",
+  "wit",
+  "melee",
+  "explosives",
+  "medicine",
+  "mechanics",
+  "willpower",
+  "flying",
+  "absolute_solver",
+);
+export type Skills = keyof typeof Skills;
 
 export enum SkillModifiers {
   average = 0,

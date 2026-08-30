@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { WorkerDrone } from "$lib/rpg_new/domain/species/worker_drone";
-  import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
+  import { WorkerDrone } from "$lib/rpg/domain/species/worker_drone";
+  import type { Species } from "$lib/rpg/infra/species/species.svelte";
   import Sheet from "../components/sheet/Sheet.svelte";
 
   // Saving is deliberately absent: persistence is reworked alongside the new architecture.

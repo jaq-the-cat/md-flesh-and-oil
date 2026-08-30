@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Container, Item } from "$lib/rpg_new/domain/items/types";
+  import type { Container, Item } from "$lib/rpg/domain/items/types";
   import { localization } from "$i18n";
   import ItemDetails from "./ItemDetails.svelte";
 

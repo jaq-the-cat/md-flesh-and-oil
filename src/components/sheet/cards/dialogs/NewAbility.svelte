@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { Attributes, Skills } from "$lib/rpg_new/config";
-  import { BLANK_ABILITIES, ABILITY_KINDS, type AbilityKind, type AbilityTemplate } from "$lib/rpg_new/domain/abilities/types";
-  import { enumValues } from "$lib/rpg_new/helpers";
+  import { Attributes, Skills } from "$lib/rpg/config";
+  import { BLANK_ABILITIES, ABILITY_KINDS, type AbilityKind, type AbilityTemplate } from "$lib/rpg/domain/abilities/types";
   import { localization } from "$i18n";
 
   let {
@@ -14,8 +13,8 @@
 
   let draft = $state<AbilityTemplate>({ ...BLANK_ABILITIES.weapon });
 
-  const skills = enumValues<Skills>(Skills);
-  const attributes = enumValues<Attributes>(Attributes);
+  const skills = Object.values(Skills);
+  const attributes = Object.values(Attributes);
 
   /** Swapping kinds keeps the name the player already typed. */
   function changeKind(next: AbilityKind) {

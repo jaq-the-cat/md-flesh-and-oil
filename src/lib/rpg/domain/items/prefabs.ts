@@ -1,4 +1,4 @@
-import { Skills } from "$lib/rpg_new/config";
+import { Skills } from "$lib/rpg/config";
 import type { ContainerTemplate, ItemTemplate } from "./types";
 
 const melee = (name: string, weight: number, damage: string, info: string | null = null, twoHanded = false) =>

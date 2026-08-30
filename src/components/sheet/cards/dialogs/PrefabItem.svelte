@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { CONTAINER_PREFABS, ITEM_PREFABS } from "$lib/rpg_new/domain/items/prefabs";
-  import type { ContainerTemplate, ItemTemplate } from "$lib/rpg_new/domain/items/types";
+  import { CONTAINER_PREFABS, ITEM_PREFABS } from "$lib/rpg/domain/items/prefabs";
+  import type { ContainerTemplate, ItemTemplate } from "$lib/rpg/domain/items/types";
   import { localization } from "$i18n";
   import ItemDetails from "./ItemDetails.svelte";
 

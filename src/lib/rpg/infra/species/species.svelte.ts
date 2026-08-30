@@ -1,5 +1,6 @@
 import {
   About,
+  Alignment,
   Bars,
   Attributes,
   Skills,
@@ -10,9 +11,9 @@ import {
   MIN_SKILL_BONUS,
   STAT_SPAN,
   DEFAULT_ATTR_VALUE,
-} from "$lib/rpg_new/config";
-import { DEFAULT_SKILLS } from "$lib/rpg_new/domain/species/defaults";
-import { clamp, clone, enumValues } from "$lib/rpg_new/helpers";
+} from "$lib/rpg/config";
+import { DEFAULT_SKILLS } from "$lib/rpg/domain/species/defaults";
+import { clamp, clone } from "$lib/rpg/helpers";
 import { NumberField, type NumberLike } from "../types.svelte";
 
 export abstract class Species {
@@ -27,10 +28,11 @@ export abstract class Species {
     skills: Skills[];
     movement: Partial<Record<Movement, number>>;
   }) {
-    this.about = Object.fromEntries(enumValues(About).map((about) => [about, ""])) as Record<About, string>;
+    this.about = Object.fromEntries(Object.values(About).map((about) => [about, ""])) as Record<About, string>;
+    this.about[About.alignment] = Alignment.true_neutral;
     this.bars = clone(enabled.bars);
     this.attributes = Object.fromEntries(
-      enumValues(Attributes).map((stat) => [stat, new NumberField(0, MAX_ATTR_VALUE, DEFAULT_ATTR_VALUE)]),
+      Object.values(Attributes).map((stat) => [stat, new NumberField(0, MAX_ATTR_VALUE, DEFAULT_ATTR_VALUE)]),
     );
     this.skills = Object.fromEntries(
       [...DEFAULT_SKILLS, ...enabled.skills].map((skill) => [skill, SkillModifiers.average]),
@@ -57,21 +59,21 @@ export abstract class Species {
 
   /** Copies into `target` every value it shares with `source`, leaving the rest at its defaults. */
   static from<T extends Species>(target: T, source: Species): T {
-    for (const about of enumValues<About>(About)) {
+    for (const about of Object.values(About)) {
       target.about[about] = source.about[about];
     }
-    for (const stat of enumValues<Attributes>(Attributes)) {
+    for (const stat of Object.values(Attributes)) {
       copyField(target, target.attributes[stat], source.attributes[stat]);
     }
-    for (const skill of enumValues<Skills>(Skills)) {
+    for (const skill of Object.values(Skills)) {
       const modifier = source.skills[skill];
       if (modifier != null && target.skills[skill] != null) target.skills[skill] = modifier;
     }
     // Bars and movement come last: their maximums are derived from the attributes and skills above.
-    for (const bar of enumValues<Bars>(Bars)) {
+    for (const bar of Object.values(Bars)) {
       copyField(target, target.bars[bar], source.bars[bar]);
     }
-    for (const movement of enumValues<Movement>(Movement)) {
+    for (const movement of Object.values(Movement)) {
       copyField(target, target.movement[movement], source.movement[movement]);
     }
     return target;

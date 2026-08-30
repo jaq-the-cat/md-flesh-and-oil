@@ -1,4 +1,4 @@
-import { Skills } from "$lib/rpg_new/config";
+import { Skills } from "$lib/rpg/config";
 import type { SPECIES } from "../species/registry";
 import type { AbilityTemplate } from "./types";
 

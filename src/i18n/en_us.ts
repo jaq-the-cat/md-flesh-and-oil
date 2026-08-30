@@ -1,7 +1,7 @@
-import { About, Attributes, Bars, Movement, SkillModifiers, Skills } from "$lib/rpg_new/config";
-import type { AbilityKind } from "$lib/rpg_new/domain/abilities/types";
-import type { ItemKind, Slot } from "$lib/rpg_new/domain/items/types";
-import type { SPECIES } from "$lib/rpg_new/domain/species/registry";
+import { About, Alignment, Attributes, Bars, Movement, SkillModifiers, Skills } from "$lib/rpg/config";
+import type { AbilityKind } from "$lib/rpg/domain/abilities/types";
+import type { ItemKind, Slot } from "$lib/rpg/domain/items/types";
+import type { SPECIES } from "$lib/rpg/domain/species/registry";
 
 export const en_us = {
   cards: {
@@ -9,11 +9,11 @@ export const en_us = {
     about: "About",
     attributes: "Attributes",
     skills: "Skills",
-    proficiencies: "Proficiencies",
+    proficiencies: "Proficiency & Expertise",
     bars: "Bars",
     movement: "Speed",
     equipment: "Equipment",
-    innate: "Innate",
+    abilities: "Abilities",
   },
 
   species: {
@@ -28,7 +28,20 @@ export const en_us = {
     [About.weight]: "Weight",
     [About.gender]: "Gender",
     [About.alignment]: "Alignment",
+    [About.biography]: "Biography",
   } satisfies Record<About, string>,
+
+  alignments: {
+    [Alignment.lawful_good]: "Lawful Good",
+    [Alignment.neutral_good]: "Neutral Good",
+    [Alignment.chaotic_good]: "Chaotic Good",
+    [Alignment.lawful_neutral]: "Lawful Neutral",
+    [Alignment.true_neutral]: "True Neutral",
+    [Alignment.chaotic_neutral]: "Chaotic Neutral",
+    [Alignment.lawful_evil]: "Lawful Evil",
+    [Alignment.neutral_evil]: "Neutral Evil",
+    [Alignment.chaotic_evil]: "Chaotic Evil",
+  } satisfies Record<Alignment, string>,
 
   attributes: {
     [Attributes.vitality]: "Vitality",
@@ -71,17 +84,22 @@ export const en_us = {
   } satisfies Record<Skills, string>,
 
   modifiers: {
-    [SkillModifiers.average]: "Average",
-    [SkillModifiers.proficient]: "Proficient",
-    [SkillModifiers.expert]: "Expert",
-  } satisfies Record<SkillModifiers, string>,
-
-  /** The one-character codes shown in the skill selects. */
-  modifierCodes: {
-    [SkillModifiers.average]: " ",
-    [SkillModifiers.proficient]: "P",
-    [SkillModifiers.expert]: "E",
-  } satisfies Record<SkillModifiers, string>,
+    single: {
+      [SkillModifiers.average]: "Average",
+      [SkillModifiers.proficient]: "Proficient",
+      [SkillModifiers.expert]: "Expert",
+    } satisfies Record<SkillModifiers, string>,
+    plural: {
+      [SkillModifiers.average]: "Averages",
+      [SkillModifiers.proficient]: "Proficiencies",
+      [SkillModifiers.expert]: "Expertises",
+    } satisfies Record<SkillModifiers, string>,
+    codes: {
+      [SkillModifiers.average]: " ",
+      [SkillModifiers.proficient]: "P",
+      [SkillModifiers.expert]: "E",
+    } satisfies Record<SkillModifiers, string>,
+  },
 
   movement: {
     [Movement.walking]: "Walk",

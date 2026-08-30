@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Bars } from "$lib/rpg_new/config";
-  import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
+  import { Bars } from "$lib/rpg/config";
+  import type { Species } from "$lib/rpg/infra/species/species.svelte";
   import NumberInput from "../NumberInput.svelte";
   import { localization } from "$i18n";
   import { fields } from "../fields";

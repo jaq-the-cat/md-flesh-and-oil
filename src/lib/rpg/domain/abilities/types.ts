@@ -1,4 +1,4 @@
-import { Attributes, Skills } from "$lib/rpg_new/config";
+import { Attributes, Skills } from "$lib/rpg/config";
 
 type Details =
   | { kind: "weapon"; hit: Skills; damage: string; range: number }

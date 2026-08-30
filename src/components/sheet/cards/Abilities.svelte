@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { ABILITY_PREFABS } from "$lib/rpg_new/domain/abilities/prefabs";
-  import { createAbility, type Ability, type AbilityTemplate } from "$lib/rpg_new/domain/abilities/types";
-  import type { SPECIES } from "$lib/rpg_new/domain/species/registry";
+  import { ABILITY_PREFABS } from "$lib/rpg/domain/abilities/prefabs";
+  import { createAbility, type Ability, type AbilityTemplate } from "$lib/rpg/domain/abilities/types";
+  import type { SPECIES } from "$lib/rpg/domain/species/registry";
   import { localization } from "$i18n";
   import InspectAbility from "./dialogs/InspectAbility.svelte";
   import NewAbility from "./dialogs/NewAbility.svelte";
@@ -40,15 +40,15 @@
   }
 </script>
 
-<div id="innate">
-  <h2 class="cardTitle">{localization().cards.innate}</h2>
+<div id="abilities">
+  <h2 class="cardTitle">{localization().cards.abilities}</h2>
 
   <div class="actions">
     <button onclick={() => (creating = true)}>{localization().ui.add_custom}</button>
     <button onclick={() => (picking = true)}>{localization().ui.add_prefab}</button>
   </div>
 
-  <div class="abilities">
+  <div class="abilityList">
     {#each abilities as ability (ability.id)}
       <button class="ability" onclick={() => (inspecting = ability)}>{ability.name}</button>
       <button class="delete" onclick={() => remove(ability)}>{localization().ui.delete}</button>
@@ -61,8 +61,8 @@
 <PrefabAbility bind:open={picking} {available} onAdd={addPrefab} />
 
 <style lang="scss">
-  #innate {
-    grid-area: innate;
+  #abilities {
+    grid-area: abilities;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -74,7 +74,7 @@
     gap: 5px;
   }
 
-  .abilities {
+  .abilityList {
     display: grid;
     grid-template-columns: auto min-content;
     gap: 5px;

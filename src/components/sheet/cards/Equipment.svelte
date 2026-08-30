@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { POCKETS } from "$lib/rpg_new/domain/items/prefabs";
+  import { POCKETS } from "$lib/rpg/domain/items/prefabs";
   import {
     containerWeight,
     createContainer,
@@ -11,13 +11,13 @@
     type Item,
     type ItemTemplate,
     type Slot,
-  } from "$lib/rpg_new/domain/items/types";
+  } from "$lib/rpg/domain/items/types";
   import { localization } from "$i18n";
   import InspectItem from "./dialogs/InspectItem.svelte";
   import NewItem from "./dialogs/NewItem.svelte";
   import PrefabItem from "./dialogs/PrefabItem.svelte";
 
-  // The inventory lives here until the species owns it, as planned in rpg_new/infra/PLAN.md.
+  // The inventory lives here until the species owns it, as planned in rpg/infra/PLAN.md.
   let containers = $state<Container[]>([createContainer(POCKETS)]);
   let selectedIndex = $state(0);
   let selected = $derived(containers[selectedIndex]);
