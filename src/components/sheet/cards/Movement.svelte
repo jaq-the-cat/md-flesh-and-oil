@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Bars } from "$lib/rpg_new/config";
+  import { Movement } from "$lib/rpg_new/config";
   import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
   import NumberInput from "../NumberInput.svelte";
   import { fields, label } from "../labels";
@@ -7,22 +7,21 @@
   let { species }: { species: Species } = $props();
 </script>
 
-<div id="bars">
-  <h2 class="cardTitle">{label("bars")}</h2>
+<div id="movement">
+  <h2 class="cardTitle">{label("movement")}</h2>
   <ul>
-    {#each fields(Bars, species.bars) as field (field.key)}
+    {#each fields(Movement, species.movement) as field (field.key)}
       <li>
         <span>{field.label}</span>
         <NumberInput {species} field={field.value} />
-        <span>/ {Math.floor(field.value.getMaxValue(species))}</span>
       </li>
     {/each}
   </ul>
 </div>
 
 <style lang="scss">
-  #bars {
-    grid-area: bars;
+  #movement {
+    grid-area: movement;
   }
 
   ul {
@@ -33,11 +32,8 @@
 
   li {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 5px;
-  }
-
-  li > :first-child {
-    flex-grow: 1;
   }
 </style>

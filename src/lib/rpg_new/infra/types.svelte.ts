@@ -1,7 +1,7 @@
 import type { Species } from "./species/species.svelte";
 
 export class NumberField<T extends Species = any> {
-  private value: number;
+  private value = $state(0);
 
   constructor(
     public readonly min: number,

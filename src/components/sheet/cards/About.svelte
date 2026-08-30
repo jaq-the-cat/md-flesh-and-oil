@@ -1,75 +1,43 @@
 <script lang="ts">
-  import { Character } from "$lib/rpg/infra/character.svelte";
+  import { About } from "$lib/rpg_new/config";
+  import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
+  import { fields, label } from "../labels";
   import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";
-  import About from "../../rulebook/snippets/about.svelte";
+  import AboutRulebook from "../../rulebook/snippets/about.svelte";
 
-  let { character = $bindable() as Character } = $props();
-  let aboutRb = $state(false);
+  let { species }: { species: Species } = $props();
+
+  let rulebook = $state(false);
 </script>
 
 <div id="about">
-  <RulebookSnippet title="About" bind:open={aboutRb}>
-    <About />
+  <RulebookSnippet title={label("about")} bind:open={rulebook}>
+    <AboutRulebook />
   </RulebookSnippet>
   <ul>
-    {#each Object.entries(character.about) as ss}
+    {#each fields(About, species.about) as field (field.key)}
       <li>
-        <span>{ss[0]}</span>
-        <input
-          bind:value={
-            () => character.about[ss[0]],
-            (v) => {
-              if (v.length < 50) character.about[ss[0]] = v ?? "";
-            }
-          }
-          onfocusout={() => character.upload("about", character.about)}
-          type="text"
-        />
+        <span>{field.label}</span>
+        <input type="text" maxlength="49" bind:value={species.about[field.key]} />
       </li>
     {/each}
   </ul>
-  <h2>Appearance</h2>
-  <textarea
-    class="appearance"
-    bind:value={character.appearance}
-    onfocusout={() => character.upload("appearance", character.appearance)}
-  ></textarea>
-  <h2>Biography</h2>
-  <textarea
-    class="bio"
-    bind:value={character.biography}
-    onfocusout={() => character.upload("biography", character.biography)}
-  ></textarea>
 </div>
 
 <style lang="scss">
   #about {
     grid-area: about;
+  }
+
+  ul {
     display: flex;
     flex-direction: column;
+    row-gap: 5px;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
     gap: 5px;
-
-    h2 {
-      margin: 0;
-    }
-
-    ul {
-      display: flex;
-      flex-direction: column;
-      row-gap: 5px;
-    }
-
-    li {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .appearance {
-      height: 5lh;
-    }
-
-    .bio {
-      flex-grow: 2;
-    }
   }
 </style>
