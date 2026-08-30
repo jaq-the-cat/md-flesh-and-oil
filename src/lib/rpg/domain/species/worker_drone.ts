@@ -8,8 +8,8 @@ export class WorkerDrone extends Species {
     super({
       bars: {
         [Bars.health]: healthField(40, 1.6),
-        [Bars.oil]: new NumberField(0, 100),
         [Bars.sanity]: sanityField(),
+        [Bars.oil]: new NumberField(0, 100),
       },
       skills: [],
       movement: {

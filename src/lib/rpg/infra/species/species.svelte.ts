@@ -73,9 +73,9 @@ export abstract class Species {
     for (const bar of Object.values(Bars)) {
       copyField(target, target.bars[bar], source.bars[bar]);
     }
-    for (const movement of Object.values(Movement)) {
-      copyField(target, target.movement[movement], source.movement[movement]);
-    }
+    // for (const movement of Object.values(Movement)) {
+    //   copyField(target, target.movement[movement], source.movement[movement]);
+    // }
     return target;
   }
 }

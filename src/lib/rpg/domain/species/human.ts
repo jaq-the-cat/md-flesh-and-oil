@@ -8,8 +8,8 @@ export class Human extends Species {
     super({
       bars: {
         [Bars.health]: healthField(25, 1.5),
-        [Bars.blood]: new NumberField(0, 100),
         [Bars.sanity]: sanityField(),
+        [Bars.blood]: new NumberField(0, 100),
       },
       skills: [],
       movement: {
