@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { AbilityTemplate } from "$lib/rpg_new/domain/abilities/types";
-  import { label } from "../../labels";
+  import { localization } from "$i18n";
   import AbilityDetails from "./AbilityDetails.svelte";
 
   let {
@@ -18,18 +18,18 @@
 
 {#if open}
   <div class="picker">
-    <h2 class="title">{label("add_prefab")}</h2>
+    <h2 class="title">{localization().ui.add_prefab}</h2>
 
     <div class="list">
       {#each available as prefab}
         <button class="prefab" onclick={() => (previewing = prefab)}>{prefab.name}</button>
         <button class="quickAdd" onclick={() => onAdd(prefab)}>+</button>
       {:else}
-        <p class="empty">{label("nothing_available")}</p>
+        <p class="empty">{localization().ui.nothing_available}</p>
       {/each}
     </div>
 
-    <button onclick={() => (open = false)}>{label("close")}</button>
+    <button onclick={() => (open = false)}>{localization().ui.close}</button>
   </div>
 {/if}
 
@@ -37,8 +37,8 @@
   <div class="preview">
     <h2 class="title">{previewing.name}</h2>
     <AbilityDetails ability={previewing} />
-    <button onclick={() => onAdd(previewing!)}>{label("add")}</button>
-    <button onclick={() => (previewing = null)}>{label("close")}</button>
+    <button onclick={() => onAdd(previewing!)}>{localization().ui.add}</button>
+    <button onclick={() => (previewing = null)}>{localization().ui.close}</button>
   </div>
 {/if}
 

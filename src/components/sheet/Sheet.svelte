@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { localization } from "$i18n";
   import { SPECIES } from "$lib/rpg_new/domain/species/registry";
   import { Species } from "$lib/rpg_new/infra/species/species.svelte";
-  import { label } from "./labels";
   import About from "./cards/About.svelte";
   import Bars from "./cards/Bars.svelte";
   import Equipment from "./cards/Equipment.svelte";
@@ -23,17 +23,19 @@
     species = Species.from(new Chosen(), species);
   }
 
+  const speciesIds = Object.keys(SPECIES) as (keyof typeof SPECIES)[];
+
   let rulebook = $state(false);
 </script>
 
 <main id="sheet">
   <div id="species">
-    <RulebookSnippet title={label("species")} bind:open={rulebook}>
+    <RulebookSnippet title={localization().cards.species} bind:open={rulebook}>
       <SpeciesRulebook />
     </RulebookSnippet>
     <select value={selected} onchange={(event) => change(event.currentTarget.value)}>
-      {#each Object.keys(SPECIES) as id}
-        <option value={id}>{label(id)}</option>
+      {#each speciesIds as id}
+        <option value={id}>{localization().species[id]}</option>
       {/each}
     </select>
   </div>

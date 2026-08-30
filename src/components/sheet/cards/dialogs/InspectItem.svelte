@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Container, Item } from "$lib/rpg_new/domain/items/types";
-  import { label } from "../../labels";
+  import { localization } from "$i18n";
   import ItemDetails from "./ItemDetails.svelte";
 
   let {
@@ -21,14 +21,14 @@
     <h2 class="title">{item.name}</h2>
     <ItemDetails {item} editable />
 
-    <h2>{label("transfer")}</h2>
+    <h2>{localization().ui.transfer}</h2>
     <select bind:value={targetIndex}>
       {#each containers as container, index}
         <option value={index}>{container.name}</option>
       {/each}
     </select>
-    <button onclick={() => moveItem(item!, containers[targetIndex])}>{label("transfer")}</button>
-    <button onclick={() => (item = null)}>{label("close")}</button>
+    <button onclick={() => moveItem(item!, containers[targetIndex])}>{localization().ui.transfer}</button>
+    <button onclick={() => (item = null)}>{localization().ui.close}</button>
   </div>
 {/if}
 

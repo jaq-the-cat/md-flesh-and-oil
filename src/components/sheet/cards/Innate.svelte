@@ -2,7 +2,7 @@
   import { ABILITY_PREFABS } from "$lib/rpg_new/domain/abilities/prefabs";
   import { createAbility, type Ability, type AbilityTemplate } from "$lib/rpg_new/domain/abilities/types";
   import type { SPECIES } from "$lib/rpg_new/domain/species/registry";
-  import { label } from "../labels";
+  import { localization } from "$i18n";
   import InspectAbility from "./dialogs/InspectAbility.svelte";
   import NewAbility from "./dialogs/NewAbility.svelte";
   import PrefabAbility from "./dialogs/PrefabAbility.svelte";
@@ -41,17 +41,17 @@
 </script>
 
 <div id="innate">
-  <h2 class="cardTitle">{label("innate")}</h2>
+  <h2 class="cardTitle">{localization().cards.innate}</h2>
 
   <div class="actions">
-    <button onclick={() => (creating = true)}>{label("add_custom")}</button>
-    <button onclick={() => (picking = true)}>{label("add_prefab")}</button>
+    <button onclick={() => (creating = true)}>{localization().ui.add_custom}</button>
+    <button onclick={() => (picking = true)}>{localization().ui.add_prefab}</button>
   </div>
 
   <div class="abilities">
     {#each abilities as ability (ability.id)}
       <button class="ability" onclick={() => (inspecting = ability)}>{ability.name}</button>
-      <button class="delete" onclick={() => remove(ability)}>{label("delete")}</button>
+      <button class="delete" onclick={() => remove(ability)}>{localization().ui.delete}</button>
     {/each}
   </div>
 </div>

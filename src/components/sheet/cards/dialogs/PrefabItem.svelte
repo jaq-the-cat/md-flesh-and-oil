@@ -1,7 +1,7 @@
 <script lang="ts">
   import { CONTAINER_PREFABS, ITEM_PREFABS } from "$lib/rpg_new/domain/items/prefabs";
   import type { ContainerTemplate, ItemTemplate } from "$lib/rpg_new/domain/items/types";
-  import { label } from "../../labels";
+  import { localization } from "$i18n";
   import ItemDetails from "./ItemDetails.svelte";
 
   let {
@@ -27,7 +27,7 @@
 
 {#if open}
   <div class="picker">
-    <h2 class="title">{label("add_prefab")}</h2>
+    <h2 class="title">{localization().ui.add_prefab}</h2>
 
     <div class="categories">
       {#each categories as name}
@@ -45,7 +45,7 @@
       {/each}
     </div>
 
-    <button onclick={() => (open = false)}>{label("close")}</button>
+    <button onclick={() => (open = false)}>{localization().ui.close}</button>
   </div>
 {/if}
 
@@ -54,14 +54,14 @@
     <h2 class="title">{previewing.name}</h2>
     {#if "carry" in previewing}
       <dl>
-        <dt>{label("carry")}</dt>
+        <dt>{localization().fields.carry}</dt>
         <dd>{previewing.carry}kg</dd>
       </dl>
     {:else}
       <ItemDetails item={previewing} />
     {/if}
-    <button onclick={() => onAdd(previewing!)}>{label("add")}</button>
-    <button onclick={() => (previewing = null)}>{label("close")}</button>
+    <button onclick={() => onAdd(previewing!)}>{localization().ui.add}</button>
+    <button onclick={() => (previewing = null)}>{localization().ui.close}</button>
   </div>
 {/if}
 

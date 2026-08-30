@@ -1,7 +1,8 @@
 <script lang="ts">
   import { About } from "$lib/rpg_new/config";
   import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
-  import { fields, label } from "../labels";
+  import { localization } from "$i18n";
+  import { fields } from "../fields";
   import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";
   import AboutRulebook from "../../rulebook/snippets/about.svelte";
 
@@ -11,11 +12,11 @@
 </script>
 
 <div id="about">
-  <RulebookSnippet title={label("about")} bind:open={rulebook}>
+  <RulebookSnippet title={localization().cards.about} bind:open={rulebook}>
     <AboutRulebook />
   </RulebookSnippet>
   <ul>
-    {#each fields(About, species.about) as field (field.key)}
+    {#each fields(About, species.about, localization().about) as field (field.key)}
       <li>
         <span>{field.label}</span>
         <input type="text" maxlength="49" bind:value={species.about[field.key]} />

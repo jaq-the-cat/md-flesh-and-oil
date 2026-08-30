@@ -12,7 +12,7 @@
     type ItemTemplate,
     type Slot,
   } from "$lib/rpg_new/domain/items/types";
-  import { label } from "../labels";
+  import { localization } from "$i18n";
   import InspectItem from "./dialogs/InspectItem.svelte";
   import NewItem from "./dialogs/NewItem.svelte";
   import PrefabItem from "./dialogs/PrefabItem.svelte";
@@ -77,14 +77,14 @@
 </script>
 
 <div id="equipment">
-  <h2 class="cardTitle">{label("equipment")}</h2>
+  <h2 class="cardTitle">{localization().cards.equipment}</h2>
 
   <div class="actions">
-    <button onclick={() => (creating = true)}>{label("add_custom")}</button>
-    <button onclick={() => (picking = true)}>{label("add_prefab")}</button>
+    <button onclick={() => (creating = true)}>{localization().ui.add_custom}</button>
+    <button onclick={() => (picking = true)}>{localization().ui.add_prefab}</button>
   </div>
 
-  <h2>{label("container")}</h2>
+  <h2>{localization().fields.container}</h2>
   <div class="containers">
     <select bind:value={selectedIndex}>
       {#each containers as container, index}
@@ -93,7 +93,7 @@
         </option>
       {/each}
     </select>
-    <button class="delete" onclick={removeSelectedContainer}>{label("delete")}</button>
+    <button class="delete" onclick={removeSelectedContainer}>{localization().ui.delete}</button>
   </div>
 
   <div class="items">
@@ -102,14 +102,14 @@
         <span>{item.name}</span>
         <span>{itemWeight(item)}kg</span>
       </button>
-      <button class="delete" onclick={() => removeItem(item)}>{label("delete")}</button>
+      <button class="delete" onclick={() => removeItem(item)}>{localization().ui.delete}</button>
     {/each}
   </div>
 
-  <h2>{label("equipped")}</h2>
+  <h2>{localization().ui.equipped}</h2>
   <div class="equipped">
     {#each SLOTS as slot}
-      <span>{label(slot)}</span>
+      <span>{localization().slots[slot]}</span>
       <select bind:value={equipped[slot]}>
         <option value={null}></option>
         {#each equippable as entry (entry.id)}

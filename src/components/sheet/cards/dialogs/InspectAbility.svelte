@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Ability } from "$lib/rpg_new/domain/abilities/types";
-  import { label } from "../../labels";
+  import { localization } from "$i18n";
   import AbilityDetails from "./AbilityDetails.svelte";
 
   let { ability = $bindable() }: { ability: Ability | null } = $props();
@@ -10,7 +10,7 @@
   <div class="inspect">
     <h2 class="title">{ability.name}</h2>
     <AbilityDetails {ability} />
-    <button onclick={() => (ability = null)}>{label("close")}</button>
+    <button onclick={() => (ability = null)}>{localization().ui.close}</button>
   </div>
 {/if}
 

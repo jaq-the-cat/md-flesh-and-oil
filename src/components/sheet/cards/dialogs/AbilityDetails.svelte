@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Attributes, Skills } from "$lib/rpg_new/config";
   import type { Ability, AbilityTemplate } from "$lib/rpg_new/domain/abilities/types";
-  import { label } from "../../labels";
+  import { localization } from "$i18n";
 
   let { ability }: { ability: Ability | AbilityTemplate } = $props();
 
@@ -10,21 +10,21 @@
 
 <dl>
   {#if ability.kind === "weapon"}
-    <dt>{label("hit")}</dt>
-    <dd>{label(Skills[ability.hit])}</dd>
-    <dt>{label("damage")}</dt>
+    <dt>{localization().fields.hit}</dt>
+    <dd>{localization().skills[ability.hit]}</dd>
+    <dt>{localization().fields.damage}</dt>
     <dd>{ability.damage}</dd>
-    <dt>{label("range")}</dt>
+    <dt>{localization().fields.range}</dt>
     <dd>{ability.range}m</dd>
   {:else if ability.kind === "attribute_modifier"}
-    <dt>{label(Attributes[ability.attribute])}</dt>
+    <dt>{localization().attributes[ability.attribute]}</dt>
     <dd>{signed(ability.amount)}</dd>
   {:else if ability.kind === "skill_modifier"}
-    <dt>{label(Skills[ability.skill])}</dt>
+    <dt>{localization().skills[ability.skill]}</dt>
     <dd>{signed(ability.amount)}</dd>
   {/if}
   {#if ability.info}
-    <dt>{label("info")}</dt>
+    <dt>{localization().fields.info}</dt>
     <dd class="info">{ability.info}</dd>
   {/if}
 </dl>

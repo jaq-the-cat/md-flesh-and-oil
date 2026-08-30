@@ -2,15 +2,16 @@
   import { Bars } from "$lib/rpg_new/config";
   import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
   import NumberInput from "../NumberInput.svelte";
-  import { fields, label } from "../labels";
+  import { localization } from "$i18n";
+  import { fields } from "../fields";
 
   let { species }: { species: Species } = $props();
 </script>
 
 <div id="bars">
-  <h2 class="cardTitle">{label("bars")}</h2>
+  <h2 class="cardTitle">{localization().cards.bars}</h2>
   <ul>
-    {#each fields(Bars, species.bars) as field (field.key)}
+    {#each fields(Bars, species.bars, localization().bars) as field (field.key)}
       <li>
         <span>{field.label}</span>
         <NumberInput {species} field={field.value} />

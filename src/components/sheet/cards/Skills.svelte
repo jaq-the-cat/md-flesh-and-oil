@@ -2,7 +2,8 @@
   import { SkillModifiers, Skills } from "$lib/rpg_new/config";
   import { enumValues } from "$lib/rpg_new/helpers";
   import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
-  import { fields, label } from "../labels";
+  import { localization } from "$i18n";
+  import { fields } from "../fields";
   import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";
   import SkillsSnippet from "../../rulebook/snippets/general/skills.svelte";
   import ProficiencySnippet from "../../rulebook/snippets/general/proficiency.svelte";
@@ -11,10 +12,10 @@
 
   const modifiers = enumValues<SkillModifiers>(SkillModifiers);
 
-  let skills = $derived(fields(Skills, species.skills));
+  let skills = $derived(fields(Skills, species.skills, localization().skills));
   let counts = $derived(
     [SkillModifiers.proficient, SkillModifiers.expert].map((modifier) => ({
-      label: label(SkillModifiers[modifier]),
+      label: localization().modifiers[modifier],
       total: skills.filter((field) => field.value === modifier).length,
     })),
   );
@@ -24,10 +25,10 @@
 </script>
 
 <div id="skills">
-  <RulebookSnippet title={label("skills")} bind:open={skillsRulebook}>
+  <RulebookSnippet title={localization().cards.skills} bind:open={skillsRulebook}>
     <SkillsSnippet />
   </RulebookSnippet>
-  <RulebookSnippet title={label("proficiencies")} bind:open={proficiencyRulebook}>
+  <RulebookSnippet title={localization().cards.proficiencies} bind:open={proficiencyRulebook}>
     <ProficiencySnippet />
   </RulebookSnippet>
   <div class="counts">
@@ -44,7 +45,7 @@
       <span class=skillValue>{Math.floor(species.getSkillBonus(field.key))}</span>
       <select bind:value={species.skills[field.key]}>
         {#each modifiers as modifier}
-          <option value={modifier}>{label(`${SkillModifiers[modifier]}_short`)}</option>
+          <option value={modifier}>{localization().modifierCodes[modifier]}</option>
         {/each}
       </select>
     {/each}

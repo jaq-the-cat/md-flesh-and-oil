@@ -2,7 +2,7 @@
   import { Attributes, Skills } from "$lib/rpg_new/config";
   import { BLANK_ABILITIES, ABILITY_KINDS, type AbilityKind, type AbilityTemplate } from "$lib/rpg_new/domain/abilities/types";
   import { enumValues } from "$lib/rpg_new/helpers";
-  import { label } from "../../labels";
+  import { localization } from "$i18n";
 
   let {
     open = $bindable(),
@@ -32,77 +32,77 @@
 
 {#if open}
   <div class="newAbility">
-    <h2 class="title">{label("add_custom")}</h2>
+    <h2 class="title">{localization().ui.add_custom}</h2>
 
     <label>
-      {label("kind")}
+      {localization().fields.kind}
       <select value={draft.kind} onchange={(event) => changeKind(event.currentTarget.value as AbilityKind)}>
         {#each ABILITY_KINDS as kind}
-          <option value={kind}>{label(kind)}</option>
+          <option value={kind}>{localization().abilityKinds[kind]}</option>
         {/each}
       </select>
     </label>
 
     <label>
-      {label("name")}
+      {localization().fields.name}
       <input type="text" bind:value={draft.name} />
     </label>
 
     {#if draft.kind === "weapon"}
       {@const weapon = draft}
       <label>
-        {label("hit")}
+        {localization().fields.hit}
         <select bind:value={weapon.hit}>
           {#each skills as skill}
-            <option value={skill}>{label(Skills[skill])}</option>
+            <option value={skill}>{localization().skills[skill]}</option>
           {/each}
         </select>
       </label>
       <label>
-        {label("damage")}
+        {localization().fields.damage}
         <input type="text" bind:value={weapon.damage} />
       </label>
       <label>
-        {label("range")}
+        {localization().fields.range}
         <input type="number" min="0" bind:value={weapon.range} />
       </label>
     {:else if draft.kind === "attribute_modifier"}
       {@const modifier = draft}
       <label>
-        {label("attributes")}
+        {localization().fields.attribute}
         <select bind:value={modifier.attribute}>
           {#each attributes as attribute}
-            <option value={attribute}>{label(Attributes[attribute])}</option>
+            <option value={attribute}>{localization().attributes[attribute]}</option>
           {/each}
         </select>
       </label>
       <label>
-        {label("amount")}
+        {localization().fields.amount}
         <input type="number" bind:value={modifier.amount} />
       </label>
     {:else if draft.kind === "skill_modifier"}
       {@const modifier = draft}
       <label>
-        {label("skill")}
+        {localization().fields.skill}
         <select bind:value={modifier.skill}>
           {#each skills as skill}
-            <option value={skill}>{label(Skills[skill])}</option>
+            <option value={skill}>{localization().skills[skill]}</option>
           {/each}
         </select>
       </label>
       <label>
-        {label("amount")}
+        {localization().fields.amount}
         <input type="number" bind:value={modifier.amount} />
       </label>
     {/if}
 
     <label class="stacked">
-      {label("info")}
+      {localization().fields.info}
       <textarea bind:value={draft.info}></textarea>
     </label>
 
-    <button onclick={create}>{label("add")}</button>
-    <button onclick={() => (open = false)}>{label("cancel")}</button>
+    <button onclick={create}>{localization().ui.add}</button>
+    <button onclick={() => (open = false)}>{localization().ui.cancel}</button>
   </div>
 {/if}
 
