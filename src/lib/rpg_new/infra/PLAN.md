@@ -1,6 +1,0 @@
-- Inventory
-  - all species have an inventory, with a base Carry Weight calculated from each one. There is a global list of
-  - slots available and each species defines which ones it will have enabled. They can also define a base set of
-  - containers to use.
-- Abilities
-  - Each species can define a list of custom abilities available. players can choose to enable/disable them.

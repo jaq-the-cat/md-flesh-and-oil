@@ -1,0 +1,9 @@
+- Inventory
+  - all species have an inventory, with a base Carry Weight calculated from each one. There is a global list of
+  - slots available and each species defines which ones it will have enabled. All species start with a base container, their Pockets, with a carry weight dependant on their Strength.
+- Abilities
+  - Each species can define a list of custom abilities available. Players can choose to enable/disable them.
+  - Abilities can be either a Weapon, an Attribute/Skill Modifier or a simple text description. Players
+  - can create custom abilities in the Abilities Card in their character sheet. Disabling an ability deletes it
+  - from the list, but it can be re-added around the same place where custom abilities are created (players
+  - can pick from a list of default abilities or make a custom one).
