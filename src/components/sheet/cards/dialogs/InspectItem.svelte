@@ -1,200 +1,153 @@
 <script lang="ts">
-  import type { Character } from "$lib/rpg/infra/character.svelte";
-  import type {
-    AmmoItem,
-    Container,
-    Healing,
-    Item,
-    LiquidContainer,
-    MeleeWeapon,
-    RangedWeapon,
-    Throwable,
-  } from "$lib/rpg/infra/items.svelte";
+  import { itemWeight, type Container, type Item } from "$lib/rpg_new/domain/items/types";
+  import { label } from "../../labels";
 
   let {
-    itemInspect = $bindable(),
-    containers = $bindable(),
-    character = $bindable(),
-    transferItem,
+    item = $bindable(),
+    containers,
+    moveItem,
   }: {
-    itemInspect:
-      | Item
-      | MeleeWeapon
-      | RangedWeapon
-      | AmmoItem
-      | Throwable
-      | LiquidContainer
-      | Healing
-      | null;
+    item: Item | null;
     containers: Container[];
-    character: Character;
-    transferItem: (item: Item, containerIndex: number | null) => void;
+    moveItem: (item: Item, target: Container) => void;
   } = $props();
 
-  let transferToContainer = $state(0);
+  let targetIndex = $state(0);
 </script>
 
-{#if itemInspect}
-  <div
-    class="modal inspect"
-    style={itemInspect === null ? "display: none" : ""}
-  >
-    <span class="itemToInspect"
-      >{itemInspect}
-      {#if itemInspect?.weight}
-        <span>[{itemInspect!.weight}kg]</span>
-      {/if}</span
-    >
-    {#if itemInspect?.type === "melee"}
-      <h2>Damage</h2>
-      <span>{(itemInspect as MeleeWeapon).damage}</span>
-      {#if (itemInspect as MeleeWeapon).info}
-        <h2>Difficulty</h2>
-        <span>{(itemInspect as MeleeWeapon).info}</span>
+{#if item}
+  <div class="inspect">
+    <h2 class="title">{item.name}</h2>
+    <dl>
+      <dt>{label("weight")}</dt>
+      <dd>{itemWeight(item)}kg</dd>
+
+      {#if item.kind === "melee"}
+        <dt>{label("damage")}</dt>
+        <dd>{item.damage}</dd>
+        {#if item.twoHanded}
+          <dt>{label("two_handed")}</dt>
+          <dd>{label("yes")}</dd>
+        {/if}
+        {#if item.info}
+          <dt>{label("info")}</dt>
+          <dd>{item.info}</dd>
+        {/if}
+      {:else if item.kind === "ranged"}
+        <dt>{label("hit")}</dt>
+        <dd>{item.hit}</dd>
+        <dt>{label("damage")}</dt>
+        <dd>{item.damage}</dd>
+        <dt>{label("range")}</dt>
+        <dd>{item.range}m</dd>
+        <dt>{label("rate")}</dt>
+        <dd>{item.rate}</dd>
+        <dt>{label("magazine")}</dt>
+        <dd>{item.magazine}</dd>
+        <dt>{label("reload")}</dt>
+        <dd>{item.reloadTurns} {label(item.reloadTurns === 1 ? "turn" : "turns")}</dd>
+        {#if item.info}
+          <dt>{label("info")}</dt>
+          <dd>{item.info}</dd>
+        {/if}
+      {:else if item.kind === "throwable"}
+        <dt>{label("damage")}</dt>
+        <dd>{item.damage}</dd>
+        <dt>{label("range")}</dt>
+        <dd>{item.range}</dd>
+        {#if item.info}
+          <dt>{label("info")}</dt>
+          <dd>{item.info}</dd>
+        {/if}
+      {:else if item.kind === "healing"}
+        <dt>{label("heal")}</dt>
+        <dd>{item.heal}</dd>
+        <dt>{label("works_on")}</dt>
+        <dd>{label(item.worksOn)}</dd>
+        {#if item.revive}
+          <dt>{label("revive")}</dt>
+          <dd>{item.revive}</dd>
+        {/if}
+        {#if item.requirements}
+          <dt>{label("requirements")}</dt>
+          <dd>{item.requirements}</dd>
+        {/if}
+      {:else if item.kind === "liquid"}
+        {@const liquid = item}
+        <dt>{label("current")}</dt>
+        <dd class="editable">
+          <input type="number" min="0" max={liquid.capacity} step="0.1" bind:value={liquid.current} />
+          / {liquid.capacity}
+        </dd>
       {/if}
-    {:else if "range" in itemInspect!}
-      <h2>Hit</h2>
-      <span>{itemInspect.hit ?? ""}</span>
-      <h2>Damage</h2>
-      <span>{itemInspect.damage}</span>
-      {#if "ammo" in itemInspect && itemInspect.ammo}
-        <h2>Ammo</h2>
-        <span class="inputs">
-          <input
-            min="0"
-            max={itemInspect.ammo.current}
-            type="number"
-            bind:value={itemInspect.ammo.current}
-            onfocusout={() => character.upload("containers", containers)}
-          />
-          /
-          <span>{itemInspect.ammo.capacity}</span>
-        </span>
-        <h2>Reload</h2>
-        <span
-          >{itemInspect.ammo.reloadTurns}
-          {itemInspect.ammo.reloadTurns != 1 ? "Turns" : "Turn"}</span
-        >
-        <button
-          onclick={() => {
-            const result = (itemInspect as RangedWeapon).tryReload(
-              containers,
-              itemInspect as RangedWeapon
-            );
-            if (!result) {
-              alert("No Ammo :(");
-            } else {
-              character.upload("containers", containers);
-            }
-          }}>Reload</button
-        >
-      {/if}
-      <h2>Stats</h2>
-      <span>{itemInspect.range} Range</span>
-      {#if "rate" in itemInspect && itemInspect.rate}
-        <span>{itemInspect.rate} Rate</span>
-      {/if}
-      {#if itemInspect.info}
-        <span>{itemInspect.info}</span>
-      {/if}
-    {:else if "heal" in itemInspect!}
-      <h2>Heal</h2>
-      <span>{itemInspect.heal ?? ""}</span>
-      <h2>Works On</h2>
-      <span>{itemInspect.worksOn ?? ""}</span>
-      {#if itemInspect.revive}
-        <h2>Revive</h2>
-        <span>{itemInspect.revive}</span>
-      {/if}
-      {#if itemInspect.requirements}
-        <h2>Requirements</h2>
-        <span>{itemInspect.requirements}</span>
-      {/if}
-    {:else if "current" in itemInspect!}
-      <h2>Current</h2>
-      <input
-        type="number"
-        bind:value={
-          () => (itemInspect as LiquidContainer).current,
-          (v) => {
-            if (v < 0 || v > (itemInspect as LiquidContainer).capacity) return;
-            (itemInspect as LiquidContainer).current = v;
-          }
-        }
-        onfocusout={() => character.upload("containers", containers)}
-        step={itemInspect.type === "liquid" ? 0.1 : 1}
-        min="0"
-        max={itemInspect.capacity}
-      />
-      <h2>Capacity</h2>
-      <span>{itemInspect.capacity ?? ""}</span>
-    {/if}
-    <h2>Transfer</h2>
-    <select bind:value={transferToContainer}>
-      {#each containers as container, i}
-        <option value={i}>{container}</option>
+    </dl>
+
+    <h2>{label("transfer")}</h2>
+    <select bind:value={targetIndex}>
+      {#each containers as container, index}
+        <option value={index}>{container.name}</option>
       {/each}
     </select>
-    <button
-      class="transferBtn"
-      onclick={() => transferItem(itemInspect!, transferToContainer)}
-      >Transfer</button
-    >
-    <button class="cancel" onclick={() => (itemInspect = null)}>Close</button>
+    <button onclick={() => moveItem(item!, containers[targetIndex])}>{label("transfer")}</button>
+    <button onclick={() => (item = null)}>{label("close")}</button>
   </div>
 {/if}
 
 <style lang="scss">
-  .modal {
-    grid-area: equipment;
-    width: 75%;
-    margin-top: 5rem;
-    align-self: flex-start;
-    justify-self: center;
-    opacity: 95%;
-    background-color: #080e00;
-    padding: 20px;
+  .inspect {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 50ch;
+    max-width: min(40%, 40ch);
+    background-color: #070c01;
+
+    padding: 30px;
     border: 1px solid #9fe644;
     box-shadow: 2px 2px 4px 0 #9fe644;
     display: flex;
     flex-direction: column;
+    row-gap: 10px;
+  }
 
-    row-gap: 5px;
+  h2 {
+    margin: 0;
+  }
 
-    * {
-      margin: 0;
-    }
+  .title {
+    font-size: 2rem;
+    text-align: center;
+  }
 
-    .itemToInspect {
-      font-size: 2rem;
-      text-align: center;
-    }
+  dl {
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: baseline;
+    margin: 0;
+    gap: 5px 15px;
+  }
 
-    select {
-      font-size: 1.5rem;
-      text-align: center;
-      padding: 10px 0;
-    }
+  dt {
+    font-size: 0.9em;
+    opacity: 0.8;
+  }
 
-    button {
-      display: block;
-      width: 100%;
-      padding: 10px 0;
-    }
+  dd {
+    margin: 0;
+  }
 
-    .inputs {
-      display: flex;
-      justify-content: stretch;
-      align-items: center;
-      column-gap: 10px;
-    }
+  .editable {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
     input {
-      // max-width: 10ch;
-      flex-grow: 2;
+      width: 8ch;
     }
+  }
 
-    button.transferBtn {
-      margin-top: auto;
-    }
+  button {
+    padding: 10px 0;
   }
 </style>
