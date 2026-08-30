@@ -4,26 +4,47 @@
   import type { Species } from "$lib/rpg_new/infra/species/species.svelte";
   import { fields, label } from "../labels";
   import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";
-  import Proficiency from "../../rulebook/snippets/general/proficiency.svelte";
+  import SkillsSnippet from "../../rulebook/snippets/general/skills.svelte";
+  import ProficiencySnippet from "../../rulebook/snippets/general/proficiency.svelte";
 
   let { species }: { species: Species } = $props();
 
   const modifiers = enumValues<SkillModifiers>(SkillModifiers);
 
-  let rulebook = $state(false);
+  let skills = $derived(fields(Skills, species.skills));
+  let counts = $derived(
+    [SkillModifiers.proficient, SkillModifiers.expert].map((modifier) => ({
+      label: label(SkillModifiers[modifier]),
+      total: skills.filter((field) => field.value === modifier).length,
+    })),
+  );
+
+  let skillsRulebook = $state(false);
+  let proficiencyRulebook = $state(false);
 </script>
 
 <div id="skills">
-  <RulebookSnippet title={label("skills")} bind:open={rulebook}>
-    <Proficiency />
+  <RulebookSnippet title={label("skills")} bind:open={skillsRulebook}>
+    <SkillsSnippet />
   </RulebookSnippet>
+  <RulebookSnippet title={label("proficiencies")} bind:open={proficiencyRulebook}>
+    <ProficiencySnippet />
+  </RulebookSnippet>
+  <div class="counts">
+    {#each counts as count}
+      <p>
+        <span>{count.label}</span>
+        <span>{count.total}</span>
+      </p>
+    {/each}
+  </div>
   <section class="skillList">
-    {#each fields(Skills, species.skills) as field (field.key)}
+    {#each skills as field (field.key)}
       <span>{field.label}</span>
       <span class=skillValue>{Math.floor(species.getSkillBonus(field.key))}</span>
       <select bind:value={species.skills[field.key]}>
         {#each modifiers as modifier}
-          <option value={modifier}>{label(SkillModifiers[modifier])}</option>
+          <option value={modifier}>{label(`${SkillModifiers[modifier]}_short`)}</option>
         {/each}
       </select>
     {/each}
@@ -33,6 +54,12 @@
 <style lang="scss">
   #skills {
     grid-area: skills;
+  }
+
+  .counts p {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
   }
 
   .skillList {

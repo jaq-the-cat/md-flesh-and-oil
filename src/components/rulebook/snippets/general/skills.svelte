@@ -1,24 +1,25 @@
 <p>
-  Skills have the same roll bonus as the parent Stat (from -4 to +6), but can be
-  further modified by having Proficiency, Expertise or something else affecting
-  that check, such as Advantage.
+  Skills have a scaling bonus dependent on their parent stats. Most skills in the game have multiple stats
+  affecting them, and their average is taken to calculate the skill bonus. You can further modify skill
+  bonuses with Proficiency (+12) and Expertise (+25) modifiers.
 </p>
-<p>Your Passive Perception is 10 + your Perception modifier.</p>
-<p>Your Passive Dodge is 10 + your Agility modifier.</p>
+<p>The minimum possible value for a skill bonus is -50. The maximum possible value is +75</p>
 <ul>
-  <li>Athletics (Vitality)</li>
-  <li>Acrobatics (Agility)</li>
-  <li>Stealth (Agility)</li>
-  <li>Flying (Agility)</li>
-  <li>Melee (Strength or Dexterity)</li>
-  <li>Firearms (Dexterity)</li>
-  <li>Persuasion (Charisma)</li>
-  <li>Intimidation (Charisma)</li>
-  <li>Investigation (Perception)</li>
-  <li>Knowledge (Intelligence)</li>
-  <li>Technology (Intelligence)</li>
-  <li>Explosives (Intelligence then Dexterity)</li>
-  <li>Medicine (Intelligence then Dexterity)</li>
-  <li>Mechanics (Intelligence then Dexterity)</li>
-  <li>Willpower (lowest of Strength, Charisma or Intelligence)</li>
+  <li>Vigor</li>
+  <li>Athletics</li>
+  <li>Stealth</li>
+  <li>Finesse</li>
+  <li>Firearms</li>
+  <li>Persuasion</li>
+  <li>Intimidation</li>
+  <li>Insight</li>
+  <li>Investigation</li>
+  <li>Knowledge</li>
+  <li>Technology</li>
+  <li>Wit</li>
+  <li>Melee</li>
+  <li>Explosives</li>
+  <li>Medicine</li>
+  <li>Mechanics</li>
+  <li>Willpower</li>
 </ul>

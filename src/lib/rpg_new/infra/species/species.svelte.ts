@@ -7,6 +7,9 @@ import {
   Movement,
   MAX_ATTR_VALUE,
   SkillStats,
+  MIN_SKILL_BONUS,
+  STAT_SPAN,
+  DEFAULT_ATTR_VALUE,
 } from "$lib/rpg_new/config";
 import { DEFAULT_SKILLS } from "$lib/rpg_new/domain/species/defaults";
 import { clamp, clone, enumValues } from "$lib/rpg_new/helpers";
@@ -22,18 +25,18 @@ export abstract class Species {
   constructor(enabled: {
     bars: Partial<Record<Bars, NumberField<Species>>>;
     skills: Skills[];
-    movement: Partial<Record<Movement, NumberLike<Species>>>;
+    movement: Partial<Record<Movement, number>>;
   }) {
     this.about = Object.fromEntries(enumValues(About).map((about) => [about, ""])) as Record<About, string>;
     this.bars = clone(enabled.bars);
     this.stats = Object.fromEntries(
-      enumValues(Attributes).map((stat) => [stat, new NumberField(0, MAX_ATTR_VALUE)]),
+      enumValues(Attributes).map((stat) => [stat, new NumberField(0, MAX_ATTR_VALUE, DEFAULT_ATTR_VALUE)]),
     );
     this.skills = Object.fromEntries(
       [...DEFAULT_SKILLS, ...enabled.skills].map((skill) => [skill, SkillModifiers.average]),
     );
     this.movement = Object.fromEntries(
-      Object.entries(enabled.movement).map(([key, max]) => [key, new NumberField(0, max)]),
+      Object.entries(enabled.movement).map(([key, value]) => [key, new NumberField(0, value * 2, value)]),
     );
   }
 
@@ -48,7 +51,8 @@ export abstract class Species {
     }
     if (values.length === 0) return 0;
     const statAverage = values.reduce((a, b) => a + b, 0) / values.length;
-    return Math.sqrt(statAverage / MAX_ATTR_VALUE) * MAX_ATTR_VALUE + skillModifier - MAX_ATTR_VALUE / 2;
+    const normalized = Math.sqrt(statAverage / MAX_ATTR_VALUE);
+    return MIN_SKILL_BONUS + normalized * STAT_SPAN + skillModifier;
   }
 
   /** Copies into `target` every value it shares with `source`, leaving the rest at its defaults. */

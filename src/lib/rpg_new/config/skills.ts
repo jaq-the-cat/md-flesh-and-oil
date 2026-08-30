@@ -27,6 +27,10 @@ export enum SkillModifiers {
   expert = 25,
 }
 
+export const MIN_SKILL_BONUS = -50;
+export const MAX_SKILL_BONUS = 75;
+export const STAT_SPAN = MAX_SKILL_BONUS - MIN_SKILL_BONUS - SkillModifiers.expert;
+
 export const SkillStats: Record<Skills, Attributes[]> = {
   [Skills.vigor]: [Attributes.vitality],
   [Skills.athletics]: [Attributes.vitality, Attributes.strength],

@@ -8,4 +8,4 @@ export enum Attributes {
   intelligence,
 }
 export const MAX_ATTR_VALUE = 100;
-export const DEFAULT_ATTR_VALUE = 50;
+export const DEFAULT_ATTR_VALUE = 25;

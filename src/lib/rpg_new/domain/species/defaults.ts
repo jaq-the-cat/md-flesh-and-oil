@@ -25,7 +25,7 @@ export const DEFAULT_SKILLS: Skills[] = [
 
 export function healthField<T extends Species>(base: number, multiplier: number) {
   return new NumberField(
-    base,
+    0,
     (obj: T) => (MAX_ATTR_VALUE / 2 + obj.getSkillBonus(Skills.vigor)) * multiplier + base,
   );
 }

@@ -6,8 +6,9 @@ export class NumberField<T extends Species = any> {
   constructor(
     public readonly min: number,
     public readonly max: NumberLike<T>,
+    start: number = min,
   ) {
-    this.value = min;
+    this.value = start;
   }
 
   getMaxValue(obj: T) {
