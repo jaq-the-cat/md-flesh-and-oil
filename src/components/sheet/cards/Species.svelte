@@ -1,15 +1,44 @@
 <script lang="ts">
   import { Bars, Movement } from "$lib/rpg/config";
+  import type { SPECIES } from "$lib/rpg/domain/species/registry";
   import type { Species } from "$lib/rpg/infra/species/species.svelte";
   import NumberInput from "../NumberInput.svelte";
   import { localization } from "$i18n";
   import { fields } from "../fields";
+  import SpeciesRulebook from "../../rulebook/snippets/species/species.svelte";
+  import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";
 
-  let { species }: { species: Species } = $props();
+  type SpeciesId = keyof typeof SPECIES;
+
+  let {
+    species,
+    speciesId,
+    speciesIds,
+    onSpeciesChange,
+  }: {
+    species: Species;
+    speciesId: SpeciesId;
+    speciesIds: SpeciesId[];
+    onSpeciesChange: (id: SpeciesId) => void;
+  } = $props();
+  let speciesRulebook = $state(false);
 </script>
 
-<div id="status">
-  <h2 class="cardTitle">{localization().cards.status}</h2>
+<div id="species">
+  <RulebookSnippet title={localization().cards.species} bind:open={speciesRulebook}>
+    <SpeciesRulebook />
+  </RulebookSnippet>
+
+  <div id="species-select">
+    <select
+      value={speciesId}
+      onchange={(event) => onSpeciesChange(event.currentTarget.value as SpeciesId)}
+    >
+      {#each speciesIds as id}
+        <option value={id}>{localization().species[id]}</option>
+      {/each}
+    </select>
+  </div>
 
   <h3>{localization().cards.bars}</h3>
   <ul>
@@ -34,11 +63,25 @@
 </div>
 
 <style lang="scss">
-  #status {
-    grid-area: status;
+  #species {
+    grid-area: species;
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  #species-select {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+    gap: 10px;
+    margin-bottom: 10px;
+
+    :first-child {
+      flex-grow: 1;
+      font-size: 1.4rem;
+    }
   }
 
   h3 {

@@ -2,11 +2,12 @@
   import { SPECIES } from "$lib/rpg/domain/species/registry";
   import { Species } from "$lib/rpg/infra/species/species.svelte";
   import About from "./cards/About.svelte";
-  import Status from "./cards/Status.svelte";
+  import SpeciesCard from "./cards/Species.svelte";
   import Equipment from "./cards/Equipment.svelte";
   import Abilities from "./cards/Abilities.svelte";
   import Skills from "./cards/Skills.svelte";
   import Attributes from "./cards/Attributes.svelte";
+  import Rules from "./cards/Rules.svelte";
 
   type SpeciesId = keyof typeof SPECIES;
 
@@ -24,11 +25,12 @@
 </script>
 
 <main id="sheet">
-  <About {species} speciesId={selected} {speciesIds} onSpeciesChange={change} />
+  <About {species} />
   <Attributes {species} />
-  <Status {species} />
+  <SpeciesCard speciesId={selected} {speciesIds} onSpeciesChange={change} {species} />
   <Abilities speciesId={selected} />
   <Skills {species} />
+  <Rules />
   <Equipment />
 </main>
 
@@ -39,9 +41,9 @@
 
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
-      "about      attributes skills"
-      "about      status     skills"
-      "equipment  equipment  abilities";
+      "about      attributes rules"
+      "species    abilities  skills"
+      "equipment  equipment  skills";
   }
 
   @media (max-width: 1300px) {
@@ -49,8 +51,9 @@
       grid-template-columns: 1fr 1fr;
       grid-template-areas:
         "about     attributes"
-        "about     status"
+        "about     species"
         "equipment abilities"
+        "equipment rules"
         "skills    skills";
     }
   }
@@ -61,9 +64,10 @@
       grid-template-areas:
         "about"
         "attributes"
-        "status"
+        "species"
         "skills"
         "abilities"
+        "rules"
         "equipment";
     }
   }

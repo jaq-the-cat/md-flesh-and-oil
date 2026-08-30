@@ -1,29 +1,22 @@
 <script>
-  import DroneDeath from "./snippets/general/death/drone.svelte";
-  import HumanDeath from "./snippets/general/death/human.svelte";
+  import Advantage from "./snippets/general/advantage.svelte";
+  import Checks from "./snippets/general/checks.svelte";
+  import DamageTypes from "./snippets/general/damageTypes.svelte";
+  import Death from "./snippets/general/death/death.svelte";
+  import FallDamage from "./snippets/general/fallDamage.svelte";
+  import OutOfCombat from "./snippets/general/outOfCombat.svelte";
   import Proficiency from "./snippets/general/proficiency.svelte";
   import Stealth from "./snippets/general/stealth.svelte";
+  import Stun from "./snippets/general/stun.svelte";
 </script>
 
 <details>
   <summary> General Rules and Explanations </summary>
-  <h2>Checks</h2>
-  <p>
-    Skill Checks are how most things are decided. You roll a d100 (a 100 sided
-    die) and add the relevant modifier against the action's difficulty (decided
-    by DM, a static value, or against an enemy's attributes) and if you pass, you can
-    do the action.
-  </p>
+  <Checks />
   <Proficiency />
-  <h2>Advantage</h2>
-  <p>
-    With Advantage, you can retry a roll, but are then forced to use the second
-    value. It is gained by attacking a Stunned, Bootlooped or Unaware enemy.
-  </p>
+  <Advantage />
   <Stealth />
-  <h2>Death</h2>
-  <DroneDeath />
-  <HumanDeath />
+  <Death />
   <h2>Weight</h2>
   <p>Carrying Capacity is determined by your Species and Strength.</p>
   <p>Base Capacity at 0 Strength is 5kg.</p>
@@ -52,32 +45,8 @@
     If you start suffering Hunger damage while Out of Combat, the ticking damage
     instead happens once every real-life minute or 10m travelled.
   </p>
-  <h2>Out of Combat</h2>
-  <p>
-    Out of Combat you can do anything you like, with no limits on movement
-    besides difficult terrain which may require an Athletics or Flying check.
-    Actions such as picking something up or opening a door can be done freely,
-    but other things such as investigating an area, picking up something heavy
-    or trying to convince an NPC to do/say something may require Skill check at
-    the DM's discretion.
-  </p>
-  <h2>Stun/Bootloop</h2>
-  <p>
-    If an enemy is Stunned/Bootlooped, they cannot move or do any action for 3
-    turns. A Stun can be recovered early if you suffer non-Hunger damage, a
-    Bootloop cannot. If the Stun/Bootloop happens outside of combat, it lasts 15
-    real-life minutes. Attacking a stunned enemy gives you Advantage.
-  </p>
-  <h2>Fall Damage</h2>
-  <p>
-    All species can take Fall Damage at a rate of 10 damage per meter above their
-    Jump Speed that they fall.
-  </p>
-  <p>A fall from 3m deals a Human 20 Damage, because their Jump Height is 1m.</p>
-  <h2>Damage Types</h2>
-  <p>There are 5 types of damage: Strike, Pierce, Slash, Energy and Hunger.</p>
-  <p>
-    Being Vulnerable to a damage type means the damage is increased by 10% (multiply by 1.1).
-  </p>
-  <p>Being Resistant is the same, but it is decreased by 10% (multiply by 0.9)</p>
+  <OutOfCombat />
+  <Stun />
+  <FallDamage />
+  <DamageTypes />
 </details>

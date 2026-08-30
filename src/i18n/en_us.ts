@@ -15,6 +15,7 @@ export const en_us = {
     movement: "Speed",
     equipment: "Equipment",
     abilities: "Abilities",
+    rules: "Rules",
   },
 
   species: {
@@ -136,6 +137,22 @@ export const en_us = {
     skill_modifier: "Skill Modifier",
     text: "Description Only",
   } satisfies Record<AbilityKind, string>,
+
+  rules: {
+    general_combat: "General Combat",
+    actions: "Actions",
+    reactions: "Reactions",
+    weapons: "Weapons",
+    critical: "Critical Hits",
+    checks: "Checks",
+    advantage: "Advantage",
+    stealth: "Stealth",
+    death: "Death",
+    stun: "Stun / Bootloop",
+    fall_damage: "Fall Damage",
+    damage_types: "Damage Types",
+    out_of_combat: "Out of Combat",
+  },
 
   worksOn: {
     humans: "Humans",
