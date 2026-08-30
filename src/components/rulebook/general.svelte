@@ -9,13 +9,10 @@
   <summary> General Rules and Explanations </summary>
   <h2>Checks</h2>
   <p>
-    Skill Checks are how most things are decided. You roll a d20 (a 20 sided
+    Skill Checks are how most things are decided. You roll a d100 (a 100 sided
     die) and add the relevant modifier against the action's difficulty (decided
     by DM, a static value, or against an enemy's stats) and if you pass, you can
-    do the action. Checks such as Explosives and Mechanics require 2 rolls, one
-    after the other, and you must pass both to succeed in that action. If a
-    2-roll skill is instead used for damage, pick one of the stats to roll for,
-    and only roll once.
+    do the action.
   </p>
   <Proficiency />
   <h2>Advantage</h2>
@@ -80,8 +77,7 @@
   <h2>Damage Types</h2>
   <p>There are 5 types of damage: Strike, Pierce, Slash, Energy and Hunger.</p>
   <p>
-    Being Vulnerable to a damage type means your HP takes the damage value +1 in
-    damage.
+    Being Vulnerable to a damage type means the damage is increased by 10% (multiply by 1.1).
   </p>
-  <p>Being Resistant is the same, but you take -1 (minimum of 1).</p>
+  <p>Being Resistant is the same, but it is decreased by 10% (multiply by 0.9)</p>
 </details>
