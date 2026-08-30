@@ -1,4 +1,6 @@
-export class NumberField<T extends object = any> {
+import type { Species } from "./species/species.svelte";
+
+export class NumberField<T extends Species = any> {
   private value: number;
 
   constructor(
@@ -23,4 +25,4 @@ export class NumberField<T extends object = any> {
   }
 }
 
-export type NumberLike<T extends object> = number | ((obj: T) => number);
+export type NumberLike<T extends Species> = number | ((obj: T) => number);

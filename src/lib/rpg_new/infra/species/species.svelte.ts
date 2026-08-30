@@ -3,13 +3,13 @@ import {
   Bars,
   Stats,
   Skills,
-  Movement,
-  SkillStats,
-  MAX_STAT_VALUE,
   SkillModifiers,
-  DEFAULT_SKILLS,
-} from "../config.svelte";
-import { clone } from "../../helpers";
+  Movement,
+  MAX_STAT_VALUE,
+  SkillStats,
+} from "$lib/rpg_new/config";
+import { DEFAULT_SKILLS } from "$lib/rpg_new/domain/species/defaults";
+import { clone } from "$lib/rpg_new/helpers";
 import { NumberField, type NumberLike } from "../types.svelte";
 
 export abstract class Species {

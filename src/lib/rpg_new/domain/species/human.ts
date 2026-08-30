@@ -1,14 +1,15 @@
-import { Bars, Skills, Movement } from "$lib/rpg_new/infra/config.svelte";
-import { Species } from "$lib/rpg_new/infra/species/species.svelte";
+import { Bars, Movement, Skills } from "$lib/rpg_new/config";
 import { NumberField } from "$lib/rpg_new/infra/types.svelte";
+import { Species } from "$lib/rpg_new/infra/species/species.svelte";
+import { sanityField } from "./defaults";
 
 export class Human extends Species {
   constructor() {
     super({
       bars: {
-        [Bars.health]: new NumberField(0, (obj: Human) => obj.getSkillValue(Skills.vigor) * 2),
+        [Bars.health]: new NumberField(0, (obj: Human) => 20 + obj.getSkillValue(Skills.vigor) * 1.5),
         [Bars.blood]: new NumberField(0, 100),
-        [Bars.sanity]: new NumberField(10, (obj: Human) => Math.min(100, obj.getSkillValue(Skills.willpower))),
+        [Bars.sanity]: sanityField(),
       },
       skills: [],
       movement: {

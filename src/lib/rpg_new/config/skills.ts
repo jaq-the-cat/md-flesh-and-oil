@@ -1,27 +1,5 @@
-export enum About {
-  name,
-  height,
-  weight,
-  gender,
-  alignment,
-}
-export enum Bars {
-  health,
-  blood,
-  oil,
-  solver,
-  sanity,
-}
-export enum Stats {
-  vitality,
-  agility,
-  strength,
-  dexterity,
-  charisma,
-  perception,
-  intelligence,
-}
-export const MAX_STAT_VALUE = 100;
+import { Stats } from "./stats";
+
 export enum Skills {
   vigor,
   athletics,
@@ -42,38 +20,13 @@ export enum Skills {
   willpower,
   flying,
 }
+
 export enum SkillModifiers {
-  average = 1,
-  proficient = 1.2,
-  expert = 1.4,
+  average = 0.5,
+  proficient = 0.85,
+  expert = 1.2,
 }
-export const DEFAULT_SKILLS: Skills[] = [
-  Skills.vigor,
-  Skills.athletics,
-  Skills.stealth,
-  Skills.finesse,
-  Skills.firearms,
-  Skills.persuasion,
-  Skills.intimidation,
-  Skills.insight,
-  Skills.investigation,
-  Skills.knowledge,
-  Skills.technology,
-  Skills.wit,
-  Skills.melee,
-  Skills.explosives,
-  Skills.medicine,
-  Skills.mechanics,
-  Skills.willpower,
-];
-export enum Movement {
-  walking,
-  running,
-  flying,
-  swimming,
-  crawling,
-  jump_height,
-}
+
 export const SkillStats: Record<Skills, Stats[]> = {
   [Skills.vigor]: [Stats.vitality],
   [Skills.athletics]: [Stats.vitality, Stats.strength],
