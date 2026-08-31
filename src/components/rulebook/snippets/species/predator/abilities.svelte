@@ -2,7 +2,7 @@
 <h3>Eat
 </h3>
 <p>
-  Can be used on a dead body (Human or Drone) to drain their entire Fresh Oil
+  Can be used on a dead body (Human or Drone) to drain their entire Oil
   reserve at once. Eating someone during combat takes 2 turns to complete.
 </p>
 <h2>Drone Repair</h2>
@@ -19,5 +19,5 @@
 <ul>
   <li>Intact Drone Parts heal for 1d40 + Mechanics HP.</li>
   <li>Damaged Drone Parts heal for 1d20 + Mechanics HP.</li>
-  <li>Replacing a damaged limb heals for 1/4 + Mechanics Max HP.</li>
+  <li>Replacing a damaged limb heals for 1/4 of Max HP plus your Mechanics bonus.</li>
 </ul>

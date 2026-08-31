@@ -22,6 +22,7 @@ export const en_us = {
     human: "Human",
     worker_drone: "Worker Drone",
     solver_drone: "Solver Drone",
+    predator_drone: "Predator Drone",
   } satisfies Record<keyof typeof SPECIES, string>,
 
   about: {

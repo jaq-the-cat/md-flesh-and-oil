@@ -66,3 +66,19 @@ export const SOLVER_DRONE_ABILITIES: AbilityTemplate[] = [
     "Instantly erases any non-Enemy object. Increases Absolute Solver by 20 each time it is used.",
   ),
 ];
+
+export const PREDATOR_DRONE_ABILITIES: AbilityTemplate[] = [
+  melee(
+    "Predator Bite",
+    "1d20 + Melee Pierce",
+    "If used on a Worker Drone, drain 20 Oil. If used on a Human, remove 20 Blood. If target consents, damage is 1.",
+  ),
+  melee("Claws", "1d30 + Melee Slash"),
+  {
+    kind: "skill_modifier",
+    name: "Ambush Predator",
+    info: "Predator Drones are built to go unnoticed until they choose otherwise.",
+    skill: Skills.stealth,
+    amount: 15,
+  },
+];
