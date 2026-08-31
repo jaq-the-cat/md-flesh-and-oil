@@ -72,7 +72,6 @@
       {localization().auth.forgot}
     </button>
 
-    <p class="note">{localization().auth.anonymous_warning}</p>
   </section>
 </main>
 

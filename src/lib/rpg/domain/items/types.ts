@@ -17,6 +17,7 @@ type Details =
       reloadTurns: number;
       info: string | null;
     }
+  | { kind: "innate"; hit: Skills; damage: string; range: number; info: string | null }
   | { kind: "throwable"; damage: string; range: string; info: string | null }
   | {
       kind: "healing";
@@ -35,8 +36,8 @@ export type ItemKind = Item["kind"];
 export type ContainerTemplate = { name: string; carry: number | null };
 export type Container = ContainerTemplate & { id: string; items: Item[] };
 
-/** Kinds a player can build by hand. Healing items are catalogue-only. */
-export type CustomKind = Exclude<ItemKind, "healing">;
+/** Kinds a player can build by hand. Healing and innate weapons are catalogue-only. */
+export type CustomKind = Exclude<ItemKind, "healing" | "innate">;
 
 /** What a freshly picked kind looks like in the custom-item form. Adding a kind fails here first. */
 export const BLANK_ITEMS: Record<CustomKind, ItemTemplate> = {

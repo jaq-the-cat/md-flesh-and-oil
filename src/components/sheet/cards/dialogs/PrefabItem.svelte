@@ -13,7 +13,8 @@
   } = $props();
 
   const CONTAINERS = "Containers";
-  const categories = [CONTAINERS, ...Object.keys(ITEM_PREFABS)];
+  // Innate weapons are body parts, not gear a player can pick up.
+  const categories = [CONTAINERS, ...Object.keys(ITEM_PREFABS).filter((name) => name !== "Innate")];
   let category = $state(CONTAINERS);
   let prefabs = $derived<(ContainerTemplate | ItemTemplate)[]>(
     category === CONTAINERS ? CONTAINER_PREFABS : ITEM_PREFABS[category],

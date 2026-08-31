@@ -1,12 +1,23 @@
 <script lang="ts">
   import { Attributes, Skills } from "$lib/rpg/config";
   import type { Ability, AbilityTemplate } from "$lib/rpg/domain/abilities/types";
+  import { innateWeapon } from "$lib/rpg/domain/items/prefabs";
   import { localization } from "$i18n";
+  import ItemDetails from "./ItemDetails.svelte";
 
   let { ability }: { ability: Ability | AbilityTemplate } = $props();
 
   const signed = (amount: number) => (amount >= 0 ? `+${amount}` : `${amount}`);
 </script>
+
+{#if ability.kind === "innate_weapon"}
+  {@const weapon = innateWeapon(ability.name)}
+  {#if weapon}
+    <ItemDetails item={weapon} />
+  {:else}
+    <p class="missing">{localization().ui.nothing_available}</p>
+  {/if}
+{/if}
 
 <dl>
   {#if ability.kind === "weapon"}
@@ -36,6 +47,11 @@
     align-items: baseline;
     margin: 0;
     gap: 10px 15px;
+  }
+
+  .missing {
+    margin: 0;
+    opacity: 0.8;
   }
 
   dt {

@@ -1,6 +1,11 @@
 <script lang="ts">
   import { Attributes, Skills } from "$lib/rpg/config";
-  import { BLANK_ABILITIES, ABILITY_KINDS, type AbilityKind, type AbilityTemplate } from "$lib/rpg/domain/abilities/types";
+  import {
+    BLANK_ABILITIES,
+    ABILITY_KINDS,
+    type AbilityTemplate,
+    type CustomAbilityKind,
+  } from "$lib/rpg/domain/abilities/types";
   import { localization } from "$i18n";
 
   let {
@@ -11,20 +16,22 @@
     onCreate: (template: AbilityTemplate) => void;
   } = $props();
 
+  let kind = $state<CustomAbilityKind>("weapon");
   let draft = $state<AbilityTemplate>({ ...BLANK_ABILITIES.weapon });
 
   const skills = Object.values(Skills);
   const attributes = Object.values(Attributes);
 
   /** Swapping kinds keeps the name the player already typed. */
-  function changeKind(next: AbilityKind) {
+  function changeKind(next: CustomAbilityKind) {
+    kind = next;
     draft = { ...BLANK_ABILITIES[next], name: draft.name };
   }
 
   function create() {
     if (draft.name === "") return;
     onCreate({ ...draft });
-    draft = { ...BLANK_ABILITIES[draft.kind] };
+    draft = { ...BLANK_ABILITIES[kind] };
     open = false;
   }
 </script>
@@ -35,7 +42,7 @@
 
     <label>
       {localization().fields.kind}
-      <select value={draft.kind} onchange={(event) => changeKind(event.currentTarget.value as AbilityKind)}>
+      <select value={draft.kind} onchange={(event) => changeKind(event.currentTarget.value as CustomAbilityKind)}>
         {#each ABILITY_KINDS as kind}
           <option value={kind}>{localization().abilityKinds[kind]}</option>
         {/each}

@@ -128,6 +128,7 @@ export const en_us = {
     plain: "Item",
     melee: "Melee",
     ranged: "Ranged",
+    innate: "Innate",
     throwable: "Throwable",
     healing: "Healing",
     liquid: "Liquid",
@@ -136,6 +137,7 @@ export const en_us = {
 
   abilityKinds: {
     weapon: "Weapon",
+    innate_weapon: "Innate Weapon",
     attribute_modifier: "Attribute Modifier",
     skill_modifier: "Skill Modifier",
     text: "Description Only",
@@ -217,7 +219,8 @@ export const en_us = {
   dm: {
     sheets: "Sheets",
     enemies: "Enemy List",
-    enemies_missing: "The enemy catalogue has not been ported to the new system yet.",
+    guaranteed: "Guaranteed Weapons",
+    possible: "Possible Weapons",
     unnamed: "Unnamed",
     not_authorised: "This page is for the game master.",
   },

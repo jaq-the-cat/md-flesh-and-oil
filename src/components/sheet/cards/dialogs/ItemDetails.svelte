@@ -8,10 +8,24 @@
 </script>
 
 <dl>
-  <dt>{localization().fields.weight}</dt>
-  <dd>{itemWeight(item)}kg</dd>
+  <!-- An innate weapon is part of a body, so it has no weight to report. -->
+  {#if item.kind !== "innate"}
+    <dt>{localization().fields.weight}</dt>
+    <dd>{itemWeight(item)}kg</dd>
+  {/if}
 
-  {#if item.kind === "melee"}
+  {#if item.kind === "innate"}
+    <dt>{localization().fields.hit}</dt>
+    <dd>{localization().skills[item.hit]}</dd>
+    <dt>{localization().fields.damage}</dt>
+    <dd>{item.damage}</dd>
+    <dt>{localization().fields.range}</dt>
+    <dd>{item.range}m</dd>
+    {#if item.info}
+      <dt>{localization().fields.info}</dt>
+      <dd class="info">{item.info}</dd>
+    {/if}
+  {:else if item.kind === "melee"}
     <dt>{localization().fields.damage}</dt>
     <dd>{item.damage}</dd>
     {#if item.twoHanded}

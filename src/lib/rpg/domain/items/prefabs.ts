@@ -52,6 +52,114 @@ const RANGED = [
   ),
 ];
 
+/** Innate weapons: parts of a body rather than gear, shared by species and enemies. */
+const innate = (name: string, hit: Skills, damage: string, range: number, info: string | null = null) =>
+  ({ kind: "innate", name, weight: 0, hit, damage, range, info }) satisfies ItemTemplate;
+
+const bite = (name: string, damage: string, info: string | null = null, range = 1) =>
+  innate(name, Skills.melee, damage, range, info);
+
+const power = (name: string, damage: string, range: number, info: string | null = null) =>
+  innate(name, Skills.absolute_solver, damage, range, info);
+
+const INNATE = [
+  bite(
+    "Human Bite",
+    "1d20 + Melee Pierce",
+    "When used on a Human, drain 2 Blood. When used on a Drone, damage is 1 and you take 1d20 + 2 Blunt instead. If target consents, damage is 1.",
+  ),
+  bite(
+    "Worker Bite",
+    "1d20 + Melee Pierce",
+    "If used on a Worker Drone, drain 10 Oil. If used on a Human, remove 10 Blood. If target consents, damage is 1.",
+  ),
+  bite("Knife Tail", "1d20 + Melee Slash", "+1 Successful Hits on hit."),
+  bite(
+    "Solver Bite",
+    "1d30 + Melee Pierce",
+    "If used on a Worker Drone, drain 20 Oil. If used on a Human, drain 10 Blood. If target consents, damage is 1. +1 Absolute Solver on success.",
+  ),
+  bite(
+    "Solver Tail",
+    "1d30 + Melee Slash",
+    "+1 Successful Hits on hit. May be used as an extra limb, flashlight or weapon. Lights up to 5m in front of the user in a cone.",
+    2,
+  ),
+  bite("Solver Claws", "1d40 + Melee Slash", "Rate up to 2. If both hands are claws, disable Solver Powers."),
+  bite("Solver Stabbies", "1d20 + Melee Pierce", "Rate 2. +1 Successful Hits on hit."),
+  power(
+    "Solver Translate",
+    "None",
+    5,
+    "Move any object up to 5 meters from your position or throw it up to 10 meters from its position.",
+  ),
+  power(
+    "Solver Transform",
+    "1d20 + Absolute Solver Energy",
+    5,
+    "Crush any object, damaging or destroying it or dealing Energy damage to enemies.",
+  ),
+  power(
+    "Solver Teleport",
+    "None",
+    15,
+    "During Combat, teleport anywhere you can see within 15m with an Absolute Solver roll of difficulty equal to the distance in meters multiplied by 2. Out of Combat, teleport anywhere you can see within 15m for free, or anywhere you have been before with an Absolute Solver roll of difficulty equal to your 100 - your Willpower bonus",
+  ),
+  power(
+    "[null]",
+    "1d100 + Absolute Solver Energy",
+    5,
+    "Instantly erases any non-Enemy object. Increases Absolute Solver by 20 each time it is used.",
+  ),
+  bite(
+    "Predator Bite",
+    "1d20 + Melee Pierce",
+    "If used on a Worker Drone, drain 20 Oil. If used on a Human, remove 20 Blood. If target consents, damage is 1.",
+  ),
+  bite("Predator Claws", "1d30 + Melee Slash"),
+  bite(
+    "Avian Bite",
+    "1d20 + Melee Pierce",
+    "If used on a Worker Drone, drain 20 Oil. If used on a Human, remove 20 Blood. If target consents, damage is 1.",
+  ),
+  bite("Wings", "None", "Permits flight. May not be used as a weapon or shield. Increases Agility while active."),
+  bite("Small Claws", "1d30 + Melee Slash"),
+  bite(
+    "Talon Dive",
+    "1d30 + Melee Slash",
+    "Must be initiated from flight. When used, move a maximum of 20 meters horizontally in the direction of the target.",
+  ),
+  bite("Talon Strike", "1d30 + Melee Slash"),
+  bite(
+    "Disassembly Bite",
+    "1d40 + Melee Pierce",
+    "If used on a Worker Drone, drain 20 Oil. If used on a Human, drain 10 Blood. If target consents, damage is 1. +1 Absolute Solver on success.",
+  ),
+  bite("Sword", "1d30 + Melee Slash", "-20 Hit, -20 Block."),
+  bite("Disassembly Claws", "1d30 + Melee Slash", "Rate up to 2."),
+  bite("Chainsaw", "1d60 + Melee Slash", "+1 Hit, uses 1L Oil per Hit."),
+  innate("Submachine Gun", Skills.firearms, "20 Pierce", 10, "Rate 6. Magazine of 30, 1 turn to reload."),
+  innate("Laser", Skills.firearms, "25 Energy", 20, "Magazine of 2, 1 turn to reload."),
+  innate("Missile", Skills.firearms, "16 Explosive", 20, "Deals damage in a 1m radius."),
+  innate("Ninja Star", Skills.athletics, "20 + Melee Pierce", 10),
+  innate(
+    "EMP",
+    Skills.technology,
+    "Bootloops all drones within 5 meters",
+    5,
+    "Bootloops self on failure. May only be used once per fight. Difficulty is 25 + Missing Health.",
+  ),
+  innate("Sentinel Flash", Skills.technology, "Bootloops in a 5m cone", 5, "Looking away costs 2 Reactions."),
+  bite("Sentinel Bite", "1d30 + 20 Pierce"),
+  bite("Wasp Bite", "6 + Strength Pierce", "+1d60 if attacking a Drone."),
+  bite("Stinger", "6 + Strength Pierce", "+1d60 if attacking a Drone."),
+];
+
+/** Innate weapons are addressed by name, from species catalogues and enemy entries alike. */
+export function innateWeapon(name: string) {
+  return INNATE.find((weapon) => weapon.name === name);
+}
+
 export const CONTAINER_PREFABS: ContainerTemplate[] = [
   { name: "Fanny Pack", carry: 6 },
   { name: "Purse", carry: 8 },
@@ -63,6 +171,7 @@ export const CONTAINER_PREFABS: ContainerTemplate[] = [
 ];
 
 export const ITEM_PREFABS: Record<string, ItemTemplate[]> = {
+  Innate: INNATE,
   Melee: [
     melee("Bone Saw", 0.1, "1d20 + Melee Slash"),
     melee("Screwdriver", 0.1, "1d20 + Melee Pierce"),

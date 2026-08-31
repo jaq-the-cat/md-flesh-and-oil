@@ -1,6 +1,8 @@
 import { Attributes, Skills } from "$lib/rpg/config";
 
 type Details =
+  /** Names an entry in the Innate item category, so a weapon is defined in exactly one place. */
+  | { kind: "innate_weapon" }
   | { kind: "weapon"; hit: Skills; damage: string; range: number }
   | { kind: "attribute_modifier"; attribute: Attributes; amount: number }
   | { kind: "skill_modifier"; skill: Skills; amount: number }
@@ -11,8 +13,11 @@ export type AbilityTemplate = { name: string; info: string } & Details;
 export type Ability = AbilityTemplate & { id: string };
 export type AbilityKind = Ability["kind"];
 
+/** Kinds a player can build by hand. Innate weapons are catalogue-only. */
+export type CustomAbilityKind = Exclude<AbilityKind, "innate_weapon">;
+
 /** What a freshly picked kind looks like in the custom-ability form. Adding a kind fails here first. */
-export const BLANK_ABILITIES: Record<AbilityKind, AbilityTemplate> = {
+export const BLANK_ABILITIES: Record<CustomAbilityKind, AbilityTemplate> = {
   weapon: { kind: "weapon", name: "", info: "", hit: Skills.melee, damage: "", range: 1 },
   attribute_modifier: {
     kind: "attribute_modifier",
@@ -25,7 +30,7 @@ export const BLANK_ABILITIES: Record<AbilityKind, AbilityTemplate> = {
   text: { kind: "text", name: "", info: "" },
 };
 
-export const ABILITY_KINDS = Object.keys(BLANK_ABILITIES) as AbilityKind[];
+export const ABILITY_KINDS = Object.keys(BLANK_ABILITIES) as CustomAbilityKind[];
 
 export function createAbility(template: AbilityTemplate): Ability {
   return { ...template, id: crypto.randomUUID() };
