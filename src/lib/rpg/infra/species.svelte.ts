@@ -11,13 +11,13 @@ import {
   MIN_SKILL_BONUS,
   STAT_SPAN,
   DEFAULT_ATTR_VALUE,
-} from "$lib/rpg/config";
-import { createAbility, type Ability, type AbilityEntry } from "$lib/rpg/domain/abilities/types";
+} from "$lib/rpg/domain/config";
+import { createAbility, type Ability, type AbilityEntry } from "$lib/rpg/infra/abilities";
 import { POCKETS } from "$lib/rpg/domain/items/prefabs";
-import { createContainer, SLOTS, type Container, type Slot } from "$lib/rpg/domain/items/types";
+import { createContainer, SLOTS, type Container, type Slot } from "$lib/rpg/infra/items";
 import { DEFAULT_SKILLS } from "$lib/rpg/domain/species/defaults";
 import { clamp, clone } from "$lib/rpg/helpers";
-import { NumberField, type NumberLike } from "../types.svelte";
+import { NumberField, type NumberLike } from "./types.svelte";
 
 export abstract class Species {
   public readonly about: Record<About, string> = $state({} as Record<About, string>);

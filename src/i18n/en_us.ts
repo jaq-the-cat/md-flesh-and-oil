@@ -7,10 +7,10 @@ import {
   Movement,
   SkillModifiers,
   Skills,
-} from "$lib/rpg/config";
-import type { AbilityKind } from "$lib/rpg/domain/abilities/types";
+} from "$lib/rpg/domain/config";
+import type { AbilityKind } from "$lib/rpg/infra/abilities";
 import type { ItemId } from "$lib/rpg/domain/items/prefabs";
-import type { ItemKind, ItemText, Slot } from "$lib/rpg/domain/items/types";
+import type { ItemKind, ItemText, Slot } from "$lib/rpg/infra/items";
 import type { SPECIES } from "$lib/rpg/domain/species/registry";
 
 export const en_us = {
@@ -327,7 +327,6 @@ export const en_us = {
 
   abilityKinds: {
     weapon: "Weapon",
-    innate_weapon: "Innate Weapon",
     attribute_modifier: "Attribute Modifier",
     skill_modifier: "Skill Modifier",
     text: "Description Only",

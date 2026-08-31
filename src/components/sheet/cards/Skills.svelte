@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { SkillModifiers, Skills } from "$lib/rpg/config";
+  import { SkillModifiers, Skills } from "$lib/rpg/domain/config";
   import { enumValues } from "$lib/rpg/helpers";
-  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import type { Species } from "$lib/rpg/infra/species.svelte";
   import { localization } from "$i18n";
   import { fields } from "../fields";
   import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";

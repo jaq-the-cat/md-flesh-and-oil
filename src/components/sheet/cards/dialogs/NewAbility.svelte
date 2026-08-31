@@ -1,12 +1,14 @@
 <script lang="ts">
-  import { Attributes, Skills } from "$lib/rpg/config";
+  import { Attributes, Skills } from "$lib/rpg/domain/config";
   import {
     BLANK_ABILITIES,
     ABILITY_KINDS,
     type AbilityTemplate,
-    type CustomAbilityKind,
-  } from "$lib/rpg/domain/abilities/types";
+    type AbilityKind,
+  } from "$lib/rpg/infra/abilities";
+  import { tidyDamage } from "$lib/rpg/infra/items";
   import { localization } from "$i18n";
+  import DamageFields from "./DamageFields.svelte";
 
   let {
     open = $bindable(),
@@ -16,21 +18,23 @@
     onCreate: (template: AbilityTemplate) => void;
   } = $props();
 
-  let kind = $state<CustomAbilityKind>("weapon");
+  let kind = $state<AbilityKind>("weapon");
   let draft = $state<AbilityTemplate>({ ...BLANK_ABILITIES.weapon });
 
   const skills = Object.values(Skills);
   const attributes = Object.values(Attributes);
 
   /** Swapping kinds keeps the name the player already typed. */
-  function changeKind(next: CustomAbilityKind) {
+  function changeKind(next: AbilityKind) {
     kind = next;
     draft = { ...BLANK_ABILITIES[next], name: draft.name };
   }
 
   function create() {
     if (draft.name === "") return;
-    onCreate({ ...draft });
+    const made = structuredClone($state.snapshot(draft)) as AbilityTemplate;
+    if (made.kind === "weapon") made.damage = tidyDamage(made.damage);
+    onCreate(made);
     draft = { ...BLANK_ABILITIES[kind] };
     open = false;
   }
@@ -42,7 +46,7 @@
 
     <label>
       {localization().fields.kind}
-      <select value={draft.kind} onchange={(event) => changeKind(event.currentTarget.value as CustomAbilityKind)}>
+      <select value={draft.kind} onchange={(event) => changeKind(event.currentTarget.value as AbilityKind)}>
         {#each ABILITY_KINDS as kind}
           <option value={kind}>{localization().abilityKinds[kind]}</option>
         {/each}
@@ -64,10 +68,7 @@
           {/each}
         </select>
       </label>
-      <label>
-        {localization().fields.damage}
-        <input type="text" bind:value={weapon.damage} />
-      </label>
+      <DamageFields bind:damage={weapon.damage} />
       <label>
         {localization().fields.range}
         <input type="number" min="0" bind:value={weapon.range} />

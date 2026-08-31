@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Attributes } from "$lib/rpg/config";
-  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import { Attributes } from "$lib/rpg/domain/config";
+  import type { Species } from "$lib/rpg/infra/species.svelte";
   import NumberInput from "../NumberInput.svelte";
   import { localization } from "$i18n";
   import { fields } from "../fields";

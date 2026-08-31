@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Bars, Movement } from "$lib/rpg/config";
+  import { Bars, Movement } from "$lib/rpg/domain/config";
   import type { SPECIES } from "$lib/rpg/domain/species/registry";
-  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import type { Species } from "$lib/rpg/infra/species.svelte";
   import NumberInput from "../NumberInput.svelte";
   import { localization } from "$i18n";
   import { fields } from "../fields";

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import type { Species } from "$lib/rpg/infra/species.svelte";
   import { containerWeight, itemWeight, templateOf, type ItemId } from "$lib/rpg/domain/items/prefabs";
   import {
     createContainer,
@@ -9,8 +9,7 @@
     type ContainerTemplate,
     type CustomTemplate,
     type Item,
-    type Slot,
-  } from "$lib/rpg/domain/items/types";
+  } from "$lib/rpg/infra/items";
   import { localization } from "$i18n";
   import { itemText } from "../items";
   import InspectItem from "./dialogs/InspectItem.svelte";

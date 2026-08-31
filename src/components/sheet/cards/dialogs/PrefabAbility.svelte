@@ -1,7 +1,9 @@
 <script lang="ts">
-  import type { AbilityTemplate } from "$lib/rpg/domain/abilities/types";
+  import type { AbilityEntry } from "$lib/rpg/infra/abilities";
   import { localization } from "$i18n";
+  import { abilityName, weaponOf, writtenOf } from "../../abilities";
   import AbilityDetails from "./AbilityDetails.svelte";
+  import ItemDetails from "./ItemDetails.svelte";
 
   let {
     open = $bindable(),
@@ -9,11 +11,11 @@
     onAdd,
   }: {
     open: boolean;
-    available: AbilityTemplate[];
-    onAdd: (template: AbilityTemplate) => void;
+    available: AbilityEntry[];
+    onAdd: (entry: AbilityEntry) => void;
   } = $props();
 
-  let previewing = $state<AbilityTemplate | null>(null);
+  let previewing = $state<AbilityEntry | null>(null);
 </script>
 
 {#if open}
@@ -22,7 +24,7 @@
 
     <div class="list">
       {#each available as prefab}
-        <button class="prefab" onclick={() => (previewing = prefab)}>{prefab.name}</button>
+        <button class="prefab" onclick={() => (previewing = prefab)}>{abilityName(prefab)}</button>
         <button class="quickAdd" onclick={() => onAdd(prefab)}>+</button>
       {:else}
         <p class="empty">{localization().ui.nothing_available}</p>
@@ -35,8 +37,12 @@
 
 {#if previewing}
   <div class="preview">
-    <h2 class="title">{previewing.name}</h2>
-    <AbilityDetails ability={previewing} />
+    <h2 class="title">{abilityName(previewing)}</h2>
+    {#if weaponOf(previewing)}
+      <ItemDetails template={weaponOf(previewing)!} />
+    {:else}
+      <AbilityDetails ability={writtenOf(previewing)!} />
+    {/if}
     <button onclick={() => onAdd(previewing!)}>{localization().ui.add}</button>
     <button onclick={() => (previewing = null)}>{localization().ui.close}</button>
   </div>

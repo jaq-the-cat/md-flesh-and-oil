@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { About, Alignment } from "$lib/rpg/config";
-  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import { About, Alignment } from "$lib/rpg/domain/config";
+  import type { Species } from "$lib/rpg/infra/species.svelte";
   import { localization } from "$i18n";
   import { fields } from "../fields";
   import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";

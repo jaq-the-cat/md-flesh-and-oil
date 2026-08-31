@@ -1,6 +1,6 @@
 <script lang="ts">
   import { templateOf } from "$lib/rpg/domain/items/prefabs";
-  import type { Container, Item } from "$lib/rpg/domain/items/types";
+  import type { Container, Item } from "$lib/rpg/infra/items";
   import { itemText } from "../../items";
   import { localization } from "$i18n";
   import ItemDetails from "./ItemDetails.svelte";

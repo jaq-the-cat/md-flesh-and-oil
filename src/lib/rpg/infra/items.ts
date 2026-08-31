@@ -1,4 +1,4 @@
-import { DamageTypes, Skills } from "$lib/rpg/config";
+import { DamageTypes, Skills } from "$lib/rpg/domain/config";
 
 export type Slot = "left_hand" | "right_hand" | "left_shoulder" | "right_shoulder" | "front" | "back";
 
@@ -109,4 +109,3 @@ export function createContainer(template: ContainerTemplate): Container {
 export function isCustom(template: string | CustomTemplate): template is CustomTemplate {
   return typeof template !== "string";
 }
-

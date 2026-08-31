@@ -1,5 +1,11 @@
-import { DamageTypes, Skills } from "$lib/rpg/config";
-import { isCustom, type ContainerTemplate, type CustomTemplate, type Item, type ItemTemplate } from "./types";
+import { DamageTypes, Skills } from "$lib/rpg/domain/config";
+import {
+  isCustom,
+  type ContainerTemplate,
+  type CustomTemplate,
+  type Item,
+  type ItemTemplate,
+} from "../../infra/items";
 
 /** Omit collapses a union, so it has to be applied to each member separately. */
 type WithoutId<T> = T extends unknown ? Omit<T, "id"> : never;

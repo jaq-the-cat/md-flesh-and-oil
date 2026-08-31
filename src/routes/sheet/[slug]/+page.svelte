@@ -4,7 +4,7 @@
   import { SHEETS_PATH } from "$lib/sheets";
   import { localization } from "$i18n";
   import { fromDocument, sheetJson, toDocument, type SheetDocument } from "$lib/persistence";
-  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import type { Species } from "$lib/rpg/infra/species.svelte";
   import Sheet from "../../../components/sheet/Sheet.svelte";
 
   const SAVE_DELAY = 800;

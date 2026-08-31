@@ -1,6 +1,6 @@
 <script lang="ts">
   import { clamp } from "$lib/rpg/helpers";
-  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import type { Species } from "$lib/rpg/infra/species.svelte";
   import type { NumberField } from "$lib/rpg/infra/types.svelte";
 
   let { species, field }: { species: Species; field: NumberField<Species> } = $props();

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { CONTAINER_PREFABS, ITEM_CATEGORIES, ITEMS, type ItemId } from "$lib/rpg/domain/items/prefabs";
-  import type { ContainerTemplate } from "$lib/rpg/domain/items/types";
+  import type { ContainerTemplate } from "$lib/rpg/infra/items";
   import { itemText } from "../sheet/items";
   import { localization } from "$i18n";
   import ItemDetails from "../sheet/cards/dialogs/ItemDetails.svelte";

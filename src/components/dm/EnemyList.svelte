@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ENEMY_PREFABS } from "$lib/rpg/domain/enemies/prefabs";
-  import { enemyWeapon, type EnemyTemplate } from "$lib/rpg/domain/enemies/types";
+  import { enemyWeapon, type EnemyTemplate } from "$lib/rpg/infra/enemies";
   import { ITEMS, type ItemId } from "$lib/rpg/domain/items/prefabs";
   import { itemText } from "../sheet/items";
   import { localization } from "$i18n";

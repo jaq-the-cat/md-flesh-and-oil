@@ -1,6 +1,6 @@
-import { Skills } from "$lib/rpg/config";
+import { Skills } from "$lib/rpg/domain/config";
 import { ITEMS } from "$lib/rpg/domain/items/prefabs";
-import type { AbilityEntry } from "./types";
+import type { AbilityEntry } from "../../infra/abilities";
 
 export const HUMAN_ABILITIES: AbilityEntry[] = [
   {

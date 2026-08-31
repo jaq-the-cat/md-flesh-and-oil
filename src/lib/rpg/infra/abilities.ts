@@ -1,9 +1,9 @@
-import { Attributes, Skills } from "$lib/rpg/config";
+import { Attributes, Skills } from "$lib/rpg/domain/config";
 import type { ItemId } from "$lib/rpg/domain/items/prefabs";
-import type { ItemTemplate } from "$lib/rpg/domain/items/types";
+import { blankDamage, type Damage, type ItemTemplate } from "$lib/rpg/infra/items";
 
 type Details =
-  | { kind: "weapon"; hit: Skills; damage: string; range: number }
+  | { kind: "weapon"; hit: Skills; damage: Damage; range: number }
   | { kind: "attribute_modifier"; attribute: Attributes; amount: number }
   | { kind: "skill_modifier"; skill: Skills; amount: number }
   | { kind: "text" };
@@ -21,7 +21,7 @@ export type AbilityKind = AbilityTemplate["kind"];
 
 /** What a freshly picked kind looks like in the custom-ability form. Adding a kind fails here first. */
 export const BLANK_ABILITIES: Record<AbilityKind, AbilityTemplate> = {
-  weapon: { kind: "weapon", name: "", info: "", hit: Skills.melee, damage: "", range: 1 },
+  weapon: { kind: "weapon", name: "", info: "", hit: Skills.melee, damage: blankDamage(), range: 1 },
   attribute_modifier: {
     kind: "attribute_modifier",
     name: "",
@@ -37,7 +37,8 @@ export const ABILITY_KINDS = Object.keys(BLANK_ABILITIES) as AbilityKind[];
 
 /** A catalogue weapon reduces to its id; a written ability gets an instance of its own. */
 export function createAbility(entry: AbilityEntry): Ability {
-  return "id" in entry ? entry.id : { ...entry, id: crypto.randomUUID() };
+  // The entry came from the catalogue, so its id is one of its keys.
+  return "id" in entry ? (entry.id as ItemId) : { ...entry, id: crypto.randomUUID() };
 }
 
 export function isWeapon(ability: Ability): ability is ItemId {
@@ -46,5 +47,7 @@ export function isWeapon(ability: Ability): ability is ItemId {
 
 /** Whether a held ability came from this catalogue entry. */
 export function matches(ability: Ability, entry: AbilityEntry) {
-  return isWeapon(ability) ? "id" in entry && entry.id === ability : !("id" in entry) && entry.name === ability.name;
+  return isWeapon(ability)
+    ? "id" in entry && entry.id === ability
+    : !("id" in entry) && entry.name === ability.name;
 }

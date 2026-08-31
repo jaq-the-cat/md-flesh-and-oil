@@ -1,6 +1,6 @@
 <script lang="ts">
   import { localization } from "$i18n";
-  import type { CustomTemplate, ItemTemplate } from "$lib/rpg/domain/items/types";
+  import type { CustomTemplate, ItemTemplate } from "$lib/rpg/infra/items";
   import { damageText, itemText } from "../../items";
 
   let {

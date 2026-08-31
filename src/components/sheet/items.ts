@@ -1,6 +1,6 @@
 import { localization } from "$i18n";
 import type { ItemId } from "$lib/rpg/domain/items/prefabs";
-import type { CustomTemplate, Damage, ItemTemplate, ItemText } from "$lib/rpg/domain/items/types";
+import type { CustomTemplate, Damage, ItemTemplate, ItemText } from "$lib/rpg/infra/items";
 
 /** A catalogue item reads its prose from the localization file; a custom one carries its own. */
 export function itemText(template: ItemTemplate | CustomTemplate): ItemText {

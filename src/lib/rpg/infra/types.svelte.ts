@@ -1,4 +1,4 @@
-import type { Species } from "./species/species.svelte";
+import type { Species } from "./species.svelte";
 
 export class NumberField<T extends Species = any> {
   private value = $state(0);

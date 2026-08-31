@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DamageTypes, Skills } from "$lib/rpg/config";
+  import { Skills } from "$lib/rpg/domain/config";
   import {
     BLANK_CUSTOM,
     ITEM_KINDS,
@@ -7,8 +7,9 @@
     type ContainerTemplate,
     type CustomKind,
     type CustomTemplate,
-  } from "$lib/rpg/domain/items/types";
+  } from "$lib/rpg/infra/items";
   import { localization } from "$i18n";
+  import DamageFields from "./DamageFields.svelte";
 
   let {
     open = $bindable(),
@@ -22,7 +23,6 @@
   const kinds: (CustomKind | typeof CONTAINER)[] = [...ITEM_KINDS, CONTAINER];
 
   const hitSkills = Object.values(Skills);
-  const damageTypes = Object.values(DamageTypes);
 
   let kind = $state<CustomKind | typeof CONTAINER>("plain");
   let draft = $state<CustomTemplate>(structuredClone(BLANK_CUSTOM.plain));
@@ -82,38 +82,7 @@
 
     {#if draft.kind === "melee" || draft.kind === "ranged" || draft.kind === "throwable"}
       {@const armed = draft}
-      <fieldset>
-        <legend>{localization().fields.damage}</legend>
-        <label class="dice">
-          {localization().fields.dice}
-          <span>
-            <input type="number" min="0" bind:value={armed.damage.dice!.count} />
-            d
-            <input type="number" min="0" bind:value={armed.damage.dice!.sides} />
-          </span>
-        </label>
-        <label>
-          {localization().fields.flat}
-          <input type="number" bind:value={armed.damage.flat} />
-        </label>
-        <label>
-          {localization().fields.skill}
-          <select bind:value={armed.damage.bonus}>
-            <option value={undefined}></option>
-            {#each hitSkills as skill}
-              <option value={skill}>{localization().skills[skill]}</option>
-            {/each}
-          </select>
-        </label>
-        <label>
-          {localization().fields.kind}
-          <select bind:value={armed.damage.type}>
-            {#each damageTypes as type}
-              <option value={type}>{localization().damageTypes[type]}</option>
-            {/each}
-          </select>
-        </label>
-      </fieldset>
+      <DamageFields bind:damage={armed.damage} />
     {/if}
 
     {#if draft.kind === "melee"}
@@ -207,21 +176,6 @@
     grid-template-columns: 14ch auto;
     align-items: center;
     gap: 10px;
-  }
-
-  fieldset {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 0;
-    padding: 10px;
-    border: 1px solid #9fe64459;
-  }
-
-  .dice span {
-    display: flex;
-    align-items: center;
-    gap: 5px;
   }
 
   .checkbox input {

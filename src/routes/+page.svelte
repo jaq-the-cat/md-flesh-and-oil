@@ -8,7 +8,7 @@
   import { session } from "$lib/auth.svelte";
   import { sheetJson, toDocument } from "$lib/persistence";
   import { WorkerDrone } from "$lib/rpg/domain/species/worker_drone";
-  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import type { Species } from "$lib/rpg/infra/species.svelte";
   import Sheet from "../components/sheet/Sheet.svelte";
 
   // A scratch sheet: nothing is written until Create is pressed.

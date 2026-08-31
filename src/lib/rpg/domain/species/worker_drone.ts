@@ -1,7 +1,9 @@
-import { Bars, Movement, Skills } from "$lib/rpg/config";
+import { Bars, Movement, Skills } from "$lib/rpg/domain/config";
 import { NumberField } from "$lib/rpg/infra/types.svelte";
-import { Species } from "$lib/rpg/infra/species/species.svelte";
-import { carryWeight, healthField, sanityField, type Build } from "./defaults";
+import { Species } from "$lib/rpg/infra/species.svelte";
+import { type Build } from "./defaults";
+import { carryWeight, sanityField } from "./helpers";
+import { healthField } from "./helpers";
 import { WORKER_DRONE_ABILITIES } from "$lib/rpg/domain/abilities/prefabs";
 
 const BUILD: Build = { base: 40, multiplier: 1.6 };

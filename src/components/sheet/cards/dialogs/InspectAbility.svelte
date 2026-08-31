@@ -1,15 +1,24 @@
 <script lang="ts">
-  import type { Ability } from "$lib/rpg/domain/abilities/types";
+  import type { Ability } from "$lib/rpg/infra/abilities";
   import { localization } from "$i18n";
+  import { abilityName, weaponOf, writtenOf } from "../../abilities";
   import AbilityDetails from "./AbilityDetails.svelte";
+  import ItemDetails from "./ItemDetails.svelte";
 
   let { ability = $bindable() }: { ability: Ability | null } = $props();
+
+  let weapon = $derived(ability ? weaponOf(ability) : undefined);
+  let written = $derived(ability ? writtenOf(ability) : undefined);
 </script>
 
 {#if ability}
   <div class="inspect">
-    <h2 class="title">{ability.name}</h2>
-    <AbilityDetails {ability} />
+    <h2 class="title">{abilityName(ability)}</h2>
+    {#if weapon}
+      <ItemDetails template={weapon} />
+    {:else if written}
+      <AbilityDetails ability={written} />
+    {/if}
     <button onclick={() => (ability = null)}>{localization().ui.close}</button>
   </div>
 {/if}

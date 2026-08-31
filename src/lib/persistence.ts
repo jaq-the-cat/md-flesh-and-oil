@@ -1,10 +1,10 @@
-import { About, Attributes, Bars, Movement, Skills, type SkillModifiers } from "$lib/rpg/config";
-import type { Ability } from "$lib/rpg/domain/abilities/types";
-import type { Container, CustomTemplate, Item, Slot } from "$lib/rpg/domain/items/types";
+import { About, Attributes, Bars, Movement, Skills, type SkillModifiers } from "$lib/rpg/domain/config";
+import type { Ability } from "$lib/rpg/infra/abilities";
+import type { Container, CustomTemplate, Item, Slot } from "$lib/rpg/infra/items";
 import { SPECIES, speciesIdOf, type SpeciesId } from "$lib/rpg/domain/species/registry";
 import { clamp } from "$lib/rpg/helpers";
 import type { NumberField } from "$lib/rpg/infra/types.svelte";
-import type { Species } from "$lib/rpg/infra/species/species.svelte";
+import type { Species } from "$lib/rpg/infra/species.svelte";
 
 /** Written alongside a sheet, but not part of the sheet itself. */
 export type SheetMeta = {

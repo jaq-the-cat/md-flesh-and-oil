@@ -1,4 +1,4 @@
-import type { Species } from "$lib/rpg/infra/species/species.svelte";
+import type { Species } from "$lib/rpg/infra/species.svelte";
 import { AvianDrone } from "./avian_drone";
 import { DisassemblyDrone } from "./disassembly_drone";
 import { Human } from "./human";

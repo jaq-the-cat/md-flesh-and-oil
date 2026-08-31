@@ -1,4 +1,4 @@
-import type { EnemyTemplate } from "./types";
+import type { EnemyTemplate } from "../../infra/enemies";
 
 /** Ported from the old system unchanged: these numbers were already on the d100 scale. */
 export const ENEMY_PREFABS: Record<string, EnemyTemplate[]> = {

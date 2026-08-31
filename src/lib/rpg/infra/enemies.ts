@@ -1,5 +1,5 @@
 import { ITEMS, type ItemId } from "$lib/rpg/domain/items/prefabs";
-import type { ItemTemplate } from "$lib/rpg/domain/items/types";
+import type { ItemTemplate } from "$lib/rpg/infra/items";
 
 /** Stat and passive labels are free text: many are resistances rather than skills. */
 export type EnemyStat = { label: string; value: number };

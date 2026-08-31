@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { createAbility, type Ability, type AbilityTemplate } from "$lib/rpg/domain/abilities/types";
-  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import { createAbility, matches, type Ability, type AbilityEntry } from "$lib/rpg/infra/abilities";
+  import type { Species } from "$lib/rpg/infra/species.svelte";
   import { localization } from "$i18n";
+  import { abilityKey, abilityName } from "../abilities";
   import InspectAbility from "./dialogs/InspectAbility.svelte";
   import NewAbility from "./dialogs/NewAbility.svelte";
   import PrefabAbility from "./dialogs/PrefabAbility.svelte";
@@ -12,24 +13,25 @@
   let abilities = $derived([...species.innate, ...species.custom]);
 
   let available = $derived(
-    species.catalogue.filter((prefab) => !species.innate.some((ability) => ability.name === prefab.name)),
+    species.catalogue.filter((entry) => !species.innate.some((ability) => matches(ability, entry))),
   );
   let inspecting = $state<Ability | null>(null);
   let creating = $state(false);
   let picking = $state(false);
 
-  function addPrefab(template: AbilityTemplate) {
-    species.innate.push(createAbility(template));
+  function addPrefab(entry: AbilityEntry) {
+    species.innate.push(createAbility(entry));
   }
 
-  function addCustom(template: AbilityTemplate) {
-    species.custom.push(createAbility(template));
+  function addCustom(entry: AbilityEntry) {
+    species.custom.push(createAbility(entry));
   }
 
   function remove(ability: Ability) {
-    species.innate = species.innate.filter((other) => other.id !== ability.id);
-    species.custom = species.custom.filter((other) => other.id !== ability.id);
-    if (inspecting?.id === ability.id) inspecting = null;
+    const key = abilityKey(ability);
+    species.innate = species.innate.filter((other) => abilityKey(other) !== key);
+    species.custom = species.custom.filter((other) => abilityKey(other) !== key);
+    if (inspecting && abilityKey(inspecting) === key) inspecting = null;
   }
 </script>
 
@@ -42,8 +44,8 @@
   </div>
 
   <div class="abilityList">
-    {#each abilities as ability (ability.id)}
-      <button class="ability" onclick={() => (inspecting = ability)}>{ability.name}</button>
+    {#each abilities as ability (abilityKey(ability))}
+      <button class="ability" onclick={() => (inspecting = ability)}>{abilityName(ability)}</button>
       <button class="delete" onclick={() => remove(ability)}>{localization().ui.delete}</button>
     {/each}
   </div>

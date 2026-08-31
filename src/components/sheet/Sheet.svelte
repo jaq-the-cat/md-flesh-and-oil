@@ -1,6 +1,6 @@
 <script lang="ts">
   import { SPECIES } from "$lib/rpg/domain/species/registry";
-  import { Species } from "$lib/rpg/infra/species/species.svelte";
+  import { Species } from "$lib/rpg/infra/species.svelte";
   import About from "./cards/About.svelte";
   import SpeciesCard from "./cards/Species.svelte";
   import Equipment from "./cards/Equipment.svelte";
