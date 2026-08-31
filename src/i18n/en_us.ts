@@ -213,6 +213,7 @@ export const en_us = {
     enemies: "Enemy List",
     enemies_missing: "The enemy catalogue has not been ported to the new system yet.",
     unnamed: "Unnamed",
+    not_authorised: "This page is for the game master.",
   },
 
   units: {

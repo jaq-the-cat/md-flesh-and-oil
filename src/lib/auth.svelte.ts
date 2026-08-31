@@ -7,6 +7,12 @@ import {
   signOut,
   type User,
 } from "firebase/auth";
+import { env } from "$env/dynamic/public";
+
+const dmEmails = (env.PUBLIC_DM_EMAILS ?? "")
+  .split(",")
+  .map((email) => email.trim().toLowerCase())
+  .filter(Boolean);
 
 let current = $state<User | null>(null);
 let ready = $state(false);
@@ -30,6 +36,11 @@ export const session = {
   },
   get signedIn() {
     return current !== null && !current.isAnonymous;
+  },
+  /** Hides the DM page from other players. Not security: the sheets stay world-readable. */
+  get isDm() {
+    const email = current?.email?.toLowerCase();
+    return email != null && dmEmails.includes(email);
   },
 };
 

@@ -3,8 +3,10 @@
   import type { StoredSheet } from "$lib/persistence";
   import type { SPECIES } from "$lib/rpg/domain/species/registry";
   import { collectionStore } from "sveltefire";
+  import { db } from "$lib/db";
+  import { SHEETS_PATH } from "$lib/sheets";
 
-  let { sheets }: { sheets: ReturnType<typeof collectionStore<StoredSheet>> } = $props();
+  const sheets = collectionStore<StoredSheet>(db.firestore!, SHEETS_PATH);
 
   const speciesName = (id: keyof typeof SPECIES) => localization().species[id] ?? id;
 </script>
