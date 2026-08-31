@@ -11,6 +11,11 @@ const solver = (name: string, damage: string, range: number, info = "") =>
   weapon(name, Skills.absolute_solver, damage, range, info);
 
 export const HUMAN_ABILITIES: AbilityTemplate[] = [
+  {
+    kind: "text",
+    name: "Adaptable",
+    info: "+1 Expertises available during character creation. Cap increases to 3.",
+  },
   melee(
     "Human Bite",
     "1d20 + Melee Pierce",
@@ -19,6 +24,11 @@ export const HUMAN_ABILITIES: AbilityTemplate[] = [
 ];
 
 export const WORKER_DRONE_ABILITIES: AbilityTemplate[] = [
+  {
+    kind: "text",
+    name: "Adaptable",
+    info: "+1 Expertises available during character creation. Cap increases to 3.",
+  },
   melee(
     "Worker Bite",
     "1d20 + Melee Pierce",
@@ -68,12 +78,6 @@ export const SOLVER_DRONE_ABILITIES: AbilityTemplate[] = [
 ];
 
 export const PREDATOR_DRONE_ABILITIES: AbilityTemplate[] = [
-  melee(
-    "Predator Bite",
-    "1d20 + Melee Pierce",
-    "If used on a Worker Drone, drain 20 Oil. If used on a Human, remove 20 Blood. If target consents, damage is 1.",
-  ),
-  melee("Claws", "1d30 + Melee Slash"),
   {
     kind: "skill_modifier",
     name: "Ambush Predator",
@@ -81,26 +85,20 @@ export const PREDATOR_DRONE_ABILITIES: AbilityTemplate[] = [
     skill: Skills.stealth,
     amount: 15,
   },
-];
-
-export const AVIAN_DRONE_ABILITIES: AbilityTemplate[] = [
   melee(
-    "Worker Bite",
+    "Predator Bite",
     "1d20 + Melee Pierce",
     "If used on a Worker Drone, drain 20 Oil. If used on a Human, remove 20 Blood. If target consents, damage is 1.",
   ),
-  melee("Small Claws", "1d30 + Melee Slash"),
-  melee(
-    "Talon Dive",
-    "1d30 + Melee Slash",
-    "Must be initiated from flight. When used, move a maximum of 20 meters horizontally in the direction of the target.",
-  ),
-  melee("Talon Strike", "1d30 + Melee Slash"),
+  melee("Claws", "1d30 + Melee Slash"),
+];
+
+export const AVIAN_DRONE_ABILITIES: AbilityTemplate[] = [
   {
-    kind: "attribute_modifier",
+    kind: "skill_modifier",
     name: "Wings",
     info: "Activated without spending an Action. Permits flight, but may not be used as a weapon or shield.",
-    attribute: Attributes.agility,
+    skill: Skills.finesse,
     amount: 10,
   },
   {
@@ -117,9 +115,31 @@ export const AVIAN_DRONE_ABILITIES: AbilityTemplate[] = [
     skill: Skills.flying,
     amount: 10,
   },
+  melee(
+    "Worker Bite",
+    "1d20 + Melee Pierce",
+    "If used on a Worker Drone, drain 20 Oil. If used on a Human, remove 20 Blood. If target consents, damage is 1.",
+  ),
+  melee("Small Claws", "1d30 + Melee Slash"),
+  melee(
+    "Talon Dive",
+    "1d30 + Melee Slash",
+    "Must be initiated from flight. When used, move a maximum of 20 meters horizontally in the direction of the target.",
+  ),
+  melee("Talon Strike", "1d30 + Melee Slash"),
 ];
 
 export const DISASSEMBLY_DRONE_ABILITIES: AbilityTemplate[] = [
+  {
+    kind: "text",
+    name: "Visor and Sensors",
+    info: "+10 Passive Perception and -10 Stealth while the Visor and Sensors are on. Toggle with an Action; limits vision to 10m when off",
+  },
+  {
+    kind: "text",
+    name: "Built for Killing",
+    info: "+10 to all damage rolls.",
+  },
   melee(
     "Disassembly Bite",
     "1d40 + Melee Pierce",
@@ -139,23 +159,4 @@ export const DISASSEMBLY_DRONE_ABILITIES: AbilityTemplate[] = [
     5,
     "Bootloops self on failure. May only be used once per fight. Difficulty is 25 + Missing Health.",
   ),
-  {
-    kind: "skill_modifier",
-    name: "Visor and Sensors",
-    info: "While the visor and sensors are on. Toggle with an Action; limits vision to 3m.",
-    skill: Skills.stealth,
-    amount: -20,
-  },
-  {
-    kind: "skill_modifier",
-    name: "Headband Sensors",
-    info: "While the headband sensors are on. The same bonus applies to Passive Perception.",
-    skill: Skills.investigation,
-    amount: 20,
-  },
-  {
-    kind: "text",
-    name: "Built for Killing",
-    info: "+10 to all damage rolls.",
-  },
 ];

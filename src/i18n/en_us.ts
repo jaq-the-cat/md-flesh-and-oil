@@ -188,6 +188,8 @@ export const en_us = {
     capacity: "Capacity",
     current: "Current",
     container: "Container",
+    passivePerception: "Passive Perception",
+    passiveDodge: "Passive Dodge",
   },
 
   auth: {

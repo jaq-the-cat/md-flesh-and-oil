@@ -49,6 +49,13 @@
         {/each}
       </select>
     {/each}
+    <span>{localization().fields.passivePerception}</span>
+    <span></span>
+    <span class=skillValue>{species.passivePerception()}</span>
+    
+    <span>{localization().fields.passiveDodge}</span>
+    <span></span>
+    <span class=skillValue>{species.passiveDodge()}</span>
   </section>
 </div>
 

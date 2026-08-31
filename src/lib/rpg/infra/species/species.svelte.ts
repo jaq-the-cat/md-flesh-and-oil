@@ -83,6 +83,14 @@ export abstract class Species {
     return MIN_SKILL_BONUS + normalized * STAT_SPAN + skillModifier;
   }
 
+  passivePerception() {
+    return Math.floor(this.attributes.perception!.getValue() / 1.5);
+  }
+
+  passiveDodge() {
+    return Math.floor((this.attributes.dexterity!.getValue() + this.attributes.agility!.getValue()) / 3);
+  }
+
   /** Copies into `target` every value it shares with `source`, leaving the rest at its defaults. */
   static from<T extends Species>(target: T, source: Species): T {
     for (const about of Object.values(About)) {
