@@ -1,45 +1,47 @@
 <script lang="ts">
-  import { Character } from "$lib/rpg/infra/character.svelte";
+  import { About, Alignment } from "$lib/rpg/config";
+  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import { localization } from "$i18n";
+  import { fields } from "../fields";
   import RulebookSnippet from "./dialogs/RulebookSnippet.svelte";
-  import About from "../../rulebook/snippets/about.svelte";
+  import AboutRulebook from "../../rulebook/snippets/about.svelte";
 
-  let { character = $bindable() as Character } = $props();
-  let aboutRb = $state(false);
+  let {
+    species,
+  }: {
+    species: Species;
+  } = $props();
+
+  // `about` holds strings, so an alignment is stored as its enum member name.
+  const alignments = Object.values(Alignment);
+
+  let aboutRulebook = $state(false);
 </script>
 
 <div id="about">
-  <RulebookSnippet title="About" bind:open={aboutRb}>
-    <About />
+  
+  <RulebookSnippet title={localization().cards.about} bind:open={aboutRulebook}>
+    <AboutRulebook />
   </RulebookSnippet>
+
   <ul>
-    {#each Object.entries(character.about) as ss}
-      <li>
-        <span>{ss[0]}</span>
-        <input
-          bind:value={
-            () => character.about[ss[0]],
-            (v) => {
-              if (v.length < 50) character.about[ss[0]] = v ?? "";
-            }
-          }
-          onfocusout={() => character.upload("about", character.about)}
-          type="text"
-        />
+    {#each fields(About, species.about, localization().about) as field (field.key)}
+      <li class:stacked={field.key === About.biography}>
+        <span class="field-label">{field.label}</span>
+        {#if field.key === About.alignment}
+          <select bind:value={species.about[field.key]}>
+            {#each alignments as alignment}
+              <option value={alignment}>{localization().alignments[alignment]}</option>
+            {/each}
+          </select>
+        {:else if field.key === About.biography}
+          <textarea bind:value={species.about[field.key]}></textarea>
+        {:else}
+          <input type="text" maxlength="49" bind:value={species.about[field.key]} />
+        {/if}
       </li>
     {/each}
   </ul>
-  <h2>Appearance</h2>
-  <textarea
-    class="appearance"
-    bind:value={character.appearance}
-    onfocusout={() => character.upload("appearance", character.appearance)}
-  ></textarea>
-  <h2>Biography</h2>
-  <textarea
-    class="bio"
-    bind:value={character.biography}
-    onfocusout={() => character.upload("biography", character.biography)}
-  ></textarea>
 </div>
 
 <style lang="scss">
@@ -47,29 +49,37 @@
     grid-area: about;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+  }
 
-    h2 {
-      margin: 0;
-    }
+  ul {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    margin: 0;
+  }
 
-    ul {
-      display: flex;
-      flex-direction: column;
-      row-gap: 5px;
-    }
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 
-    li {
-      display: flex;
-      justify-content: space-between;
+    * {
+      font-size: 1.25rem;
     }
+  }
 
-    .appearance {
-      height: 5lh;
-    }
+  /* The biography takes whatever height the card is given. */
+  .stacked {
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    .bio {
-      flex-grow: 2;
-    }
+  textarea {
+    flex-grow: 1;
+    min-height: 6lh;
+    max-height: none;
   }
 </style>

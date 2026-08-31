@@ -35,9 +35,9 @@
     the head, instantly kill the opponent.
   </li>
   <ul>
-    <li>Head: -4</li>
-    <li>Arms: -3</li>
-    <li>Legs: -3</li>
+    <li>Head: -40</li>
+    <li>Arms: -20</li>
+    <li>Legs: -20</li>
   </ul>
   <li>Move</li>
   <ul>
@@ -55,9 +55,6 @@
   </li>
   <li>
     Equip/Swap/Unequip Item
-    <ul>
-      <li>Disassembly Drones gain 1 Heat when switching Arm Weapons.</li>
-    </ul>
   </li>
   <li>Hide</li>
   <ul>
@@ -86,7 +83,7 @@
     <li>Ambushing</li>
     <ul>
       <li>Allows Attacking.</li>
-      <li>Gives +3 Hit chance where you're looking.</li>
+      <li>Gives +15 Hit chance where you're looking.</li>
       <li>Reduces movement to 3 meters and prevents Dashing.</li>
       <li>Leaving this Stance is free.</li>
     </ul>
@@ -94,9 +91,8 @@
     <ul>
       <li>Allows Dodging.</li>
       <li>
-        Sets your Passive Dodge to an Acrobatics roll +2 and ends your turn.
+        Gain +10 Passive Dodge and ends your turn
       </li>
-      <li>Any Dodge reactions done while in Dodging stance also gain a +2.</li>
       <li>
         If you see a Melee attack coming, they must do a Hit check against your
         Passive Dodge even if you don't use a reaction.
@@ -106,15 +102,15 @@
     <li>Bracing (must have a blocking item)</li>
     <ul>
       <li>Allows Blocking.</li>
-      <li>Gives +3 to reaction Blocking.</li>
+      <li>Gives +20 to reaction Blocking.</li>
       <li>Leaving this Stance costs 1 Action.</li>
     </ul>
   </ul>
   <li>Grapple</li>
   <ul>
     <li>
-      Run a Melee check against your target, and they can use an Athletics,
-      Acrobatics or Melee check to counter it.
+      Run a Melee check against your target, and they can use an Athletics or Melee
+      check to counter it.
     </li>
     <li>If you win, you grapple them to the ground, stunning them.</li>
     <li>If they win, you immediately end your turn.</li>
@@ -122,16 +118,12 @@
   <li>Throw</li>
   <ul>
     <li>
-      Run a Strength Melee check against your target, and they can use an
+      Run a Melee check against your target, and they can use an
       Athletics or Strength check to counter it.
     </li>
     <li>
-      If you win, you can throw them up to 1d20 + Strength meters away. You deal
-      fall damage multiplied by 2 based on that roll.
-    </li>
-    <li>
-      If they have a Jump Height of 4 and you throw them 10 meters, you deal
-      (10-4)*2=12 damage
+      If you win, you can throw them up to 1d4 meters away, plus 1 meter per 10
+      Strength. You deal fall damage multiplied by 2 based on that roll.
     </li>
     <li>If they win, you immediately end your turn.</li>
   </ul>

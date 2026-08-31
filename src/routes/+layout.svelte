@@ -1,25 +1,32 @@
 <script lang="ts">
   import "./global.scss";
+  import { onMount } from "svelte";
   import { FirebaseApp } from "sveltefire";
   import { initializeApp } from "firebase/app";
   import { getFirestore } from "firebase/firestore";
   import { getAuth } from "firebase/auth";
+  import { env } from "$env/dynamic/public";
+  import { logOut, session, startSession } from "$lib/auth.svelte";
   import { db } from "$lib/db";
+  import { localization } from "$i18n";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDyDRKb1jBN_RezKt9aQkT0RigtLLHA1QM",
-    authDomain: "flesh-and-oil.firebaseapp.com",
-    projectId: "flesh-and-oil",
-    storageBucket: "flesh-and-oil.firebasestorage.app",
-    messagingSenderId: "235579855348",
-    appId: "1:235579855348:web:4bad8fec111bf31cef29a1",
-  };
-
-  const app = initializeApp(firebaseConfig);
+  // Not secrets: Firebase web config always ships to the browser. Kept out of the repo so
+  // each deployment can point at its own project.
+  const app = initializeApp({
+    apiKey: env.PUBLIC_FIREBASE_API_KEY,
+    authDomain: env.PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: env.PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: env.PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: env.PUBLIC_FIREBASE_APP_ID,
+  });
   const firestore = getFirestore(app);
   const auth = getAuth(app);
 
   db.firestore = firestore;
+
+  // Every write needs an identity for the security rules to check.
+  onMount(startSession);
 </script>
 
 <svelte:head>
@@ -30,7 +37,14 @@
   <a data-sveltekit-reload class="buttonStyle" href="/"
     >Character Sheet Creator</a
   >
+  <a data-sveltekit-reload class="buttonStyle" href="/sheets">My Sheets</a>
   <a data-sveltekit-reload class="buttonStyle" href="/rulebook">Rulebook</a>
+  {#if session.signedIn}
+    <span class="who">{session.email}</span>
+    <button class="buttonStyle" onclick={logOut}>{localization().auth.log_out}</button>
+  {:else if session.ready}
+    <a data-sveltekit-reload class="buttonStyle" href="/login">{localization().auth.log_in}</a>
+  {/if}
 </header>
 
 <FirebaseApp {auth} {firestore}>
@@ -38,6 +52,11 @@
 </FirebaseApp>
 
 <style>
+  .who {
+    align-self: center;
+    opacity: 0.8;
+  }
+
   header {
     display: flex;
     justify-content: center;

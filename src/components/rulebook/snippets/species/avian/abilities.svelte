@@ -2,13 +2,13 @@
 <h3>Wings</h3>
 <p>Can be activated without spending an Action.</p>
 <p>Permits flight, but may not be used as a weapon or shield.</p>
-<p>When active, temporarily increases Agility by +1.</p>
+<p>When flying, increase Passive Dodge by +10.</p>
 <h3>Talon Carry</h3>
 <p>
   Avian Drones can pick up Heavy objects such as other Drones, heavy weapons or
   containers using their Talons. This halves their Flying Speed.<br />
-  The total weight they can carry is their Strength value multiplied by 10, up to
-  100kg at 10 Strength.
+  The total weight they can carry in kilograms is equal to their Strength value, up
+  to 100kg at 100 Strength.
 </p>
 <h3>Flying</h3>
 <p>
@@ -30,5 +30,5 @@
 <ul>
   <li>Intact Drone Parts heal for 1d40 + Mechanics HP.</li>
   <li>Damaged Drone Parts heal for 1d20 + Mechanics HP.</li>
-  <li>Replacing a damaged limb heals for 1/4 + Mechanics Max HP.</li>
+  <li>Replacing a damaged limb heals for 1/4 of Max HP plus your Mechanics bonus.</li>
 </ul>

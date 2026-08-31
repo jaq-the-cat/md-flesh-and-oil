@@ -1,7 +1,7 @@
 <h2>Abilities</h2>
 <h3>Eat (Insane)</h3>
 <p>
-  Can be used on a dead body (Human or Drone) to drain their entire Fresh Oil
+  Can be used on a dead body (Human or Drone) to drain their entire Oil
   reserve at once. Eating someone during combat takes 2 turns to complete.
 </p>
 <h2>Drone Repair</h2>
@@ -18,14 +18,14 @@
 <ul>
   <li>Intact Drone Parts heal for 1d40 + Mechanics HP.</li>
   <li>Damaged Drone Parts heal for 1d20 + Mechanics HP.</li>
-  <li>Replacing a damaged limb heals for 1/4 + Mechanics Max HP.</li>
+  <li>Replacing a damaged limb heals for 1/4 of Max HP plus your Mechanics bonus.</li>
 </ul>
 <h2>Disassembly Drone Part Scavenging [NC]</h2>
 <p>
   Worker Drones can choose to replace their own limbs with scavenged Disassembly
   Drone limbs.
 </p>
-<p>The roll difficulty is 10 + your missing HP.</p>
+<p>The roll difficulty is 50 + your missing HP.</p>
 <p>
   Succeeding in limb replacement triggers a Solver Infection roll of 1d(10 -
   Limbs Replaced).
@@ -34,7 +34,7 @@
   DD Arms grant them a hand and one singular weapon, the last one used by the
   Disassembly Drone before the limb was removed.
 </p>
-<p>Switching weapons when using a DD arm requires 1 Fresh or Used Oil.</p>
+<p>Switching weapons when using a DD arm requires 10 Oil.</p>
 <p>
   DD Legs, when they are both replaced, increase running speed to regular
   Disassembly Drone levels and jump height to 6 meters.
@@ -48,6 +48,6 @@
 <p>This should be kept secret from the player.</p>
 <p>
   Drones that have been infected in the previous or current game sessions have
-  their Oil loss and Heat gain doubled by all sources and cannot infect Worker
+  their Oil loss doubled by all sources and cannot infect Worker
   Drones using Bite.
 </p>

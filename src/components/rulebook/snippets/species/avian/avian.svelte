@@ -1,9 +1,8 @@
 <script>
-  import OilFresh from "../reuse/oilFresh.svelte";
+  import Oil from "../reuse/oil.svelte";
   import Sanity from "../reuse/sanity.svelte";
   import Abilities from "./abilities.svelte";
   import Bars from "./bars.svelte";
-  import Modifiers from "./modifiers.svelte";
   import Speed from "./speed.svelte";
 </script>
 
@@ -18,7 +17,6 @@
 <em>Design by weebie</em>
 <Bars />
 <Speed />
-<Modifiers />
-<OilFresh />
+<Oil />
 <Sanity />
 <Abilities />

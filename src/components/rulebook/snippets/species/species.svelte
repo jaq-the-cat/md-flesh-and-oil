@@ -49,6 +49,6 @@
     margin: 10px 0;
     display: flex;
     flex-direction: column;
-    row-gap: 5px;
+    row-gap: 10px;
   }
 </style>

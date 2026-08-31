@@ -8,7 +8,6 @@
 
 {#if title}
   <button class="cardTitle" onclick={() => (open = !open)}>{title}</button>
-  <br />
 {/if}
 <modal style={open ? "" : "display: none"}>
   {@render children?.()}

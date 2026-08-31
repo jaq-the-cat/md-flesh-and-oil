@@ -1,344 +1,174 @@
 <script lang="ts">
-  import { invalidText } from "$lib";
-  import { Character } from "$lib/rpg/infra/character.svelte";
-  import { Container, Item } from "$lib/rpg/infra/items.svelte";
-  import { prefabs } from "$lib/rpg/instances/objectLists.svelte";
-  import EquipmentSlot from "./EquipmentSlot.svelte";
+  import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import {
+    containerWeight,
+    createContainer,
+    createItem,
+    itemWeight,
+    SLOTS,
+    type Container,
+    type ContainerTemplate,
+    type Item,
+    type ItemTemplate,
+    type Slot,
+  } from "$lib/rpg/domain/items/types";
+  import { localization } from "$i18n";
   import InspectItem from "./dialogs/InspectItem.svelte";
+  import NewItem from "./dialogs/NewItem.svelte";
+  import PrefabItem from "./dialogs/PrefabItem.svelte";
 
-  let { character = $bindable() as Character } = $props();
+  let { species }: { species: Species } = $props();
 
-  let newItem = $state({ name: "", weight: 1 });
+  let containers = $derived(species.containers);
+  let equipped = $derived(species.equipped);
+  let selectedIndex = $state(0);
+  let selected = $derived(containers[selectedIndex]);
 
-  let containers = $derived(character.containers);
-  let selectedContainer = $state(0);
-  let container = $derived(containers[selectedContainer]);
+  /** Anything that can go in a slot, so it can never fall out of sync with the containers. */
+  let equippable = $derived(containers.flatMap((container) => [container, ...container.items]).slice(1));
 
-  let itemInspect: Item | null = $state(null);
+  let inspecting = $state<Item | null>(null);
 
-  let selectedPrefabCategory = $state("Containers");
-  let selectedPrefab = $state(0);
+  let creating = $state(false);
+  let picking = $state(false);
 
-  function addItem() {
-    let item = new Item(newItem.name, newItem.weight);
-    container.addOne(item);
-    character.itemList.refresh(containers);
-    character.upload("containers", containers);
+  function addContainer(template: ContainerTemplate) {
+    containers.push(createContainer(template));
+    selectedIndex = containers.length - 1;
   }
 
-  function addContainer() {
-    const newContainer = new Container(newItem.name, newItem.weight, 1);
-    containers.push(newContainer);
-    character.itemList.push(newContainer);
-    newItem.name = "";
-    newItem.weight = 1;
-    character.itemList.refresh(containers);
-    character.upload("containers", containers);
-    selectedContainer = containers.length - 1;
+  function add(template: ContainerTemplate | ItemTemplate) {
+    if ("carry" in template) addContainer(template);
+    else selected.items.push(createItem(template));
   }
 
-  function addPrefab(item: Item | Container) {
-    const cloned = item.clone();
-    if ("inventory" in cloned) {
-      containers.push(cloned);
-      selectedContainer = containers.length - 1;
-    } else {
-      container.addOne(cloned);
+  function removeSelectedContainer() {
+    if (selectedIndex === 0) return; // the first container is what you carry on your person
+    const [removed] = containers.splice(selectedIndex, 1);
+    unequip([removed.id, ...removed.items.map((item) => item.id)]);
+    selectedIndex -= 1;
+  }
+
+  function removeItem(item: Item) {
+    selected.items = selected.items.filter((other) => other.id !== item.id);
+    unequip([item.id]);
+    if (inspecting?.id === item.id) inspecting = null;
+  }
+
+  function moveItem(item: Item, target: Container) {
+    selected.items = selected.items.filter((other) => other.id !== item.id);
+    target.items.push(item);
+    inspecting = null;
+  }
+
+  function unequip(ids: string[]) {
+    for (const slot of SLOTS) {
+      const id = equipped[slot];
+      if (id !== null && ids.includes(id)) equipped[slot] = null;
     }
-    character.itemList.refresh(containers);
-    character.upload("containers", containers);
-  }
-
-  function removeContainer(index: number) {
-    if (index === 0) return;
-    const container = containers.splice(index, 1)[0];
-
-    let equipmentRemoved: { [key: string]: null } = {};
-    container.inventory.forEach((item) => {
-      character.itemList.removeElement(item);
-      equipmentRemoved = {
-        ...equipmentRemoved,
-        ...character.checkItemWasRemoved(item.id),
-      };
-    });
-    character.itemList.removeElement(container);
-    equipmentRemoved = {
-      ...equipmentRemoved,
-      ...character.checkItemWasRemoved(container.id),
-    };
-
-    character.uploadMultiple({
-      containers,
-      ...equipmentRemoved,
-    });
-
-    character.maxWeight = character.getMaxWeight();
-    selectedContainer = index - 1;
-  }
-
-  function removeItem(item: Item, index: number) {
-    container.inventory.splice(index, 1);
-    character.itemList.removeElement(item);
-
-    const equipmentRemoved = character.checkItemWasRemoved(item.id);
-
-    character.uploadMultiple({
-      containers,
-      ...equipmentRemoved,
-    });
-  }
-
-  function inspectClicked(item: Item) {
-    itemInspect = item;
-  }
-
-  function transferItem(item: Item, targetContainerIndex: number | null) {
-    if (targetContainerIndex === null) return;
-    let index = container.inventory.findIndex(
-      (itemCheck) => itemCheck.toString() === item.toString()
-    );
-    container.inventory.splice(index, 1);
-    character.itemList.removeElement(item);
-    if (character.left === item.name) character.left = null;
-    if (character.right === item.name) character.right = null;
-    if (character.front === item.name) character.front = null;
-    if (character.back === item.name) character.back = null;
-    containers[targetContainerIndex].inventory.push(item);
-    character.itemList.refresh(containers);
-    itemInspect = null;
-    character.upload("containers", containers);
   }
 </script>
 
 <div id="equipment">
-  <header>
-    <h2>Equipment</h2>
-    <span
-      style={character.weight < 0 || character.weight > character.maxWeight
-        ? invalidText
-        : ""}
-    >
-      {character.weight}/{character.maxWeight} kg
-    </span>
-  </header>
-  <h2>Add Custom Item</h2>
-  <div class="newItem">
-    <div class="newItemInputs">
-      <input class="newItemName" bind:value={newItem.name} type="text" />
-      <input class="newItemWeight" bind:value={newItem.weight} type="number" />
-    </div>
-    <button class="addItem" onclick={() => addItem()}>Add as Item</button>
-    <button class="addContainer" onclick={() => addContainer()}>
-      Add as Container
-    </button>
+  <h2 class="cardTitle">{localization().cards.equipment}</h2>
+
+  <div class="actions">
+    <button onclick={() => (creating = true)}>{localization().ui.add_custom}</button>
+    <button onclick={() => (picking = true)}>{localization().ui.add_prefab}</button>
   </div>
-  <h2>Add Prefab</h2>
-  <div class="addPrefab">
-    <select bind:value={selectedPrefab} class="prefabSelect">
-      {#each prefabs[selectedPrefabCategory] as prefab, i}
-        <option value={i}>{prefab.toStringWeight()}</option>
+
+  <h2>{localization().fields.container}</h2>
+  <div class="containers">
+    <select bind:value={selectedIndex}>
+      {#each containers as container, index}
+        <option value={index}>
+          {container.name} [{containerWeight(container)}/{container.carry ?? Math.floor(species.carryWeight)}kg]
+        </option>
       {/each}
     </select>
-    <select
-      bind:value={selectedPrefabCategory}
-      onchange={() => (selectedPrefab = 0)}
-      class="prefabCategory"
-    >
-      {#each Object.keys(prefabs) as category}
-        <option value={category}>{category}</option>
-      {/each}
-    </select>
-    <button
-      class="prefabAdd"
-      onclick={() => addPrefab(prefabs[selectedPrefabCategory][selectedPrefab])}
-      >Add Prefab</button
-    >
+    <button class="delete" onclick={removeSelectedContainer}>{localization().ui.delete}</button>
   </div>
-  <h2>Container</h2>
-  <div class="containerSelect">
-    <select bind:value={selectedContainer}>
-      {#each containers as container, i}
-        <option value={i}>{container}</option>
-      {/each}
-    </select>
-    <button class="delete" onclick={() => removeContainer(selectedContainer)}
-      >DEL</button
-    >
-  </div>
-  <div class="itemList">
-    {#each container.inventory as item, index}
-      <button
-        class="itemDetails"
-        onclick={() => {
-          inspectClicked(item);
-        }}
-      >
-        <span class="itemName">{item}</span>
-        <span class="itemWeight">
-          {#if item.weight}
-            [{item.weight}kg]
-          {/if}
-        </span>
+
+  <div class="items">
+    {#each selected.items as item (item.id)}
+      <button class="item" onclick={() => (inspecting = item)}>
+        <span>{item.name}</span>
+        <span>{itemWeight(item)}kg</span>
       </button>
-      <button class="delete" onclick={() => removeItem(item, index)}>DEL</button
-      >
+      <button class="delete" onclick={() => removeItem(item)}>{localization().ui.delete}</button>
     {/each}
   </div>
-  <h2>Equipped</h2>
+
+  <h2>{localization().ui.equipped}</h2>
   <div class="equipped">
-    <EquipmentSlot
-      slotName="Left Hand"
-      fieldName="left"
-      bind:character
-      bind:slot={character.left}
-    />
-    <EquipmentSlot
-      slotName="Right Hand"
-      fieldName="right"
-      bind:character
-      bind:slot={character.right}
-    />
-    <EquipmentSlot
-      slotName="Left Shoulder"
-      fieldName="leftShoulder"
-      bind:character
-      bind:slot={character.leftShoulder}
-    />
-    <EquipmentSlot
-      slotName="Right Shoulder"
-      fieldName="rightShoulder"
-      bind:character
-      bind:slot={character.rightShoulder}
-    />
-    <EquipmentSlot
-      slotName="Front"
-      fieldName="front"
-      bind:character
-      bind:slot={character.front}
-    />
-    <EquipmentSlot
-      slotName="Back"
-      fieldName="back"
-      bind:character
-      bind:slot={character.back}
-    />
+    {#each SLOTS as slot}
+      <span>{localization().slots[slot]}</span>
+      <select bind:value={equipped[slot]}>
+        <option value={null}></option>
+        {#each equippable as entry (entry.id)}
+          <option value={entry.id}>{entry.name}</option>
+        {/each}
+      </select>
+    {/each}
   </div>
 </div>
 
-<InspectItem
-  bind:itemInspect
-  bind:containers={character.containers}
-  bind:character
-  {transferItem}
-/>
+<InspectItem bind:item={inspecting} {containers} {moveItem} />
+<NewItem bind:open={creating} onCreate={add} />
+<PrefabItem bind:open={picking} onAdd={add} />
 
-<style scoped lang="scss">
-  header {
+<style lang="scss">
+  #equipment {
+    grid-area: equipment;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .newItem {
+  h2 {
+    margin: 0;
+  }
+
+  .actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    justify-content: stretch;
-
-    .newItemInputs {
-      grid-column: 1 / 3;
-      display: flex;
-      column-gap: 5px;
-
-      .newItemName {
-        flex-grow: 2;
-      }
-    }
-
-    .newItemWeight {
-      min-width: 6ch;
-      max-width: 30%;
-    }
-
-    .addContainer {
-      grid-column: 2 / 3;
-    }
+    gap: 10px;
   }
 
-  .addPrefab {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    .prefabSelect {
-      grid-column: 1 / 3;
-    }
-    .prefabCategory {
-      grid-column: 1;
-    }
-    .prefabAdd {
-      grid-column: 2;
-    }
-  }
-
-  .containerSelect {
-    grid-column: 1 / 3;
+  .containers {
     display: flex;
-    flex-direction: row;
-
-    column-gap: 5px;
+    gap: 10px;
 
     select {
-      flex-grow: 2;
+      flex-grow: 1;
     }
+  }
+
+  .items {
+    display: grid;
+    grid-template-columns: auto min-content;
+    align-content: start;
+    gap: 10px;
+    flex-grow: 1;
+    min-height: 6lh;
+    overflow-y: auto;
+  }
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 5px;
   }
 
   .delete {
     padding: 5px 15px;
   }
 
-  .itemList {
-    display: grid;
-    max-width: 100%;
-    grid-template-columns: auto min-content;
-    max-height: 40vh;
-    overflow-y: auto;
-    grid-column: 1 / 4;
-    gap: 5px;
-
-    .itemDetails {
-      text-align: start;
-      padding-left: 5px;
-    }
-
-    .itemName {
-      justify-self: start;
-      align-self: center;
-      width: 100%;
-    }
-
-    .itemWeight {
-      justify-self: end;
-      align-self: center;
-    }
-  }
-
   .equipped {
     display: grid;
     grid-template-columns: max-content auto;
-    gap: 5px;
-  }
-
-  #equipment {
-    grid-area: equipment;
-
-    > * {
-      margin-bottom: 5px;
-    }
-  }
-
-  h2 {
-    grid-column: 1 / 3;
-    margin: 0;
+    align-items: center;
+    gap: 10px;
   }
 </style>

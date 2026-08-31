@@ -1,200 +1,67 @@
 <script lang="ts">
-  import type { Character } from "$lib/rpg/infra/character.svelte";
-  import type {
-    AmmoItem,
-    Container,
-    Healing,
-    Item,
-    LiquidContainer,
-    MeleeWeapon,
-    RangedWeapon,
-    Throwable,
-  } from "$lib/rpg/infra/items.svelte";
+  import type { Container, Item } from "$lib/rpg/domain/items/types";
+  import { localization } from "$i18n";
+  import ItemDetails from "./ItemDetails.svelte";
 
   let {
-    itemInspect = $bindable(),
-    containers = $bindable(),
-    character = $bindable(),
-    transferItem,
+    item = $bindable(),
+    containers,
+    moveItem,
   }: {
-    itemInspect:
-      | Item
-      | MeleeWeapon
-      | RangedWeapon
-      | AmmoItem
-      | Throwable
-      | LiquidContainer
-      | Healing
-      | null;
+    item: Item | null;
     containers: Container[];
-    character: Character;
-    transferItem: (item: Item, containerIndex: number | null) => void;
+    moveItem: (item: Item, target: Container) => void;
   } = $props();
 
-  let transferToContainer = $state(0);
+  let targetIndex = $state(0);
 </script>
 
-{#if itemInspect}
-  <div
-    class="modal inspect"
-    style={itemInspect === null ? "display: none" : ""}
-  >
-    <span class="itemToInspect"
-      >{itemInspect}
-      {#if itemInspect?.weight}
-        <span>[{itemInspect!.weight}kg]</span>
-      {/if}</span
-    >
-    {#if itemInspect?.type === "melee"}
-      <h2>Damage</h2>
-      <span>{(itemInspect as MeleeWeapon).damage}</span>
-      {#if (itemInspect as MeleeWeapon).info}
-        <h2>Difficulty</h2>
-        <span>{(itemInspect as MeleeWeapon).info}</span>
-      {/if}
-    {:else if "range" in itemInspect!}
-      <h2>Hit</h2>
-      <span>{itemInspect.hit ?? ""}</span>
-      <h2>Damage</h2>
-      <span>{itemInspect.damage}</span>
-      {#if "ammo" in itemInspect && itemInspect.ammo}
-        <h2>Ammo</h2>
-        <span class="inputs">
-          <input
-            min="0"
-            max={itemInspect.ammo.current}
-            type="number"
-            bind:value={itemInspect.ammo.current}
-            onfocusout={() => character.upload("containers", containers)}
-          />
-          /
-          <span>{itemInspect.ammo.capacity}</span>
-        </span>
-        <h2>Reload</h2>
-        <span
-          >{itemInspect.ammo.reloadTurns}
-          {itemInspect.ammo.reloadTurns != 1 ? "Turns" : "Turn"}</span
-        >
-        <button
-          onclick={() => {
-            const result = (itemInspect as RangedWeapon).tryReload(
-              containers,
-              itemInspect as RangedWeapon
-            );
-            if (!result) {
-              alert("No Ammo :(");
-            } else {
-              character.upload("containers", containers);
-            }
-          }}>Reload</button
-        >
-      {/if}
-      <h2>Stats</h2>
-      <span>{itemInspect.range} Range</span>
-      {#if "rate" in itemInspect && itemInspect.rate}
-        <span>{itemInspect.rate} Rate</span>
-      {/if}
-      {#if itemInspect.info}
-        <span>{itemInspect.info}</span>
-      {/if}
-    {:else if "heal" in itemInspect!}
-      <h2>Heal</h2>
-      <span>{itemInspect.heal ?? ""}</span>
-      <h2>Works On</h2>
-      <span>{itemInspect.worksOn ?? ""}</span>
-      {#if itemInspect.revive}
-        <h2>Revive</h2>
-        <span>{itemInspect.revive}</span>
-      {/if}
-      {#if itemInspect.requirements}
-        <h2>Requirements</h2>
-        <span>{itemInspect.requirements}</span>
-      {/if}
-    {:else if "current" in itemInspect!}
-      <h2>Current</h2>
-      <input
-        type="number"
-        bind:value={
-          () => (itemInspect as LiquidContainer).current,
-          (v) => {
-            if (v < 0 || v > (itemInspect as LiquidContainer).capacity) return;
-            (itemInspect as LiquidContainer).current = v;
-          }
-        }
-        onfocusout={() => character.upload("containers", containers)}
-        step={itemInspect.type === "liquid" ? 0.1 : 1}
-        min="0"
-        max={itemInspect.capacity}
-      />
-      <h2>Capacity</h2>
-      <span>{itemInspect.capacity ?? ""}</span>
-    {/if}
-    <h2>Transfer</h2>
-    <select bind:value={transferToContainer}>
-      {#each containers as container, i}
-        <option value={i}>{container}</option>
+{#if item}
+  <div class="inspect">
+    <h2 class="title">{item.name}</h2>
+    <ItemDetails {item} editable />
+
+    <h2>{localization().ui.transfer}</h2>
+    <select bind:value={targetIndex}>
+      {#each containers as container, index}
+        <option value={index}>{container.name}</option>
       {/each}
     </select>
-    <button
-      class="transferBtn"
-      onclick={() => transferItem(itemInspect!, transferToContainer)}
-      >Transfer</button
-    >
-    <button class="cancel" onclick={() => (itemInspect = null)}>Close</button>
+    <button onclick={() => moveItem(item!, containers[targetIndex])}>{localization().ui.transfer}</button>
+    <button onclick={() => (item = null)}>{localization().ui.close}</button>
   </div>
 {/if}
 
 <style lang="scss">
-  .modal {
-    grid-area: equipment;
-    width: 75%;
-    margin-top: 5rem;
-    align-self: flex-start;
-    justify-self: center;
-    opacity: 95%;
-    background-color: #080e00;
-    padding: 20px;
+  .inspect {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 50ch;
+    max-width: min(40%, 40ch);
+    max-height: 90vh;
+    overflow-y: auto;
+    background-color: #070c01;
+
+    padding: 30px;
     border: 1px solid #9fe644;
     box-shadow: 2px 2px 4px 0 #9fe644;
     display: flex;
     flex-direction: column;
+    row-gap: 10px;
+  }
 
-    row-gap: 5px;
+  h2 {
+    margin: 0;
+  }
 
-    * {
-      margin: 0;
-    }
+  .title {
+    font-size: 2rem;
+    text-align: center;
+  }
 
-    .itemToInspect {
-      font-size: 2rem;
-      text-align: center;
-    }
-
-    select {
-      font-size: 1.5rem;
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    button {
-      display: block;
-      width: 100%;
-      padding: 10px 0;
-    }
-
-    .inputs {
-      display: flex;
-      justify-content: stretch;
-      align-items: center;
-      column-gap: 10px;
-    }
-    input {
-      // max-width: 10ch;
-      flex-grow: 2;
-    }
-
-    button.transferBtn {
-      margin-top: auto;
-    }
+  button {
+    padding: 10px 0;
   }
 </style>
