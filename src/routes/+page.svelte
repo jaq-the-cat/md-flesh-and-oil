@@ -3,6 +3,7 @@
   import { goto } from "$app/navigation";
   import { addDoc, collection } from "firebase/firestore";
   import { db } from "$lib/db";
+  import { SHEETS_PATH } from "$lib/sheets";
   import { localization } from "$i18n";
   import { session } from "$lib/auth.svelte";
   import { sheetJson, toDocument } from "$lib/persistence";
@@ -24,7 +25,7 @@
     failed = false;
     try {
       const sheet = JSON.parse(sheetJson(toDocument(species)));
-      const created = await addDoc(collection(db.firestore!, "sheets"), {
+      const created = await addDoc(collection(db.firestore!, SHEETS_PATH), {
         ...sheet,
         author: session.uid!,
         updatedAt: Date.now(),

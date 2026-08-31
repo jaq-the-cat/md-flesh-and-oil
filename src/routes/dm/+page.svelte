@@ -1,5 +1,6 @@
 <script lang="ts">
   import { db } from "$lib/db";
+  import { SHEETS_PATH } from "$lib/sheets";
   import type { StoredSheet } from "$lib/persistence";
   import EnemyList from "../../components/dm/EnemyList.svelte";
   import Items from "../../components/dm/Items.svelte";
@@ -7,7 +8,7 @@
   import "./dm.scss";
   import { collectionStore } from "sveltefire";
 
-  let sheets = collectionStore<StoredSheet>(db.firestore!, "sheets");
+  let sheets = collectionStore<StoredSheet>(db.firestore!, SHEETS_PATH);
 </script>
 
 <svelte:head>

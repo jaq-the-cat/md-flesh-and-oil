@@ -1,6 +1,7 @@
 <script lang="ts">
   import { doc, onSnapshot, setDoc } from "firebase/firestore";
   import { db } from "$lib/db";
+  import { SHEETS_PATH } from "$lib/sheets";
   import { localization } from "$i18n";
   import { fromDocument, sheetJson, toDocument, type SheetDocument } from "$lib/persistence";
   import type { Species } from "$lib/rpg/infra/species/species.svelte";
@@ -19,7 +20,7 @@
   // Preserved across saves: setDoc replaces the whole document, so an unknown author would be lost.
   let author: string | undefined;
 
-  let reference = $derived(doc(db.firestore!, "sheets", data.slug));
+  let reference = $derived(doc(db.firestore!, SHEETS_PATH, data.slug));
 
   $effect(() =>
     onSnapshot(reference, (snapshot) => {

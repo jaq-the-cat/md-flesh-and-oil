@@ -2,6 +2,7 @@
   import { collection, deleteDoc, doc, query, where, type CollectionReference } from "firebase/firestore";
   import { collectionStore } from "sveltefire";
   import { db } from "$lib/db";
+  import { SHEETS_PATH } from "$lib/sheets";
   import { localization } from "$i18n";
   import type { StoredSheet } from "$lib/persistence";
   import type { SPECIES } from "$lib/rpg/domain/species/registry";
@@ -10,7 +11,7 @@
 
   const firestore = db.firestore!;
   // Firestore collections are untyped; everything written to `sheets` is a sheet document.
-  const sheetsCollection = collection(firestore, "sheets") as CollectionReference<StoredSheet>;
+  const sheetsCollection = collection(firestore, SHEETS_PATH) as CollectionReference<StoredSheet>;
 
   // Sorted here rather than with orderBy, which would need a composite Firestore index.
   const sheets = collectionStore<StoredSheet>(
@@ -29,7 +30,7 @@
   async function remove(sheet: StoredSheet) {
     failed = false;
     try {
-      await deleteDoc(doc(firestore, "sheets", sheet.id));
+      await deleteDoc(doc(firestore, SHEETS_PATH, sheet.id));
       deleting = null;
     } catch {
       failed = true;
