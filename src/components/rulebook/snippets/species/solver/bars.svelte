@@ -1,6 +1,6 @@
 <h2>Bars</h2>
 <ul>
-  <li>HP ((50 + Vigor bonus) x 1.8 + 50)</li>
+  <li>HP (based on Vigor)</li>
   <li>Absolute Solver (100)</li>
   <li>Oil (100)</li>
   <li>Sanity (Willpower bonus)</li>

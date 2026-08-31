@@ -4,7 +4,7 @@ import { Species } from "$lib/rpg/infra/species/species.svelte";
 import { carryWeight, healthField, sanityField, type Build } from "./defaults";
 import { HUMAN_ABILITIES } from "$lib/rpg/domain/abilities/prefabs";
 
-const BUILD: Build = { base: 25, multiplier: 1.5 };
+const BUILD: Build = { base: 30, multiplier: 1.5 };
 
 export class Human extends Species {
   constructor() {

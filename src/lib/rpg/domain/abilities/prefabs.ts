@@ -1,4 +1,4 @@
-import { Skills } from "$lib/rpg/config";
+import { Attributes, Skills } from "$lib/rpg/config";
 import type { AbilityTemplate } from "./types";
 
 const weapon = (name: string, hit: Skills, damage: string, range: number, info = "") =>
@@ -80,5 +80,82 @@ export const PREDATOR_DRONE_ABILITIES: AbilityTemplate[] = [
     info: "Predator Drones are built to go unnoticed until they choose otherwise.",
     skill: Skills.stealth,
     amount: 15,
+  },
+];
+
+export const AVIAN_DRONE_ABILITIES: AbilityTemplate[] = [
+  melee(
+    "Worker Bite",
+    "1d20 + Melee Pierce",
+    "If used on a Worker Drone, drain 20 Oil. If used on a Human, remove 20 Blood. If target consents, damage is 1.",
+  ),
+  melee("Small Claws", "1d30 + Melee Slash"),
+  melee(
+    "Talon Dive",
+    "1d30 + Melee Slash",
+    "Must be initiated from flight. When used, move a maximum of 20 meters horizontally in the direction of the target.",
+  ),
+  melee("Talon Strike", "1d30 + Melee Slash"),
+  {
+    kind: "attribute_modifier",
+    name: "Wings",
+    info: "Activated without spending an Action. Permits flight, but may not be used as a weapon or shield.",
+    attribute: Attributes.agility,
+    amount: 10,
+  },
+  {
+    kind: "skill_modifier",
+    name: "Silent Feathers",
+    info: "Avian Drones move quietly, in the air and on the ground.",
+    skill: Skills.stealth,
+    amount: 10,
+  },
+  {
+    kind: "skill_modifier",
+    name: "Natural Flier",
+    info: "Built as long-distance messengers.",
+    skill: Skills.flying,
+    amount: 10,
+  },
+];
+
+export const DISASSEMBLY_DRONE_ABILITIES: AbilityTemplate[] = [
+  melee(
+    "Disassembly Bite",
+    "1d40 + Melee Pierce",
+    "If used on a Worker Drone, remove 10 Fresh Oil and drain 20 Used Oil. If used on a Human, remove 10 Blood and drain 10 Blood. If target consents, damage is 1. +1 Absolute Solver on success.",
+  ),
+  melee("Sword", "1d30 + Melee Slash", "-20 Hit, -20 Block."),
+  melee("Claws", "1d30 + Melee Slash", "Rate up to 2."),
+  melee("Chainsaw", "1d60 + Melee Slash", "+1 Hit, uses 1L Oil per Hit."),
+  weapon("Submachine Gun", Skills.firearms, "20 Pierce", 10, "Rate 6. Magazine of 30, 1 turn to reload."),
+  weapon("Laser", Skills.firearms, "25 Energy", 20, "Magazine of 2, 1 turn to reload."),
+  weapon("Missile", Skills.firearms, "16 Explosive", 20, "Deals damage in a 1m radius."),
+  weapon("Ninja Star", Skills.athletics, "20 + Melee Pierce", 10),
+  weapon(
+    "EMP",
+    Skills.technology,
+    "Bootloops all drones within 5 meters",
+    5,
+    "Bootloops self on failure. May only be used once per fight. Difficulty is 25 + Missing Health.",
+  ),
+  {
+    kind: "skill_modifier",
+    name: "Visor and Sensors",
+    info: "While the visor and sensors are on. Toggle with an Action; limits vision to 3m.",
+    skill: Skills.stealth,
+    amount: -20,
+  },
+  {
+    kind: "skill_modifier",
+    name: "Headband Sensors",
+    info: "While the headband sensors are on. The same bonus applies to Passive Perception.",
+    skill: Skills.investigation,
+    amount: 20,
+  },
+  {
+    kind: "text",
+    name: "Built for Killing",
+    info: "+10 to all damage rolls.",
   },
 ];

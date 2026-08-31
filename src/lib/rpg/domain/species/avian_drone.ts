@@ -1,12 +1,12 @@
-import { Bars, Movement } from "$lib/rpg/config";
+import { Bars, Movement, Skills } from "$lib/rpg/config";
 import { NumberField } from "$lib/rpg/infra/types.svelte";
 import { Species } from "$lib/rpg/infra/species/species.svelte";
 import { carryWeight, healthField, sanityField, type Build } from "./defaults";
-import { PREDATOR_DRONE_ABILITIES } from "$lib/rpg/domain/abilities/prefabs";
+import { AVIAN_DRONE_ABILITIES } from "$lib/rpg/domain/abilities/prefabs";
 
-const BUILD: Build = { base: 30, multiplier: 1.8 };
+const BUILD: Build = { base: 30, multiplier: 1.5 };
 
-export class PredatorDrone extends Species {
+export class AvianDrone extends Species {
   constructor() {
     super({
       bars: {
@@ -14,14 +14,15 @@ export class PredatorDrone extends Species {
         [Bars.sanity]: sanityField(),
         [Bars.oil]: new NumberField(0, 100),
       },
-      skills: [],
+      skills: [Skills.flying],
       movement: {
         [Movement.walking]: 5,
-        [Movement.running]: 12,
+        [Movement.running]: 10,
         [Movement.crawling]: 4,
-        [Movement.jump_height]: 4,
+        [Movement.jump_height]: 2,
+        [Movement.flying]: 15,
       },
-      abilities: PREDATOR_DRONE_ABILITIES,
+      abilities: AVIAN_DRONE_ABILITIES,
       carry: carryWeight(BUILD),
     });
   }

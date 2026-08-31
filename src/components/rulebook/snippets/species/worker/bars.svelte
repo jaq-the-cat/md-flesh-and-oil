@@ -1,6 +1,6 @@
 <h2>Bars</h2>
 <ul>
-  <li>HP ((50 + Vigor bonus) x 1.6 + 40)</li>
+  <li>HP (based on Vigor)</li>
   <li>Oil (100)</li>
   <li>Sanity (Willpower bonus)</li>
   <li>Resistant to Strike damage</li>
