@@ -1,6 +1,6 @@
 import { About, Attributes, Bars, Movement, Skills, type SkillModifiers } from "$lib/rpg/config";
 import type { Ability } from "$lib/rpg/domain/abilities/types";
-import type { Container, Slot } from "$lib/rpg/domain/items/types";
+import type { Container, CustomTemplate, Item, Slot } from "$lib/rpg/domain/items/types";
 import { SPECIES, speciesIdOf, type SpeciesId } from "$lib/rpg/domain/species/registry";
 import { clamp } from "$lib/rpg/helpers";
 import type { NumberField } from "$lib/rpg/infra/types.svelte";
@@ -88,7 +88,7 @@ export function fromDocument(document: SheetDocument): Species {
     applyField(species, species.movement[movement], document.movement?.[movement]);
   }
 
-  if (document.containers) species.containers = document.containers;
+  if (document.containers) species.containers = document.containers.map(adoptContainer);
   if (document.equipped) species.equipped = { ...species.equipped, ...document.equipped };
   if (document.innate) species.innate = document.innate;
   species.custom = document.custom ?? [];
@@ -104,4 +104,18 @@ function valuesOf<K extends string>(fields: Partial<Record<K, NumberField<Specie
 function applyField(species: Species, field?: NumberField<Species>, value?: number) {
   if (field == null || value == null) return;
   field.setValue(species, clamp(value, field.min, field.getMaxValue(species)));
+}
+
+/**
+ * Sheets saved before items became catalogue references stored the whole template inline.
+ * Those still load: the old shape simply becomes a custom item.
+ */
+function adoptContainer(container: Container): Container {
+  return { ...container, items: container.items.map(adoptItem) };
+}
+
+function adoptItem(item: Item): Item {
+  if (item.template !== undefined) return item;
+  const { id, current, ...legacy } = item as Item & Record<string, unknown>;
+  return { id, template: legacy as unknown as CustomTemplate, ...(current === undefined ? {} : { current }) };
 }

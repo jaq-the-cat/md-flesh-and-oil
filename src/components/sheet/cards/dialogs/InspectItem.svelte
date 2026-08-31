@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { templateOf } from "$lib/rpg/domain/items/prefabs";
   import type { Container, Item } from "$lib/rpg/domain/items/types";
+  import { itemText } from "../../items";
   import { localization } from "$i18n";
   import ItemDetails from "./ItemDetails.svelte";
 
@@ -14,12 +16,15 @@
   } = $props();
 
   let targetIndex = $state(0);
+  let template = $derived(item ? templateOf(item) : undefined);
 </script>
 
 {#if item}
   <div class="inspect">
-    <h2 class="title">{item.name}</h2>
-    <ItemDetails {item} editable />
+    {#if template}
+      <h2 class="title">{itemText(template).name}</h2>
+      <ItemDetails {template} bind:current={item.current} editable />
+    {/if}
 
     <h2>{localization().ui.transfer}</h2>
     <select bind:value={targetIndex}>

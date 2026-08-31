@@ -1,18 +1,18 @@
 <script lang="ts">
   import type { Species } from "$lib/rpg/infra/species/species.svelte";
+  import { containerWeight, itemWeight, templateOf, type ItemId } from "$lib/rpg/domain/items/prefabs";
   import {
-    containerWeight,
     createContainer,
     createItem,
-    itemWeight,
     SLOTS,
     type Container,
     type ContainerTemplate,
+    type CustomTemplate,
     type Item,
-    type ItemTemplate,
     type Slot,
   } from "$lib/rpg/domain/items/types";
   import { localization } from "$i18n";
+  import { itemText } from "../items";
   import InspectItem from "./dialogs/InspectItem.svelte";
   import NewItem from "./dialogs/NewItem.svelte";
   import PrefabItem from "./dialogs/PrefabItem.svelte";
@@ -37,10 +37,15 @@
     selectedIndex = containers.length - 1;
   }
 
-  function add(template: ContainerTemplate | ItemTemplate) {
-    if ("carry" in template) addContainer(template);
+  function add(template: ContainerTemplate | ItemId | CustomTemplate) {
+    if (typeof template !== "string" && "carry" in template) addContainer(template);
     else selected.items.push(createItem(template));
   }
+
+  const nameOf = (item: Item) => {
+    const template = templateOf(item);
+    return template ? itemText(template).name : item.id;
+  };
 
   function removeSelectedContainer() {
     if (selectedIndex === 0) return; // the first container is what you carry on your person
@@ -82,7 +87,7 @@
     <select bind:value={selectedIndex}>
       {#each containers as container, index}
         <option value={index}>
-          {container.name} [{containerWeight(container)}/{container.carry ?? Math.floor(species.carryWeight)}kg]
+          {container.name} [{containerWeight(container.items)}/{container.carry ?? Math.floor(species.carryWeight)}kg]
         </option>
       {/each}
     </select>
@@ -92,7 +97,7 @@
   <div class="items">
     {#each selected.items as item (item.id)}
       <button class="item" onclick={() => (inspecting = item)}>
-        <span>{item.name}</span>
+        <span>{nameOf(item)}</span>
         <span>{itemWeight(item)}kg</span>
       </button>
       <button class="delete" onclick={() => removeItem(item)}>{localization().ui.delete}</button>
@@ -106,7 +111,7 @@
       <select bind:value={equipped[slot]}>
         <option value={null}></option>
         {#each equippable as entry (entry.id)}
-          <option value={entry.id}>{entry.name}</option>
+          <option value={entry.id}>{"items" in entry ? entry.name : nameOf(entry)}</option>
         {/each}
       </select>
     {/each}

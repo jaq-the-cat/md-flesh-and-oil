@@ -1,91 +1,91 @@
 <script lang="ts">
-  import { Skills } from "$lib/rpg/config";
-  import { itemWeight, type Item, type ItemTemplate } from "$lib/rpg/domain/items/types";
   import { localization } from "$i18n";
+  import type { CustomTemplate, ItemTemplate } from "$lib/rpg/domain/items/types";
+  import { damageText, itemText } from "../../items";
 
-  // Templates render read-only; a real item in the sheet can have its liquid level adjusted.
-  let { item, editable = false }: { item: Item | ItemTemplate; editable?: boolean } = $props();
+  let {
+    template,
+    current = $bindable(),
+    editable = false,
+  }: {
+    template: ItemTemplate | CustomTemplate;
+    /** Only a liquid has one, and only a carried item can change it. */
+    current?: number;
+    editable?: boolean;
+  } = $props();
+
+  let text = $derived(itemText(template));
 </script>
 
 <dl>
   <!-- An innate weapon is part of a body, so it has no weight to report. -->
-  {#if item.kind !== "innate"}
+  {#if template.kind !== "innate"}
     <dt>{localization().fields.weight}</dt>
-    <dd>{itemWeight(item)}kg</dd>
+    <dd>{template.weight}kg</dd>
   {/if}
 
-  {#if item.kind === "innate"}
+  {#if template.kind === "innate"}
     <dt>{localization().fields.hit}</dt>
-    <dd>{localization().skills[item.hit]}</dd>
+    <dd>{localization().skills[template.hit]}</dd>
     <dt>{localization().fields.damage}</dt>
-    <dd>{item.damage}</dd>
+    <dd>{damageText(template.damage)}</dd>
     <dt>{localization().fields.range}</dt>
-    <dd>{item.range}m</dd>
-    {#if item.info}
-      <dt>{localization().fields.info}</dt>
-      <dd class="info">{item.info}</dd>
-    {/if}
-  {:else if item.kind === "melee"}
+    <dd>{template.range}m</dd>
+  {:else if template.kind === "melee"}
     <dt>{localization().fields.damage}</dt>
-    <dd>{item.damage}</dd>
-    {#if item.twoHanded}
+    <dd>{damageText(template.damage)}</dd>
+    {#if template.twoHanded}
       <dt>{localization().fields.two_handed}</dt>
       <dd>{localization().ui.yes}</dd>
     {/if}
-    {#if item.info}
-      <dt>{localization().fields.info}</dt>
-      <dd class="info">{item.info}</dd>
-    {/if}
-  {:else if item.kind === "ranged"}
+  {:else if template.kind === "ranged"}
     <dt>{localization().fields.hit}</dt>
-    <dd>{localization().skills[item.hit]}</dd>
+    <dd>{localization().skills[template.hit]}</dd>
     <dt>{localization().fields.damage}</dt>
-    <dd>{item.damage}</dd>
+    <dd>{damageText(template.damage)}</dd>
     <dt>{localization().fields.range}</dt>
-    <dd>{item.range}m</dd>
+    <dd>{template.range}m</dd>
     <dt>{localization().fields.rate}</dt>
-    <dd>{item.rate}</dd>
+    <dd>{template.rate}</dd>
     <dt>{localization().fields.magazine}</dt>
-    <dd>{item.magazine}</dd>
+    <dd>{template.magazine}</dd>
     <dt>{localization().fields.reload}</dt>
-    <dd>{item.reloadTurns} {localization().units[item.reloadTurns === 1 ? "turn" : "turns"]}</dd>
-    {#if item.info}
-      <dt>{localization().fields.info}</dt>
-      <dd class="info">{item.info}</dd>
-    {/if}
-  {:else if item.kind === "throwable"}
+    <dd>{template.reloadTurns} {localization().units[template.reloadTurns === 1 ? "turn" : "turns"]}</dd>
+  {:else if template.kind === "throwable"}
     <dt>{localization().fields.damage}</dt>
-    <dd>{item.damage}</dd>
+    <dd>{damageText(template.damage)}</dd>
     <dt>{localization().fields.range}</dt>
-    <dd>{item.range}</dd>
-    {#if item.info}
-      <dt>{localization().fields.info}</dt>
-      <dd class="info">{item.info}</dd>
+    <dd>{template.range}</dd>
+  {:else if template.kind === "healing"}
+    {#if text.heal}
+      <dt>{localization().fields.heal}</dt>
+      <dd>{text.heal}</dd>
     {/if}
-  {:else if item.kind === "healing"}
-    <dt>{localization().fields.heal}</dt>
-    <dd>{item.heal}</dd>
     <dt>{localization().fields.works_on}</dt>
-    <dd>{localization().worksOn[item.worksOn]}</dd>
-    {#if item.revive}
+    <dd>{localization().worksOn[template.worksOn]}</dd>
+    {#if text.revive}
       <dt>{localization().fields.revive}</dt>
-      <dd>{item.revive}</dd>
+      <dd>{text.revive}</dd>
     {/if}
-    {#if item.requirements}
+    {#if text.requirements}
       <dt>{localization().fields.requirements}</dt>
-      <dd>{item.requirements}</dd>
+      <dd>{text.requirements}</dd>
     {/if}
-  {:else if item.kind === "liquid"}
-    {@const liquid = item}
+  {:else if template.kind === "liquid"}
     <dt>{localization().fields.current}</dt>
     <dd class="level">
       {#if editable}
-        <input type="number" min="0" max={liquid.capacity} step="0.1" bind:value={liquid.current} />
+        <input type="number" min="0" max={template.capacity} step="0.1" bind:value={current} />
       {:else}
-        {liquid.current}
+        {current ?? template.capacity}
       {/if}
-      / {liquid.capacity}
+      / {template.capacity}
     </dd>
+  {/if}
+
+  {#if text.info}
+    <dt>{localization().fields.info}</dt>
+    <dd class="info">{text.info}</dd>
   {/if}
 </dl>
 

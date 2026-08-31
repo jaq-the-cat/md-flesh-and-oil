@@ -1,22 +1,27 @@
 <script lang="ts">
-  import { CONTAINER_PREFABS, ITEM_PREFABS } from "$lib/rpg/domain/items/prefabs";
-  import type { ContainerTemplate, ItemTemplate } from "$lib/rpg/domain/items/types";
+  import { CONTAINER_PREFABS, ITEM_CATEGORIES, ITEMS, type ItemId } from "$lib/rpg/domain/items/prefabs";
+  import type { ContainerTemplate } from "$lib/rpg/domain/items/types";
+  import { itemText } from "../sheet/items";
   import { localization } from "$i18n";
   import ItemDetails from "../sheet/cards/dialogs/ItemDetails.svelte";
   import RulebookSnippet from "../sheet/cards/dialogs/RulebookSnippet.svelte";
 
   const CONTAINERS = "Containers";
-  const categories = [CONTAINERS, ...Object.keys(ITEM_PREFABS)];
+  const categories = [CONTAINERS, ...Object.keys(ITEM_CATEGORIES)];
 
   let category = $state(CONTAINERS);
-  let items = $derived<(ContainerTemplate | ItemTemplate)[]>(
-    category === CONTAINERS ? CONTAINER_PREFABS : ITEM_PREFABS[category],
+  let items = $derived<(ContainerTemplate | ItemId)[]>(
+    category === CONTAINERS ? CONTAINER_PREFABS : ITEM_CATEGORIES[category],
   );
 
-  let inspecting = $state<ContainerTemplate | ItemTemplate | null>(null);
+  let inspecting = $state<ContainerTemplate | ItemId | null>(null);
+
+  const nameOf = (item: ContainerTemplate | ItemId) =>
+    typeof item === "string" ? itemText(ITEMS[item]).name : item.name;
 
   // For a container the figure is what it holds, for an item what it weighs.
-  const kilos = (item: ContainerTemplate | ItemTemplate) => ("carry" in item ? item.carry : item.weight);
+  const kilos = (item: ContainerTemplate | ItemId) =>
+    typeof item === "string" ? ITEMS[item].weight : item.carry;
 </script>
 
 <section id="items">
@@ -31,7 +36,7 @@
   <div class="list">
     {#each items as item}
       <button class="item" onclick={() => (inspecting = item)}>
-        <span>{item.name}</span>
+        <span>{nameOf(item)}</span>
         <span>{kilos(item)}kg</span>
       </button>
     {/each}
@@ -47,14 +52,14 @@
   }
 >
   {#if inspecting}
-    <h2 class="title">{inspecting.name}</h2>
-    {#if "carry" in inspecting}
+    <h2 class="title">{nameOf(inspecting)}</h2>
+    {#if typeof inspecting === "string"}
+      <ItemDetails template={ITEMS[inspecting]} />
+    {:else}
       <dl>
         <dt>{localization().fields.carry}</dt>
         <dd>{inspecting.carry}kg</dd>
       </dl>
-    {:else}
-      <ItemDetails item={inspecting} />
     {/if}
   {/if}
 </RulebookSnippet>

@@ -1,37 +1,38 @@
 import { Skills } from "$lib/rpg/config";
-import type { AbilityTemplate } from "./types";
+import { ITEMS } from "$lib/rpg/domain/items/prefabs";
+import type { AbilityEntry } from "./types";
 
-export const HUMAN_ABILITIES: AbilityTemplate[] = [
+export const HUMAN_ABILITIES: AbilityEntry[] = [
   {
     kind: "text",
     name: "Adaptable",
     info: "+1 Expertises available during character creation. Cap increases to 3.",
   },
-  { kind: "innate_weapon", name: "Human Bite", info: "" },
+  ITEMS.human_bite,
 ];
 
-export const WORKER_DRONE_ABILITIES: AbilityTemplate[] = [
+export const WORKER_DRONE_ABILITIES: AbilityEntry[] = [
   {
     kind: "text",
     name: "Adaptable",
     info: "+1 Expertises available during character creation. Cap increases to 3.",
   },
-  { kind: "innate_weapon", name: "Worker Bite", info: "" },
-  { kind: "innate_weapon", name: "Knife Tail", info: "" },
+  ITEMS.worker_bite,
+  ITEMS.knife_tail,
 ];
 
-export const SOLVER_DRONE_ABILITIES: AbilityTemplate[] = [
-  { kind: "innate_weapon", name: "Solver Bite", info: "" },
-  { kind: "innate_weapon", name: "Solver Tail", info: "" },
-  { kind: "innate_weapon", name: "Solver Claws", info: "" },
-  { kind: "innate_weapon", name: "Solver Stabbies", info: "" },
-  { kind: "innate_weapon", name: "Solver Translate", info: "" },
-  { kind: "innate_weapon", name: "Solver Transform", info: "" },
-  { kind: "innate_weapon", name: "Solver Teleport", info: "" },
-  { kind: "innate_weapon", name: "[null]", info: "" },
+export const SOLVER_DRONE_ABILITIES: AbilityEntry[] = [
+  ITEMS.solver_bite,
+  ITEMS.solver_tail,
+  ITEMS.solver_claws,
+  ITEMS.solver_stabbies,
+  ITEMS.solver_translate,
+  ITEMS.solver_transform,
+  ITEMS.solver_teleport,
+  ITEMS.null_item,
 ];
 
-export const PREDATOR_DRONE_ABILITIES: AbilityTemplate[] = [
+export const PREDATOR_DRONE_ABILITIES: AbilityEntry[] = [
   {
     kind: "skill_modifier",
     name: "Ambush Predator",
@@ -39,11 +40,11 @@ export const PREDATOR_DRONE_ABILITIES: AbilityTemplate[] = [
     skill: Skills.stealth,
     amount: 15,
   },
-  { kind: "innate_weapon", name: "Predator Bite", info: "" },
-  { kind: "innate_weapon", name: "Predator Claws", info: "" },
+  ITEMS.predator_bite,
+  ITEMS.predator_claws,
 ];
 
-export const AVIAN_DRONE_ABILITIES: AbilityTemplate[] = [
+export const AVIAN_DRONE_ABILITIES: AbilityEntry[] = [
   {
     kind: "skill_modifier",
     name: "Wings",
@@ -65,13 +66,13 @@ export const AVIAN_DRONE_ABILITIES: AbilityTemplate[] = [
     skill: Skills.flying,
     amount: 10,
   },
-  { kind: "innate_weapon", name: "Avian Bite", info: "" },
-  { kind: "innate_weapon", name: "Small Claws", info: "" },
-  { kind: "innate_weapon", name: "Talon Dive", info: "" },
-  { kind: "innate_weapon", name: "Talon Strike", info: "" },
+  ITEMS.avian_bite,
+  ITEMS.small_claws,
+  ITEMS.talon_dive,
+  ITEMS.talon_strike,
 ];
 
-export const DISASSEMBLY_DRONE_ABILITIES: AbilityTemplate[] = [
+export const DISASSEMBLY_DRONE_ABILITIES: AbilityEntry[] = [
   {
     kind: "text",
     name: "Visor and Sensors",
@@ -82,13 +83,13 @@ export const DISASSEMBLY_DRONE_ABILITIES: AbilityTemplate[] = [
     name: "Built for Killing",
     info: "+10 to all damage rolls.",
   },
-  { kind: "innate_weapon", name: "Disassembly Bite", info: "" },
-  { kind: "innate_weapon", name: "Sword", info: "" },
-  { kind: "innate_weapon", name: "Disassembly Claws", info: "" },
-  { kind: "innate_weapon", name: "Chainsaw", info: "" },
-  { kind: "innate_weapon", name: "Submachine Gun", info: "" },
-  { kind: "innate_weapon", name: "Laser", info: "" },
-  { kind: "innate_weapon", name: "Missile", info: "" },
-  { kind: "innate_weapon", name: "Ninja Star", info: "" },
-  { kind: "innate_weapon", name: "EMP", info: "" },
+  ITEMS.disassembly_bite,
+  ITEMS.sword_innate,
+  ITEMS.disassembly_claws,
+  ITEMS.chainsaw_innate,
+  ITEMS.submachine_gun_innate,
+  ITEMS.laser,
+  ITEMS.missile,
+  ITEMS.ninja_star_innate,
+  ITEMS.emp,
 ];

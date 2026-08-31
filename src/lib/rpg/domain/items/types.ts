@@ -1,84 +1,112 @@
-import { Skills } from "$lib/rpg/config";
+import { DamageTypes, Skills } from "$lib/rpg/config";
 
 export type Slot = "left_hand" | "right_hand" | "left_shoulder" | "right_shoulder" | "front" | "back";
 
 export const SLOTS: Slot[] = ["left_hand", "right_hand", "left_shoulder", "right_shoulder", "front", "back"];
 
-type Details =
+export type Dice = { count: number; sides: number };
+
+/** Structured so the numbers stay here and only the words need translating. */
+export type Damage = {
+  dice?: Dice;
+  flat?: number;
+  bonus?: Skills;
+  type: DamageTypes;
+};
+
+/** The mechanical half of an item. Its prose lives in the localization file, keyed by id. */
+export type Details =
   | { kind: "plain" }
-  | { kind: "melee"; damage: string; twoHanded: boolean; info: string | null }
+  | { kind: "melee"; damage: Damage; twoHanded: boolean }
   | {
       kind: "ranged";
       hit: Skills;
-      damage: string;
+      damage: Damage;
       range: number;
       rate: number;
       magazine: number;
       reloadTurns: number;
-      info: string | null;
     }
-  | { kind: "innate"; hit: Skills; damage: string; range: number; info: string | null }
-  | { kind: "throwable"; damage: string; range: string; info: string | null }
-  | {
-      kind: "healing";
-      heal: string;
-      worksOn: "humans" | "drones" | "both";
-      revive: string | null;
-      requirements: string | null;
-    }
-  | { kind: "liquid"; capacity: number; weightPerUnit: number; current: number };
+  | { kind: "innate"; hit: Skills; damage: Damage; range: number }
+  | { kind: "throwable"; damage: Damage; range: string }
+  | { kind: "healing"; worksOn: "humans" | "drones" | "both" }
+  | { kind: "liquid"; capacity: number; weightPerUnit: number };
 
-export type ItemTemplate = { name: string; weight: number } & Details;
-export type Item = ItemTemplate & { id: string };
-export type ItemKind = Item["kind"];
+/** Everything about an item that is prose, and therefore translated. */
+export type ItemText = {
+  name: string;
+  info?: string;
+  heal?: string;
+  revive?: string;
+  requirements?: string;
+};
+
+export type ItemTemplate = { id: string; weight: number } & Details;
+export type ItemKind = ItemTemplate["kind"];
+
+/** Kinds a player can build by hand. Healing and innate weapons are catalogue-only. */
+export type CustomKind = Exclude<ItemKind, "healing" | "innate">;
+
+/** A one-off the player wrote: it carries its own prose, having no catalogue entry. */
+export type CustomTemplate = { name: string; info: string | null; weight: number } & Details;
+
+/** An item in a container: a catalogue entry by id, or a custom one. */
+export type Item = {
+  id: string;
+  template: string | CustomTemplate;
+  /** Liquid level, the only part of an item that changes while it is carried. */
+  current?: number;
+};
 
 /** A null carry means the species' own carry weight, which tracks Athletics. */
 export type ContainerTemplate = { name: string; carry: number | null };
 export type Container = ContainerTemplate & { id: string; items: Item[] };
 
-/** Kinds a player can build by hand. Healing and innate weapons are catalogue-only. */
-export type CustomKind = Exclude<ItemKind, "healing" | "innate">;
-
-/** What a freshly picked kind looks like in the custom-item form. Adding a kind fails here first. */
-export const BLANK_ITEMS: Record<CustomKind, ItemTemplate> = {
-  plain: { kind: "plain", name: "", weight: 1 },
-  melee: { kind: "melee", name: "", weight: 1, damage: "", twoHanded: false, info: "" },
+/** A blank of each kind a player can author. Adding a custom kind fails here first. */
+export const BLANK_CUSTOM: Record<CustomKind, CustomTemplate> = {
+  plain: { kind: "plain", name: "", info: null, weight: 1 },
+  melee: { kind: "melee", name: "", info: null, weight: 1, damage: blankDamage(), twoHanded: false },
   ranged: {
     kind: "ranged",
     name: "",
+    info: null,
     weight: 1,
     hit: Skills.firearms,
-    damage: "",
+    damage: blankDamage(),
     range: 10,
     rate: 1,
     magazine: 1,
     reloadTurns: 1,
-    info: "",
   },
-  throwable: { kind: "throwable", name: "", weight: 1, damage: "", range: "", info: "" },
-  liquid: { kind: "liquid", name: "", weight: 1, capacity: 1, weightPerUnit: 1, current: 0 },
+  throwable: { kind: "throwable", name: "", info: null, weight: 1, damage: blankDamage(), range: "" },
+  liquid: { kind: "liquid", name: "", info: null, weight: 1, capacity: 1, weightPerUnit: 1 },
 };
 
-export const ITEM_KINDS = Object.keys(BLANK_ITEMS) as CustomKind[];
+export const ITEM_KINDS = Object.keys(BLANK_CUSTOM) as CustomKind[];
 
-export function createItem(template: ItemTemplate): Item {
-  return { ...template, id: crypto.randomUUID() };
+/** Fully populated so the form can bind to it; the zeroes are stripped on save. */
+export function blankDamage(): Damage {
+  return { dice: { count: 0, sides: 0 }, flat: 0, type: DamageTypes.strike };
+}
+
+/** Drops the parts a player left empty, so stored damage says only what it has. */
+export function tidyDamage(damage: Damage): Damage {
+  const tidied: Damage = { type: damage.type };
+  if (damage.dice && damage.dice.count > 0 && damage.dice.sides > 0) tidied.dice = { ...damage.dice };
+  if (damage.flat) tidied.flat = damage.flat;
+  if (damage.bonus) tidied.bonus = damage.bonus;
+  return tidied;
+}
+
+export function createItem(template: string | CustomTemplate, current?: number): Item {
+  return { id: crypto.randomUUID(), template, ...(current === undefined ? {} : { current }) };
 }
 
 export function createContainer(template: ContainerTemplate): Container {
   return { ...template, id: crypto.randomUUID(), items: [] };
 }
 
-/** A liquid's contents count toward its weight; every other kind is a fixed figure. */
-export function itemWeight(item: ItemTemplate) {
-  const contents = item.kind === "liquid" ? item.current * item.weightPerUnit : 0;
-  return round(item.weight + contents);
+export function isCustom(template: string | CustomTemplate): template is CustomTemplate {
+  return typeof template !== "string";
 }
 
-export function containerWeight(container: Container) {
-  return round(container.items.reduce((total, item) => total + itemWeight(item), 0));
-}
-
-function round(value: number) {
-  return parseFloat(value.toFixed(2));
-}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Attributes, Skills } from "$lib/rpg/config";
   import type { Ability, AbilityTemplate } from "$lib/rpg/domain/abilities/types";
-  import { innateWeapon } from "$lib/rpg/domain/items/prefabs";
+  import { ITEMS } from "$lib/rpg/domain/items/prefabs";
   import { localization } from "$i18n";
   import ItemDetails from "./ItemDetails.svelte";
 
@@ -11,9 +11,9 @@
 </script>
 
 {#if ability.kind === "innate_weapon"}
-  {@const weapon = innateWeapon(ability.name)}
+  {@const weapon = ITEMS[ability.item]}
   {#if weapon}
-    <ItemDetails item={weapon} />
+    <ItemDetails template={weapon} />
   {:else}
     <p class="missing">{localization().ui.nothing_available}</p>
   {/if}

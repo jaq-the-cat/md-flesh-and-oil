@@ -1,6 +1,8 @@
 <script lang="ts">
   import { ENEMY_PREFABS } from "$lib/rpg/domain/enemies/prefabs";
-  import { enemyWeapon, type EnemyTemplate, type EnemyWeapon } from "$lib/rpg/domain/enemies/types";
+  import { enemyWeapon, type EnemyTemplate } from "$lib/rpg/domain/enemies/types";
+  import { ITEMS, type ItemId } from "$lib/rpg/domain/items/prefabs";
+  import { itemText } from "../sheet/items";
   import { localization } from "$i18n";
   import ItemDetails from "../sheet/cards/dialogs/ItemDetails.svelte";
   import RulebookSnippet from "../sheet/cards/dialogs/RulebookSnippet.svelte";
@@ -11,7 +13,7 @@
   let enemies = $derived(ENEMY_PREFABS[category]);
 
   let inspecting = $state<EnemyTemplate | null>(null);
-  let weapon = $state<EnemyWeapon | null>(null);
+  let weapon = $state<ItemId | null>(null);
 
   let weaponDetails = $derived(weapon ? enemyWeapon(weapon) : undefined);
 </script>
@@ -67,7 +69,7 @@
         <h3>{group.label}</h3>
         <div class="weapons">
           {#each group.list as reference}
-            <button onclick={() => (weapon = reference)}>{reference.name}</button>
+            <button onclick={() => (weapon = reference)}>{itemText(ITEMS[reference]).name}</button>
           {/each}
         </div>
       {/if}
@@ -77,8 +79,8 @@
 
 {#if weaponDetails}
   <div class="weapon">
-    <h2 class="title">{weaponDetails.name}</h2>
-    <ItemDetails item={weaponDetails} />
+    <h2 class="title">{itemText(weaponDetails).name}</h2>
+    <ItemDetails template={weaponDetails} />
     <button onclick={() => (weapon = null)}>{localization().ui.close}</button>
   </div>
 {/if}

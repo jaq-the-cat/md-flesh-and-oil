@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { CONTAINER_PREFABS, ITEM_PREFABS } from "$lib/rpg/domain/items/prefabs";
-  import type { ContainerTemplate, ItemTemplate } from "$lib/rpg/domain/items/types";
+  import { CONTAINER_PREFABS, ITEM_CATEGORIES, ITEMS, type ItemId } from "$lib/rpg/domain/items/prefabs";
+  import type { ContainerTemplate } from "$lib/rpg/domain/items/types";
   import { localization } from "$i18n";
+  import { itemText } from "../../items";
   import ItemDetails from "./ItemDetails.svelte";
 
   let {
@@ -9,21 +10,25 @@
     onAdd,
   }: {
     open: boolean;
-    onAdd: (template: ContainerTemplate | ItemTemplate) => void;
+    onAdd: (template: ContainerTemplate | ItemId) => void;
   } = $props();
 
   const CONTAINERS = "Containers";
   // Innate weapons are body parts, not gear a player can pick up.
-  const categories = [CONTAINERS, ...Object.keys(ITEM_PREFABS).filter((name) => name !== "Innate")];
+  const categories = [CONTAINERS, ...Object.keys(ITEM_CATEGORIES).filter((name) => name !== "Innate")];
   let category = $state(CONTAINERS);
-  let prefabs = $derived<(ContainerTemplate | ItemTemplate)[]>(
-    category === CONTAINERS ? CONTAINER_PREFABS : ITEM_PREFABS[category],
+  let prefabs = $derived<(ContainerTemplate | ItemId)[]>(
+    category === CONTAINERS ? CONTAINER_PREFABS : ITEM_CATEGORIES[category],
   );
 
-  let previewing = $state<ContainerTemplate | ItemTemplate | null>(null);
+  let previewing = $state<ContainerTemplate | ItemId | null>(null);
+
+  const nameOf = (prefab: ContainerTemplate | ItemId) =>
+    typeof prefab === "string" ? itemText(ITEMS[prefab]).name : prefab.name;
 
   // For a container the figure is what it holds, for an item what it weighs.
-  const kilos = (prefab: ContainerTemplate | ItemTemplate) => ("carry" in prefab ? prefab.carry : prefab.weight);
+  const kilos = (prefab: ContainerTemplate | ItemId) =>
+    typeof prefab === "string" ? ITEMS[prefab].weight : prefab.carry;
 </script>
 
 {#if open}
@@ -39,7 +44,7 @@
     <div class="list">
       {#each prefabs as prefab}
         <button class="prefab" onclick={() => (previewing = prefab)}>
-          <span>{prefab.name}</span>
+          <span>{nameOf(prefab)}</span>
           <span>{kilos(prefab)}kg</span>
         </button>
         <button class="quickAdd" onclick={() => onAdd(prefab)}>+</button>
@@ -52,14 +57,14 @@
 
 {#if previewing}
   <div class="preview">
-    <h2 class="title">{previewing.name}</h2>
-    {#if "carry" in previewing}
+    <h2 class="title">{nameOf(previewing)}</h2>
+    {#if typeof previewing === "string"}
+      <ItemDetails template={ITEMS[previewing]} />
+    {:else}
       <dl>
         <dt>{localization().fields.carry}</dt>
         <dd>{previewing.carry}kg</dd>
       </dl>
-    {:else}
-      <ItemDetails item={previewing} />
     {/if}
     <button onclick={() => onAdd(previewing!)}>{localization().ui.add}</button>
     <button onclick={() => (previewing = null)}>{localization().ui.close}</button>

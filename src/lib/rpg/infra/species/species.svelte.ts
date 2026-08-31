@@ -12,7 +12,7 @@ import {
   STAT_SPAN,
   DEFAULT_ATTR_VALUE,
 } from "$lib/rpg/config";
-import { createAbility, type Ability, type AbilityTemplate } from "$lib/rpg/domain/abilities/types";
+import { createAbility, type Ability, type AbilityEntry } from "$lib/rpg/domain/abilities/types";
 import { POCKETS } from "$lib/rpg/domain/items/prefabs";
 import { createContainer, SLOTS, type Container, type Slot } from "$lib/rpg/domain/items/types";
 import { DEFAULT_SKILLS } from "$lib/rpg/domain/species/defaults";
@@ -30,7 +30,7 @@ export abstract class Species {
   public equipped: Record<Slot, string | null> = $state({} as Record<Slot, string | null>);
 
   /** Every ability this species offers, whether or not it is currently taken. */
-  public readonly catalogue: AbilityTemplate[] = [];
+  public readonly catalogue: AbilityEntry[] = [];
   public innate: Ability[] = $state([]);
   public custom: Ability[] = $state([]);
 
@@ -40,7 +40,7 @@ export abstract class Species {
     bars: Partial<Record<Bars, NumberField<Species>>>;
     skills: Skills[];
     movement: Partial<Record<Movement, number>>;
-    abilities: AbilityTemplate[];
+    abilities: AbilityEntry[];
     carry: (obj: Species) => number;
   }) {
     this.about = Object.fromEntries(Object.values(About).map((about) => [about, ""])) as Record<About, string>;

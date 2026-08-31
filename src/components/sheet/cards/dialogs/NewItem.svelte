@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { Skills } from "$lib/rpg/config";
+  import { DamageTypes, Skills } from "$lib/rpg/config";
   import {
-    BLANK_ITEMS,
+    BLANK_CUSTOM,
     ITEM_KINDS,
+    tidyDamage,
     type ContainerTemplate,
     type CustomKind,
-    type ItemTemplate,
+    type CustomTemplate,
   } from "$lib/rpg/domain/items/types";
   import { localization } from "$i18n";
 
@@ -14,30 +15,37 @@
     onCreate,
   }: {
     open: boolean;
-    onCreate: (template: ItemTemplate | ContainerTemplate) => void;
+    onCreate: (template: CustomTemplate | ContainerTemplate) => void;
   } = $props();
 
   const CONTAINER = "container";
   const kinds: (CustomKind | typeof CONTAINER)[] = [...ITEM_KINDS, CONTAINER];
 
-  let kind = $state<CustomKind | typeof CONTAINER>("plain");
-  let draft = $state<ItemTemplate>({ ...BLANK_ITEMS.plain });
-  let carry = $state(10);
-
   const hitSkills = Object.values(Skills);
+  const damageTypes = Object.values(DamageTypes);
+
+  let kind = $state<CustomKind | typeof CONTAINER>("plain");
+  let draft = $state<CustomTemplate>(structuredClone(BLANK_CUSTOM.plain));
+  let carry = $state(10);
 
   /** Swapping kinds keeps what the player already typed that the new kind also has. */
   function changeKind(next: CustomKind | typeof CONTAINER) {
     kind = next;
     // A container has no item fields, so park the draft on `plain` and no kind block renders.
-    const blank = BLANK_ITEMS[next === CONTAINER ? "plain" : next];
+    const blank = structuredClone(BLANK_CUSTOM[next === CONTAINER ? "plain" : next]);
     draft = { ...blank, name: draft.name, weight: draft.weight };
   }
 
   function create() {
     if (draft.name === "") return;
-    onCreate(kind === CONTAINER ? { name: draft.name, carry } : { ...draft });
-    draft = { ...BLANK_ITEMS[kind === CONTAINER ? "plain" : kind] };
+    if (kind === CONTAINER) {
+      onCreate({ name: draft.name, carry });
+    } else {
+      const made = structuredClone($state.snapshot(draft)) as CustomTemplate;
+      if ("damage" in made) made.damage = tidyDamage(made.damage);
+      onCreate(made);
+    }
+    draft = structuredClone(BLANK_CUSTOM[kind === CONTAINER ? "plain" : kind]);
     open = false;
   }
 </script>
@@ -72,19 +80,47 @@
       </label>
     {/if}
 
+    {#if draft.kind === "melee" || draft.kind === "ranged" || draft.kind === "throwable"}
+      {@const armed = draft}
+      <fieldset>
+        <legend>{localization().fields.damage}</legend>
+        <label class="dice">
+          {localization().fields.dice}
+          <span>
+            <input type="number" min="0" bind:value={armed.damage.dice!.count} />
+            d
+            <input type="number" min="0" bind:value={armed.damage.dice!.sides} />
+          </span>
+        </label>
+        <label>
+          {localization().fields.flat}
+          <input type="number" bind:value={armed.damage.flat} />
+        </label>
+        <label>
+          {localization().fields.skill}
+          <select bind:value={armed.damage.bonus}>
+            <option value={undefined}></option>
+            {#each hitSkills as skill}
+              <option value={skill}>{localization().skills[skill]}</option>
+            {/each}
+          </select>
+        </label>
+        <label>
+          {localization().fields.kind}
+          <select bind:value={armed.damage.type}>
+            {#each damageTypes as type}
+              <option value={type}>{localization().damageTypes[type]}</option>
+            {/each}
+          </select>
+        </label>
+      </fieldset>
+    {/if}
+
     {#if draft.kind === "melee"}
       {@const melee = draft}
-      <label>
-        {localization().fields.damage}
-        <input type="text" bind:value={melee.damage} />
-      </label>
       <label class="checkbox">
         {localization().fields.two_handed}
         <input type="checkbox" bind:checked={melee.twoHanded} />
-      </label>
-      <label>
-        {localization().fields.info}
-        <input type="text" bind:value={melee.info} />
       </label>
     {:else if draft.kind === "ranged"}
       {@const ranged = draft}
@@ -95,10 +131,6 @@
             <option value={skill}>{localization().skills[skill]}</option>
           {/each}
         </select>
-      </label>
-      <label>
-        {localization().fields.damage}
-        <input type="text" bind:value={ranged.damage} />
       </label>
       <label>
         {localization().fields.range}
@@ -116,23 +148,11 @@
         {localization().fields.reload}
         <input type="number" min="0" bind:value={ranged.reloadTurns} />
       </label>
-      <label>
-        {localization().fields.info}
-        <input type="text" bind:value={ranged.info} />
-      </label>
     {:else if draft.kind === "throwable"}
       {@const throwable = draft}
       <label>
-        {localization().fields.damage}
-        <input type="text" bind:value={throwable.damage} />
-      </label>
-      <label>
         {localization().fields.range}
         <input type="text" bind:value={throwable.range} />
-      </label>
-      <label>
-        {localization().fields.info}
-        <input type="text" bind:value={throwable.info} />
       </label>
     {:else if draft.kind === "liquid"}
       {@const liquid = draft}
@@ -144,11 +164,12 @@
         {localization().fields.weight_per_unit}
         <input type="number" min="0" step="0.1" bind:value={liquid.weightPerUnit} />
       </label>
-      <label>
-        {localization().fields.current}
-        <input type="number" min="0" max={liquid.capacity} step="0.1" bind:value={liquid.current} />
-      </label>
     {/if}
+
+    <label class="stacked">
+      {localization().fields.info}
+      <textarea bind:value={draft.info}></textarea>
+    </label>
 
     <button onclick={create}>{localization().ui.add}</button>
     <button onclick={() => (open = false)}>{localization().ui.cancel}</button>
@@ -188,8 +209,31 @@
     gap: 10px;
   }
 
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 10px;
+    border: 1px solid #9fe64459;
+  }
+
+  .dice span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
   .checkbox input {
     justify-self: start;
+  }
+
+  .stacked {
+    grid-template-columns: auto;
+  }
+
+  textarea {
+    height: 4lh;
   }
 
   button {

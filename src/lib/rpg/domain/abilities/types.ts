@@ -1,8 +1,8 @@
 import { Attributes, Skills } from "$lib/rpg/config";
+import type { ItemId } from "$lib/rpg/domain/items/prefabs";
+import type { ItemTemplate } from "$lib/rpg/domain/items/types";
 
 type Details =
-  /** Names an entry in the Innate item category, so a weapon is defined in exactly one place. */
-  | { kind: "innate_weapon" }
   | { kind: "weapon"; hit: Skills; damage: string; range: number }
   | { kind: "attribute_modifier"; attribute: Attributes; amount: number }
   | { kind: "skill_modifier"; skill: Skills; amount: number }
@@ -10,14 +10,17 @@ type Details =
 
 /** Every ability can carry free text, so a `text` ability is simply one with nothing else. */
 export type AbilityTemplate = { name: string; info: string } & Details;
-export type Ability = AbilityTemplate & { id: string };
-export type AbilityKind = Ability["kind"];
 
-/** Kinds a player can build by hand. Innate weapons are catalogue-only. */
-export type CustomAbilityKind = Exclude<AbilityKind, "innate_weapon">;
+/** What a species lists: a catalogue weapon written directly, or an ability of its own. */
+export type AbilityEntry = ItemTemplate | AbilityTemplate;
+
+/** What a character holds. A catalogue weapon is kept as the id it refers to. */
+export type Ability = ItemId | (AbilityTemplate & { id: string });
+
+export type AbilityKind = AbilityTemplate["kind"];
 
 /** What a freshly picked kind looks like in the custom-ability form. Adding a kind fails here first. */
-export const BLANK_ABILITIES: Record<CustomAbilityKind, AbilityTemplate> = {
+export const BLANK_ABILITIES: Record<AbilityKind, AbilityTemplate> = {
   weapon: { kind: "weapon", name: "", info: "", hit: Skills.melee, damage: "", range: 1 },
   attribute_modifier: {
     kind: "attribute_modifier",
@@ -30,8 +33,18 @@ export const BLANK_ABILITIES: Record<CustomAbilityKind, AbilityTemplate> = {
   text: { kind: "text", name: "", info: "" },
 };
 
-export const ABILITY_KINDS = Object.keys(BLANK_ABILITIES) as CustomAbilityKind[];
+export const ABILITY_KINDS = Object.keys(BLANK_ABILITIES) as AbilityKind[];
 
-export function createAbility(template: AbilityTemplate): Ability {
-  return { ...template, id: crypto.randomUUID() };
+/** A catalogue weapon reduces to its id; a written ability gets an instance of its own. */
+export function createAbility(entry: AbilityEntry): Ability {
+  return "id" in entry ? entry.id : { ...entry, id: crypto.randomUUID() };
+}
+
+export function isWeapon(ability: Ability): ability is ItemId {
+  return typeof ability === "string";
+}
+
+/** Whether a held ability came from this catalogue entry. */
+export function matches(ability: Ability, entry: AbilityEntry) {
+  return isWeapon(ability) ? "id" in entry && entry.id === ability : !("id" in entry) && entry.name === ability.name;
 }
