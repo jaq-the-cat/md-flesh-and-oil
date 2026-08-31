@@ -194,6 +194,8 @@ export const en_us = {
     log_in: "Log In",
     log_out: "Log Out",
     sign_up: "Sign Up",
+    forgot: "Forgot your password?",
+    reset_sent: "A reset link has been sent to",
     already: "Already signed in as",
     log_in_to_save: "Log in to save this sheet",
     log_in_to_list: "Log in to see the sheets you have created.",

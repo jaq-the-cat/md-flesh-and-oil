@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInAnonymously,
   signInWithEmailAndPassword,
   signOut,
@@ -61,6 +62,10 @@ export async function register(email: string, password: string) {
 
 export async function logIn(email: string, password: string) {
   await signInWithEmailAndPassword(getAuth(), email, password);
+}
+
+export async function resetPassword(email: string) {
+  await sendPasswordResetEmail(getAuth(), email);
 }
 
 export async function logOut() {
