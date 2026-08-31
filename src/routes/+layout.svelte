@@ -6,8 +6,9 @@
   import { getFirestore } from "firebase/firestore";
   import { getAuth } from "firebase/auth";
   import { env } from "$env/dynamic/public";
-  import { authorId } from "$lib/author";
+  import { logOut, session, startSession } from "$lib/auth.svelte";
   import { db } from "$lib/db";
+  import { localization } from "$i18n";
 
   // Not secrets: Firebase web config always ships to the browser. Kept out of the repo so
   // each deployment can point at its own project.
@@ -25,9 +26,7 @@
   db.firestore = firestore;
 
   // Every write needs an identity for the security rules to check.
-  onMount(() => {
-    authorId().catch(() => {});
-  });
+  onMount(startSession);
 </script>
 
 <svelte:head>
@@ -40,6 +39,12 @@
   >
   <a data-sveltekit-reload class="buttonStyle" href="/sheets">My Sheets</a>
   <a data-sveltekit-reload class="buttonStyle" href="/rulebook">Rulebook</a>
+  {#if session.signedIn}
+    <span class="who">{session.email}</span>
+    <button class="buttonStyle" onclick={logOut}>{localization().auth.log_out}</button>
+  {:else if session.ready}
+    <a data-sveltekit-reload class="buttonStyle" href="/login">{localization().auth.log_in}</a>
+  {/if}
 </header>
 
 <FirebaseApp {auth} {firestore}>
@@ -47,6 +52,11 @@
 </FirebaseApp>
 
 <style>
+  .who {
+    align-self: center;
+    opacity: 0.8;
+  }
+
   header {
     display: flex;
     justify-content: center;

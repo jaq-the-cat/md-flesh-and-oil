@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { authorId } from "$lib/author";
+  import { session } from "$lib/auth.svelte";
   import { localization } from "$i18n";
   import OwnedSheets from "./OwnedSheets.svelte";
 </script>
@@ -9,13 +9,15 @@
 </svelte:head>
 
 <main>
-  {#await authorId()}
+  {#if !session.ready}
     <h1>{localization().ui.loading}</h1>
-  {:then author}
-    <OwnedSheets {author} />
-  {:catch}
-    <h1>{localization().sheets.no_identity}</h1>
-  {/await}
+  {:else if session.signedIn}
+    <OwnedSheets author={session.uid!} />
+  {:else}
+    <h1>{localization().sheets.title}</h1>
+    <p class="note">{localization().auth.log_in_to_list}</p>
+    <a class="buttonStyle" href="/login">{localization().auth.log_in}</a>
+  {/if}
 </main>
 
 <style lang="scss">
@@ -24,7 +26,16 @@
     margin-inline: auto;
   }
 
-  h1 {
+  h1,
+  .note {
     text-align: center;
+  }
+
+  a {
+    display: block;
+    width: max-content;
+    margin: 10px auto;
+    padding: 10px 20px;
+    text-decoration: none;
   }
 </style>

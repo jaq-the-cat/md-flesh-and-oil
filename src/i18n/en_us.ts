@@ -187,6 +187,19 @@ export const en_us = {
     container: "Container",
   },
 
+  auth: {
+    title: "Log In",
+    email: "Email",
+    password: "Password",
+    log_in: "Log In",
+    log_out: "Log Out",
+    sign_up: "Sign Up",
+    already: "Already signed in as",
+    log_in_to_save: "Log in to save this sheet",
+    log_in_to_list: "Log in to see the sheets you have created.",
+    anonymous_warning: "Sheets made before signing up stay reachable by link, but will not appear in your list.",
+  },
+
   sheets: {
     title: "My Sheets",
     empty: "You have not created any sheets in this browser yet.",

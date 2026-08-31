@@ -4,7 +4,7 @@
   import { addDoc, collection } from "firebase/firestore";
   import { db } from "$lib/db";
   import { localization } from "$i18n";
-  import { authorId } from "$lib/author";
+  import { session } from "$lib/auth.svelte";
   import { sheetJson, toDocument } from "$lib/persistence";
   import { WorkerDrone } from "$lib/rpg/domain/species/worker_drone";
   import type { Species } from "$lib/rpg/infra/species/species.svelte";
@@ -26,7 +26,7 @@
       const sheet = JSON.parse(sheetJson(toDocument(species)));
       const created = await addDoc(collection(db.firestore!, "sheets"), {
         ...sheet,
-        author: await authorId(),
+        author: session.uid!,
         updatedAt: Date.now(),
       });
       await goto(`/sheet/${created.id}`);
@@ -48,9 +48,13 @@
 />
 
 <header class="sheetLinks">
-  <button onclick={create} disabled={creating}>
-    {creating ? localization().ui.creating : localization().ui.create}
-  </button>
+  {#if session.signedIn}
+    <button onclick={create} disabled={creating}>
+      {creating ? localization().ui.creating : localization().ui.create}
+    </button>
+  {:else}
+    <a class="buttonStyle" href="/login">{localization().auth.log_in_to_save}</a>
+  {/if}
   {#if failed}
     <span class="failed">{localization().ui.error}</span>
   {/if}
@@ -66,8 +70,10 @@
     column-gap: 20px;
     margin-bottom: 10px;
 
-    button {
+    button,
+    a {
       font-size: 1.1rem;
+      text-decoration: none;
       border: 1px solid #9fe644;
       padding: 10px;
     }
