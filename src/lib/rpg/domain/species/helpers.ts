@@ -15,5 +15,5 @@ export function carryWeight({ base, multiplier }: Build) {
 }
 
 export function sanityField<T extends Species>() {
-  return new NumberField(0, (obj: T) => Math.min(100, obj.getSkillBonus(Skills.willpower)));
+  return new NumberField(0, (obj: T) => Math.min(100, obj.getSkillBonus(Skills.willpower) * 2));
 }
