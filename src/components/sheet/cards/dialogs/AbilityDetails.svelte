@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Attributes, Skills } from "$lib/rpg/domain/config";
   import type { AbilityTemplate } from "$lib/rpg/infra/abilities";
   import { localization } from "$i18n";
   import { damageText } from "../../items";
@@ -17,9 +16,9 @@
     <dd>{damageText(ability.damage)}</dd>
     <dt>{localization().fields.range}</dt>
     <dd>{ability.range}m</dd>
-  {:else if ability.kind === "attribute_modifier"}
+  <!-- {:else if ability.kind === "attribute_modifier"}
     <dt>{localization().attributes[ability.attribute]}</dt>
-    <dd>{signed(ability.amount)}</dd>
+    <dd>{signed(ability.amount)}</dd> -->
   {:else if ability.kind === "skill_modifier"}
     <dt>{localization().skills[ability.skill]}</dt>
     <dd>{signed(ability.amount)}</dd>

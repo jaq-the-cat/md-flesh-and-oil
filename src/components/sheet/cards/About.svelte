@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { About, Alignment } from "$lib/rpg/domain/config";
+  import { About, Alignment, Height, Weight } from "$lib/rpg/domain/config";
   import type { Species } from "$lib/rpg/infra/species.svelte";
   import { localization } from "$i18n";
   import { fields } from "../fields";
@@ -14,6 +14,8 @@
 
   // `about` holds strings, so an alignment is stored as its enum member name.
   const alignments = Object.values(Alignment);
+  const heights = Object.values(Height);
+  const weights = Object.values(Weight);
 
   let aboutRulebook = $state(false);
 </script>
@@ -32,6 +34,18 @@
           <select bind:value={species.about[field.key]}>
             {#each alignments as alignment}
               <option value={alignment}>{localization().alignments[alignment]}</option>
+            {/each}
+          </select>
+        {:else if field.key === About.height}
+          <select bind:value={species.about[field.key]}>
+            {#each heights as height}
+              <option value={height}>{localization().heights[height]}</option>
+            {/each}
+          </select>
+        {:else if field.key === About.weight}
+          <select bind:value={species.about[field.key]}>
+            {#each weights as weight}
+              <option value={weight}>{localization().weights[weight]}</option>
             {/each}
           </select>
         {:else if field.key === About.biography}
@@ -77,6 +91,9 @@
     align-items: stretch;
   }
 
+  input, select {
+    width: 16ch;
+  }
   textarea {
     flex-grow: 1;
     min-height: 6lh;

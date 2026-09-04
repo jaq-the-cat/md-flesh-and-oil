@@ -15,3 +15,9 @@ export const Alignment = names(
   "chaotic_evil",
 );
 export type Alignment = keyof typeof Alignment;
+
+export const Height = names("giant", "tall", "average", "small", "tiny");
+export type Height = keyof typeof Height;
+
+export const Weight = names("massive", "heavy", "average", "light", "very_light");
+export type Weight = keyof typeof Weight;

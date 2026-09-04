@@ -39,37 +39,53 @@
   >
   <a data-sveltekit-reload class="buttonStyle" href="/sheets">My Sheets</a>
   <a data-sveltekit-reload class="buttonStyle" href="/rulebook">Rulebook</a>
-  {#if session.signedIn}
-    <span class="who">{session.email}</span>
-    <button class="buttonStyle" onclick={logOut}>{localization().auth.log_out}</button>
-  {:else if session.ready}
-    <a data-sveltekit-reload class="buttonStyle" href="/login">{localization().auth.log_in}</a>
-  {/if}
+  <span>
+    {#if session.signedIn}
+        <button class="buttonStyle auth" onclick={logOut}>{localization().auth.log_out}</button>
+        <span class="who">{session.email}</span>
+    {:else if session.ready}
+        <a data-sveltekit-reload class="buttonStyle auth" href="/login">{localization().auth.log_in}</a>
+    {/if}
+  </span>
 </header>
 
 <FirebaseApp {auth} {firestore}>
   <slot />
 </FirebaseApp>
 
-<style>
-  .who {
-    align-self: center;
-    opacity: 0.8;
-  }
+<style lang="scss">
 
   header {
     display: flex;
     justify-content: center;
     column-gap: 20px;
+    row-gap: 10px;
     width: 100%;
     padding: 10px;
     padding-top: 0;
     margin-bottom: 10px;
+    flex-wrap: wrap;
 
-    a {
+    .buttonStyle {
       padding: 10px;
       text-decoration: none;
       font-size: 1.2rem;
+    }
+
+    .auth {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    
+    .who {
+      opacity: 0.8;
+      align-self: center;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    header {
+      flex-direction: column;
     }
   }
 </style>

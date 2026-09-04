@@ -4,9 +4,11 @@ import {
   Attributes,
   Bars,
   DamageTypes,
+  Height,
   Movement,
   SkillModifiers,
   Skills,
+  Weight,
 } from "$lib/rpg/domain/config";
 import type { AbilityKind } from "$lib/rpg/infra/abilities";
 import type { ItemId } from "$lib/rpg/domain/items/prefabs";
@@ -57,6 +59,22 @@ export const en_us = {
     [Alignment.neutral_evil]: "Neutral Evil",
     [Alignment.chaotic_evil]: "Chaotic Evil",
   } satisfies Record<Alignment, string>,
+
+  heights: {
+    [Height.giant]: "Giant",
+    [Height.tall]: "Tall",
+    [Height.average]: "Average",
+    [Height.small]: "Small",
+    [Height.tiny]: "Tiny",
+  } satisfies Record<Height, string>,
+
+  weights: {
+    [Weight.massive]: "Massive",
+    [Weight.heavy]: "Heavy",
+    [Weight.average]: "Average",
+    [Weight.light]: "Light",
+    [Weight.very_light]: "Very Light",
+  } satisfies Record<Weight, string>,
 
   attributes: {
     [Attributes.vitality]: "Vitality",
